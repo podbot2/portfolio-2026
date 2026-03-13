@@ -237,9 +237,9 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 
 /* ── PROJECT STACK ── */
 /* Tall wrapper that gives each sticky card its own scroll range.
-   100vh for the intro slide + 5 × 100vh for the five project cards = 600vh total. */
+   100vh intro + 4 × 100vh cards = 500vh total. */
 #proj-stack{
-  height:600vh;
+  height:500vh;
   position:relative;
 }
 
@@ -260,7 +260,6 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 #proj-1{z-index:2}
 #proj-2{z-index:3}
 #proj-3{z-index:4}
-#proj-4{z-index:5}
 
 .proj::before{
   content:'';
@@ -650,23 +649,19 @@ body.is-transitioning {
 <!-- Project navigation -->
 <nav class="proj-nav" id="proj-nav" aria-label="Project navigation">
   <div class="proj-nav-item" data-nav="0">
-    <span class="proj-nav-label">Inventory intelligence</span>
+    <span class="proj-nav-label">vAuto Labs</span>
     <span class="proj-nav-dot"></span>
   </div>
   <div class="proj-nav-item" data-nav="1">
-    <span class="proj-nav-label">Component library</span>
+    <span class="proj-nav-label">cloudServe</span>
     <span class="proj-nav-dot"></span>
   </div>
   <div class="proj-nav-item" data-nav="2">
-    <span class="proj-nav-label">Dealer personas</span>
+    <span class="proj-nav-label">Maxis Workspaces</span>
     <span class="proj-nav-dot"></span>
   </div>
   <div class="proj-nav-item" data-nav="3">
-    <span class="proj-nav-label">Zero-ambiguity spec</span>
-    <span class="proj-nav-dot"></span>
-  </div>
-  <div class="proj-nav-item" data-nav="4">
-    <span class="proj-nav-label">Error language</span>
+    <span class="proj-nav-label">Data Catalog</span>
     <span class="proj-nav-dot"></span>
   </div>
 </nav>
@@ -674,7 +669,7 @@ body.is-transitioning {
 <div class="nav">
   <div class="nav-right">
     <div class="avail-pill" id="avail-dot-wrap">Product Designer</div>
-    <div class="lbl" style="margin-top:4px">Data-Driven Platforms</div>
+    <div class="lbl" style="margin-top:4px">Cox Automotive · vAuto</div>
   </div>
 </div>
 
@@ -721,26 +716,26 @@ body.is-transitioning {
   <div class="proj-intro" id="proj-intro">
     <div class="proj-intro-inner">
       <div class="proj-intro-eyebrow">Selected work</div>
-      <div class="proj-intro-title">2022 — 2025</div>
-      <div class="proj-intro-meta">5 projects · scroll to explore</div>
+      <div class="proj-intro-title">2023 — present</div>
+      <div class="proj-intro-meta">4 projects · scroll to explore</div>
     </div>
   </div>
 
-  <!-- sticky-stack wrapper — 600vh gives each of the 5 cards its own scroll range -->
+  <!-- sticky-stack wrapper — 500vh gives each of the 4 cards its own scroll range -->
   <div id="proj-stack">
 
   <!-- 01 -->
-  <div class="proj" id="proj-0" data-color="#c4607a" data-rgb="196,96,122" data-idx="0">
+  <div class="proj" id="proj-0" data-color="#c4688c" data-rgb="196,104,140" data-idx="0">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-index">01</div>
-      <div class="proj-discipline">Human-centered design · vAuto</div>
-      <div class="proj-title">Inventory <em>intelligence</em> redesign</div>
-      <div class="proj-desc">End-to-end redesign of the appraisal workflow for automotive dealers. Reduced task time by 34% through progressive disclosure and smarter defaults.</div>
+      <div class="proj-discipline">Human-centered design · Cox Automotive</div>
+      <div class="proj-title">vAuto <em>Labs</em> platform</div>
+      <div class="proj-desc">Designed the end-to-end launch experience for vAuto Labs — a beta feature platform within ProfitTime GPS. Built Pendo-powered onboarding guides driving 2.5x higher engagement and waitlist flows that reduced feature-activation support tickets by 18%.</div>
       <div class="proj-meta">
-        <span class="proj-year">2024</span>
+        <span class="proj-year">2025</span>
         <span class="proj-divider"></span>
-        <span class="proj-year">vAuto · Appraisal</span>
+        <span class="proj-year">Cox Automotive · vAuto</span>
       </div>
       <a class="proj-link" href="#">View project <span class="proj-link-arrow">→</span></a>
     </div>
@@ -754,13 +749,13 @@ body.is-transitioning {
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-index">02</div>
-      <div class="proj-discipline">Systems thinking · Interstate DS</div>
-      <div class="proj-title">Component <em>library</em> contribution</div>
-      <div class="proj-desc">Designed and documented 14 new components for the Interstate Design System, including data table variants, inline feedback patterns, and empty state templates.</div>
+      <div class="proj-discipline">Systems thinking · General Motors</div>
+      <div class="proj-title">Self-service <em>cloud</em> infrastructure</div>
+      <div class="proj-desc">Designed an enterprise app that lets engineers and data architects independently provision AWS, Azure, and GCP accounts — eliminating manual IT bottlenecks and scaling across GM's cloud transformation.</div>
       <div class="proj-meta">
         <span class="proj-year">2023</span>
         <span class="proj-divider"></span>
-        <span class="proj-year">Interstate DS</span>
+        <span class="proj-year">GM · EDAI</span>
       </div>
       <a class="proj-link" href="#">View project <span class="proj-link-arrow">→</span></a>
     </div>
@@ -774,13 +769,13 @@ body.is-transitioning {
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-index">03</div>
-      <div class="proj-discipline">User research · Discovery</div>
-      <div class="proj-title">Dealer <em>persona</em> framework</div>
-      <div class="proj-desc">Led 22 contextual interviews across 8 dealership archetypes. Synthesized findings into a persona and journey map framework now used across 4 product teams.</div>
+      <div class="proj-discipline">User research · General Motors</div>
+      <div class="proj-title">Dash app <em>deployment</em> simplified</div>
+      <div class="proj-desc">Reduced a 9-step, 40-page deployment process down to 3 steps. Designed a Jupyter-integrated wizard that let data scientists, engineers, and analysts ship Dash apps independently within the Maxis platform.</div>
       <div class="proj-meta">
         <span class="proj-year">2023</span>
         <span class="proj-divider"></span>
-        <span class="proj-year">vAuto · Research</span>
+        <span class="proj-year">GM · Maxis</span>
       </div>
       <a class="proj-link" href="#">View project <span class="proj-link-arrow">→</span></a>
     </div>
@@ -794,38 +789,18 @@ body.is-transitioning {
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-index">04</div>
-      <div class="proj-discipline">Spec-driven development · Handoff</div>
-      <div class="proj-title">Zero-ambiguity <em>spec</em> practice</div>
-      <div class="proj-desc">Built a spec templating system that cut engineering clarification cycles by 60%. Adopted as standard practice across the vAuto UX team.</div>
+      <div class="proj-discipline">Information architecture · General Motors</div>
+      <div class="proj-title">Enterprise <em>data</em> discoverability</div>
+      <div class="proj-desc">Designed GM's internal cloud data catalog — centralized discovery, access requests, data lineage visibility, and metadata documentation. Reduced resource allocation expenses by 12% through streamlined data access.</div>
       <div class="proj-meta">
-        <span class="proj-year">2024</span>
+        <span class="proj-year">2023</span>
         <span class="proj-divider"></span>
-        <span class="proj-year">vAuto · Handoff</span>
+        <span class="proj-year">GM · Data</span>
       </div>
       <a class="proj-link" href="#">View project <span class="proj-link-arrow">→</span></a>
     </div>
     <div class="proj-right">
       <canvas class="proj-canvas" data-draw="3"></canvas>
-    </div>
-  </div>
-
-  <!-- 05 -->
-  <div class="proj" id="proj-4" data-color="#4a6080" data-rgb="74,96,128" data-idx="4">
-    <div class="proj-progress"><div class="proj-progress-fill"></div></div>
-    <div class="proj-left">
-      <div class="proj-index">05</div>
-      <div class="proj-discipline">Content strategy · UX writing</div>
-      <div class="proj-title">Error state <em>language</em> system</div>
-      <div class="proj-desc">Audited and rewrote 200+ error messages across vAuto's product suite using grade-5 readability standards. Introduced a reusable error copy framework.</div>
-      <div class="proj-meta">
-        <span class="proj-year">2022</span>
-        <span class="proj-divider"></span>
-        <span class="proj-year">vAuto · Content</span>
-      </div>
-      <a class="proj-link" href="#">View project <span class="proj-link-arrow">→</span></a>
-    </div>
-    <div class="proj-right">
-      <canvas class="proj-canvas" data-draw="4"></canvas>
     </div>
   </div>
   </div><!-- /proj-stack -->
@@ -1228,19 +1203,17 @@ const PROJ_DRAWS = (()=>{
   }
 
   const configs = [
-    { url:'https://picsum.photos/seed/appraisal/900/700',  cx:.54, cy:.5, cw:.72, ch:.58, rot:-.018 },
-    { url:'https://picsum.photos/seed/components/900/600', cx:.55, cy:.5, cw:.74, ch:.52, rot:.014  },
-    { url:'https://picsum.photos/seed/personas/700/900',   cx:.53, cy:.5, cw:.58, ch:.68, rot:-.012 },
-    { url:'https://picsum.photos/seed/specwork/900/700',   cx:.54, cy:.5, cw:.72, ch:.56, rot:.016  },
-    { url:'https://picsum.photos/seed/errorlang/900/700',  cx:.53, cy:.5, cw:.70, ch:.56, rot:-.014 },
+    { url:'https://picsum.photos/seed/vauto-labs/900/700',   cx:.54, cy:.5, cw:.72, ch:.58, rot:-.018 },
+    { url:'https://picsum.photos/seed/cloudserve/900/700',   cx:.55, cy:.5, cw:.74, ch:.52, rot:.014  },
+    { url:'https://picsum.photos/seed/maxis/700/900',        cx:.53, cy:.5, cw:.58, ch:.68, rot:-.012 },
+    { url:'https://picsum.photos/seed/datacatalog/900/700',  cx:.54, cy:.5, cw:.72, ch:.56, rot:.016  },
   ];
 
   const labels = [
-    'appraisal workflow · 34% faster task completion',
-    'Interstate DS · 14 components contributed',
-    '22 interviews · 8 archetypes · 4 teams',
-    '60% fewer eng clarification cycles',
-    '200+ messages · grade-5 readability',
+    'vAuto Labs · 2.5x engagement · 18% fewer tickets',
+    'cloudServe · self-service cloud provisioning',
+    'Maxis · 9 steps → 3 steps',
+    'Data Catalog · 12% cost reduction',
   ];
 
   const draws = configs.map((cfg, i) => (ctx, W, H, col) => {
