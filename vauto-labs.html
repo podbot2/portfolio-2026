@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vAuto Labs · Jennifer Flores · Product Designer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f5f2ee;
+  --surface:#faf8f5;
+  --ink:#1c1a2e;
+  --ink-mid:#4a4760;
+  --ink-dim:#9e9ab0;
+  --pink:#e88fa0;
+  --mint:#6ecfb8;
+  --lav:#a89dcc;
+  --line:rgba(28,26,46,.08);
+  --navy:#2b2850;
+  --accent:#c4688c;
+  --accent-rgb:196,104,140;
+  --accent-t:rgba(196,104,140,.14);
+}
+
+html{ scroll-behavior:smooth; }
+
+body{
+  min-height:100vh;
+  overflow-y:auto; overflow-x:hidden;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DM Mono',monospace;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cursor{
+  position:fixed;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);pointer-events:none;z-index:9999;
+  will-change:transform;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(var(--accent-rgb),.4);border-radius:50%;
+  pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
+  transition:width .3s,height .3s;will-change:transform;
+}
+
+/* ── AMBIENT LIGHT ── */
+#ambient{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 40%, rgba(var(--accent-rgb),.07) 0%, transparent 70%);
+}
+
+/* ── FLOAT NAV ── */
+.float-nav{
+  position:fixed;top:20px;left:50%;
+  opacity:0;transform:translateX(-50%) translateY(-10px);
+  z-index:300;width:calc(100% - 48px);max-width:640px;
+  cursor:none;
+  transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
+}
+.float-nav.is-visible{
+  opacity:1;pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.float-nav-inner{
+  display:flex;align-items:center;justify-content:space-between;gap:0;
+  padding:10px 10px 10px 20px;
+  background:rgba(28,26,46,.72);
+  backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+}
+.float-nav-identity{
+  display:flex;flex-direction:column;gap:2px;
+  padding-right:12px;border-right:1px solid rgba(255,255,255,.1);flex-shrink:0;
+}
+.float-nav-name{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:#fff;line-height:1;
+}
+.float-nav-title{
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.38);line-height:1;
+}
+.float-nav-links{
+  display:flex;align-items:center;gap:0;
+  padding:0 16px;flex:1;justify-content:center;
+}
+.float-nav-link{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,.55);
+  text-decoration:none;cursor:none;
+  padding:4px 10px;
+  transition:color .2s ease;
+}
+.float-nav-link:hover{color:#fff;}
+.float-nav-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;
+  text-transform:uppercase;padding:6px 14px 6px 10px;
+  border:1px solid rgba(255,255,255,.16);
+  color:rgba(255,255,255,.85);background:rgba(255,255,255,.10);
+  border-radius:999px;flex-shrink:0;cursor:none;text-decoration:none;
+  transition:background .2s,border-color .2s;
+}
+.float-nav-pill:hover{background:rgba(255,255,255,.18);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:45% 55%;
+  background:#1c1a2e;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(80px,10vh,120px) clamp(32px,4vw,72px) clamp(60px,8vh,96px) clamp(40px,5vw,80px);
+  position:relative;z-index:2;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+
+.hero-back{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.32);text-decoration:none;cursor:none;
+  margin-bottom:clamp(28px,4vh,48px);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:color .2s;
+}
+.hero-back:hover{color:rgba(255,255,255,.7);}
+
+.hero-badge{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:clamp(16px,2.5vh,28px);
+}
+.hero-badge-num{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(36px,5vw,64px);color:rgba(255,255,255,.08);
+  line-height:1;letter-spacing:-.04em;
+}
+.hero-badge-label{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);line-height:1.5;
+}
+
+.hero-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(36px,3.8vw,52px);line-height:1.0;
+  letter-spacing:-.02em;color:#fff;
+  margin-bottom:clamp(16px,2.5vh,24px);
+}
+.hero-title em{font-style:italic;color:var(--accent);}
+
+.hero-tagline{
+  font-size:13px;font-weight:300;letter-spacing:.04em;line-height:1.7;
+  color:rgba(255,255,255,.55);max-width:420px;
+  margin-bottom:clamp(28px,4vh,48px);
+}
+
+/* Meta grid */
+.hero-meta{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.06);
+  margin-bottom:0;max-width:380px;
+}
+.hero-meta-cell{
+  padding:12px 16px;background:#1c1a2e;
+}
+.hero-meta-label{
+  font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);margin-bottom:4px;
+}
+.hero-meta-value{
+  font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.7);
+}
+
+/* Progress bar strip on left edge */
+.hero-progress{
+  position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--accent);z-index:5;
+}
+
+/* ── HERO RIGHT ── */
+.hero-right{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;overflow:hidden;
+}
+#hero-canvas{
+  width:100%;height:100%;
+  display:block;
+}
+
+/* ── CASE STUDY BODY ── */
+.cs-body{
+  background:var(--bg);
+  position:relative;z-index:1;
+}
+.cs-container{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 clamp(24px,5vw,80px);
+}
+
+/* Section base */
+.cs-section{
+  padding:80px 0;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.cs-section.is-visible{
+  opacity:1;transform:translateY(0);
+}
+
+.cs-num{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:80px;color:rgba(28,26,46,.06);
+  position:absolute;left:-20px;top:64px;
+  line-height:1;letter-spacing:-.04em;
+  user-select:none;pointer-events:none;
+}
+
+.cs-label{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-dim);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.cs-label::before{
+  content:'';width:16px;height:1px;background:var(--ink-dim);display:block;flex-shrink:0;
+}
+
+.cs-h2{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(24px,3vw,36px);color:var(--ink);
+  margin-bottom:24px;line-height:1.15;letter-spacing:-.01em;
+}
+.cs-h2 em{font-style:italic;color:var(--accent);}
+
+.cs-p{
+  font-size:13px;font-weight:300;letter-spacing:.04em;line-height:1.7;
+  color:var(--ink-mid);margin-bottom:16px;max-width:640px;
+}
+.cs-p:last-child{margin-bottom:0;}
+
+/* Callout box */
+.cs-callout{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-left:2px solid var(--accent);
+  padding:20px 24px;
+  max-width:640px;
+  margin:24px 0;
+}
+.cs-callout p{
+  font-size:13px;font-weight:300;letter-spacing:.04em;line-height:1.7;
+  color:var(--ink-mid);
+}
+.cs-callout p+p{margin-top:8px;}
+
+/* Inline tags */
+.cs-tag{
+  display:inline-block;
+  font-size:9px;font-family:'DM Mono',monospace;
+  padding:4px 10px;
+  border:1px solid var(--line);
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-dim);
+  margin:3px 3px 3px 0;
+}
+
+/* Team row */
+.cs-team-row{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:20px;
+}
+
+/* Sub-section heading */
+.cs-sub-label{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-dim);margin-bottom:6px;margin-top:36px;
+}
+.cs-sub-h{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:22px;color:var(--ink);
+  margin-bottom:12px;
+}
+
+/* Meta row for guides */
+.cs-guide-meta{
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-dim);margin-bottom:16px;
+  display:flex;gap:0;flex-wrap:wrap;
+}
+.cs-guide-meta-item{
+  display:flex;align-items:center;gap:8px;
+  padding-right:16px;margin-right:16px;
+  border-right:1px solid var(--line);
+}
+.cs-guide-meta-item:last-child{border-right:none;padding-right:0;margin-right:0;}
+
+/* Numbered step items */
+.cs-steps{
+  display:flex;flex-direction:column;gap:0;
+  max-width:640px;margin-top:16px;
+}
+.cs-step{
+  display:grid;
+  grid-template-columns:40px 1fr;
+  gap:0 16px;
+  padding:20px 0;
+  border-bottom:1px solid var(--line);
+}
+.cs-step:last-child{border-bottom:none;}
+.cs-step-num{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:28px;color:rgba(28,26,46,.12);
+  line-height:1;padding-top:2px;
+}
+.cs-step-body{}
+.cs-step-title{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink);font-weight:400;margin-bottom:8px;
+}
+.cs-step-text{
+  font-size:13px;font-weight:300;letter-spacing:.04em;line-height:1.7;
+  color:var(--ink-mid);
+}
+.cs-step-note{
+  font-size:10px;letter-spacing:.1em;color:var(--ink-dim);
+  margin-top:8px;
+}
+
+/* Decision list */
+.cs-decisions{
+  display:flex;flex-direction:column;gap:0;
+  max-width:640px;margin-top:8px;
+}
+.cs-decision{
+  display:grid;grid-template-columns:40px 1fr;
+  gap:0 16px;padding:24px 0;border-bottom:1px solid var(--line);
+}
+.cs-decision:last-child{border-bottom:none;}
+.cs-decision-num{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-dim);padding-top:2px;
+}
+.cs-decision-body{}
+.cs-decision-title{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);font-weight:400;margin-bottom:8px;
+}
+.cs-decision-text{
+  font-size:13px;font-weight:300;letter-spacing:.04em;line-height:1.7;
+  color:var(--ink-mid);
+}
+
+/* Research goals grid */
+.cs-goals{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  max-width:640px;margin-top:24px;
+}
+.cs-goal{
+  background:var(--surface);padding:24px;
+}
+.cs-goal-num{
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;
+  color:rgba(28,26,46,.1);line-height:1;margin-bottom:8px;
+}
+.cs-goal-title{
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink);font-weight:400;margin-bottom:8px;
+}
+.cs-goal-text{
+  font-size:12px;font-weight:300;letter-spacing:.04em;line-height:1.6;
+  color:var(--ink-mid);
+}
+
+/* Gaps section — slightly dimmer */
+.cs-section--gaps .cs-h2,
+.cs-section--gaps .cs-label{
+  opacity:.75;
+}
+.cs-section--gaps .cs-p{
+  color:var(--ink-dim);font-style:italic;
+}
+.cs-gaps-flag{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;opacity:.7;
+}
+
+.cs-gaps-list{
+  max-width:640px;
+  display:flex;flex-direction:column;gap:0;
+}
+.cs-gaps-item{
+  padding:20px 0;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:24px 1fr;gap:0 14px;
+}
+.cs-gaps-item:last-child{border-bottom:none;}
+.cs-gaps-marker{
+  font-size:9px;letter-spacing:.1em;color:var(--ink-dim);padding-top:2px;
+}
+.cs-gaps-body{}
+.cs-gaps-title{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-dim);font-weight:400;margin-bottom:6px;font-style:normal;
+}
+.cs-gaps-text{
+  font-size:12px;font-weight:300;letter-spacing:.04em;line-height:1.65;
+  color:var(--ink-dim);font-style:italic;
+}
+
+/* ── FOOTER / NEXT PROJECT ── */
+.cs-footer{
+  background:var(--navy);
+  padding:clamp(48px,8vh,80px) clamp(24px,5vw,80px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.cs-footer-back{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);text-decoration:none;cursor:none;
+  transition:color .2s;
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+.cs-footer-back:hover{color:rgba(255,255,255,.85);}
+.cs-footer-next{
+  display:flex;align-items:center;gap:20px;
+  text-decoration:none;cursor:none;
+  transition:opacity .2s;
+}
+.cs-footer-next:hover{opacity:.8;}
+.cs-footer-next-label{
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.cs-footer-eyebrow{
+  font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+.cs-footer-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(20px,2.5vw,30px);color:#fff;letter-spacing:-.01em;
+}
+.cs-footer-arrow{
+  font-size:20px;color:rgba(255,255,255,.4);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.cs-footer-next:hover .cs-footer-arrow{transform:translateX(5px);}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeIn{to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .hero{grid-template-columns:1fr;grid-template-rows:auto auto;}
+  .hero-right{min-height:240px;}
+  .hero-meta{grid-template-columns:1fr 1fr;}
+  .cs-goals{grid-template-columns:1fr;}
+  .cs-num{display:none;}
+  .cs-footer{flex-direction:column;align-items:flex-start;}
+  .cs-footer-next .cs-footer-next-label{align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── CURSOR ── -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ── AMBIENT ── -->
+<div id="ambient"></div>
+
+<!-- ── FLOAT NAV ── -->
+<header class="float-nav" id="float-nav" role="banner">
+  <div class="float-nav-inner">
+    <div class="float-nav-identity">
+      <span class="float-nav-name">Jennifer Flores</span>
+      <span class="float-nav-title">Product Designer II</span>
+    </div>
+    <nav class="float-nav-links" aria-label="Case study navigation">
+      <a class="float-nav-link" href="portfolio-2025.html">← Work</a>
+    </nav>
+    <a class="float-nav-pill" href="#">cloudServe →</a>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero" id="hero">
+
+  <div class="hero-progress"></div>
+
+  <!-- LEFT COLUMN -->
+  <div class="hero-left">
+
+    <a class="hero-back" href="portfolio-2025.html">← Work</a>
+
+    <div class="hero-badge">
+      <div class="hero-badge-num">01</div>
+      <div class="hero-badge-label">Human-centered design<br>Cox Automotive</div>
+    </div>
+
+    <h1 class="hero-title">vAuto <em>Labs</em></h1>
+
+    <p class="hero-tagline">Onboarding and discovery design for ProfitTime GPS's experimental feature platform — a two-guide system bridging announcement to activation across a ~220,000-user base.</p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-cell">
+        <div class="hero-meta-label">Company</div>
+        <div class="hero-meta-value">vAuto · Cox Automotive</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hero-meta-label">Role</div>
+        <div class="hero-meta-value">Lead UX Designer</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hero-meta-label">Launched</div>
+        <div class="hero-meta-value">Alpha March 2026</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="hero-meta-label">Platform</div>
+        <div class="hero-meta-value">ProfitTime GPS</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN — canvas illustration -->
+  <div class="hero-right">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     CASE STUDY BODY
+═══════════════════════════════════════ -->
+<div class="cs-body">
+<div class="cs-container">
+
+  <!-- 01 — Overview -->
+  <section class="cs-section" id="s01">
+    <span class="cs-num">01</span>
+    <div class="cs-label">What is vAuto Labs?</div>
+    <h2 class="cs-h2">An experimental platform for <em>dealers</em> who try new features first.</h2>
+    <p class="cs-p">vAuto Labs is a new feature platform within ProfitTime GPS that gives beta dealers early access to vAuto's newest tools before they launch to the broader ~220,000-user base. Dealers can enable features directly, join waitlists for upcoming releases, and submit thumbs-up/down feedback from within Labs.</p>
+    <div class="cs-callout">
+      <p>Alpha launched March 3, 2026 · 6 hand-selected dealers · Beta and GA timelines TBD pending alpha research findings.</p>
+    </div>
+    <div class="cs-team-row">
+      <span class="cs-tag">Jennifer Flores — Designer</span>
+      <span class="cs-tag">Monica Herrera — Product</span>
+      <span class="cs-tag">Rob Monk — Pendo Admin</span>
+      <span class="cs-tag">Patrick Dennis — PM</span>
+    </div>
+  </section>
+
+  <!-- 02 — Design Challenge -->
+  <section class="cs-section" id="s02">
+    <span class="cs-num">02</span>
+    <div class="cs-label">The problem</div>
+    <h2 class="cs-h2">Introducing a new platform <em>across two pages</em>, without losing the user between them.</h2>
+    <p class="cs-p">Pendo guides cannot span multiple pages — each guide is scoped to a single URL. Labs lives on ExperimentPlatform.aspx. The announcement that dealers need to see first fires on Provision.aspx, the ProfitTime dashboard they land on at login.</p>
+    <p class="cs-p">The handoff between Guide 1 (announcement) and Guide 2 (onboarding) had to feel seamless — not like two disconnected pop-ups. The user clicks 'Explore Labs →' in Guide 1, lands on the Labs page, and Guide 2 fires immediately. If the timing or framing is off, dealers bounce before Labs has a chance to explain itself.</p>
+    <p class="cs-p">Compounding this: dealer research at vAuto shows that users are not accustomed to self-service. They default to calling for help. Labs only works at scale if dealers can discover, understand, and activate features on their own.</p>
+  </section>
+
+  <!-- 03 — Guide Design -->
+  <section class="cs-section" id="s03">
+    <span class="cs-num">03</span>
+    <div class="cs-label">The solution</div>
+    <h2 class="cs-h2">Two guides. One experience.</h2>
+
+    <!-- Guide 1 -->
+    <div class="cs-sub-label">Guide 1 — Announcement</div>
+    <div class="cs-sub-h">The entry point.</div>
+    <div class="cs-guide-meta">
+      <div class="cs-guide-meta-item">Fires on: ProfitTime dashboard (Provision.aspx)</div>
+      <div class="cs-guide-meta-item">Trigger: First visit only</div>
+      <div class="cs-guide-meta-item">Format: Full-screen lightbox overlay</div>
+    </div>
+    <div class="cs-callout">
+      <p><strong style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)">vAuto Labs</strong></p>
+      <p>See and try the new tools we are working on.</p>
+      <p style="margin-top:12px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Explore Labs →</p>
+    </div>
+
+    <!-- Guide 2 -->
+    <div class="cs-sub-label" style="margin-top:40px">Guide 2 — Labs Onboarding (3 steps)</div>
+    <div class="cs-sub-h">The activation path.</div>
+    <div class="cs-guide-meta">
+      <div class="cs-guide-meta-item">Fires on: Labs page (ExperimentPlatform.aspx)</div>
+      <div class="cs-guide-meta-item">Trigger: Automatically on arrival from Guide 1</div>
+    </div>
+
+    <div class="cs-steps">
+      <div class="cs-step">
+        <div class="cs-step-num">1</div>
+        <div class="cs-step-body">
+          <div class="cs-step-title">See what's being tested</div>
+          <div class="cs-step-text">These are features available to your dealership. Turn one on to add it to your workflow, or ask your admin to enable it. Some features enable directly. Others require a browser extension from the app store.</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-num">2</div>
+        <div class="cs-step-body">
+          <div class="cs-step-title">Get information on any feature</div>
+          <div class="cs-step-text">Use the interactive tutorial to walk through a feature step by step. Check the FAQ for quick answers to common questions.</div>
+          <div class="cs-step-note">Anchor: Tutorial and FAQ links on feature cards</div>
+        </div>
+      </div>
+      <div class="cs-step">
+        <div class="cs-step-num">3</div>
+        <div class="cs-step-body">
+          <div class="cs-step-title">Show interest in upcoming features</div>
+          <div class="cs-step-text">Join the waitlist to request access. If a spot opens, your admin can turn the feature on for your dealership.</div>
+          <div class="cs-step-note">CTA: Done</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — Key UX Decisions -->
+  <section class="cs-section" id="s04">
+    <span class="cs-num">04</span>
+    <div class="cs-label">Design rationale</div>
+    <h2 class="cs-h2">Every decision had a reason.</h2>
+
+    <div class="cs-decisions">
+      <div class="cs-decision">
+        <div class="cs-decision-num">01</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Two-guide structure</div>
+          <div class="cs-decision-text">Pendo cannot span pages. Guide 1 fires on the ProfitTime dashboard; Guide 2 fires on Labs. The handoff is designed to feel seamless — Guide 1 completes, the CTA navigates to Labs, and Guide 2 fires immediately on arrival.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">02</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">No nav beacon callout</div>
+          <div class="cs-decision-text">The "Explore Labs" CTA navigates directly to Labs. Adding an intermediate beacon step would break momentum and add friction between discovery and arrival.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">03</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Feedback step removed</div>
+          <div class="cs-decision-text">Thumbs up/down feedback is already visible on feature cards in Labs. Adding a guide step to call it out would serve a product goal, not a user goal. Enterprise transfers guide data showed only 3 responses — a partner activation problem, not a guide design one.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">04</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Tutorial/FAQ as Step 2, not last</div>
+          <div class="cs-decision-text">Dealer research showed dealers were missing Tutorial and FAQ links because they didn't know they existed. Placing it as Step 2 — not appended as padding at the end — surfaces it while attention is highest.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">05</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Admin vs. non-admin copy</div>
+          <div class="cs-decision-text">Both audiences receive the same guide. Admins read "turn one on" as their action. Non-admins read "ask your admin" as theirs. No separate guide versions needed.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">06</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">~180-character limit for feature descriptions</div>
+          <div class="cs-decision-text">Established a working character limit for feature card descriptions to keep content scannable and consistent across all features that appear in Labs.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — Alpha Research Plan -->
+  <section class="cs-section" id="s05">
+    <span class="cs-num">05</span>
+    <div class="cs-label">Measuring success</div>
+    <h2 class="cs-h2">Listening before declaring it works.</h2>
+    <p class="cs-p">Moderated interviews scheduled 1–2 weeks post-alpha with the 6-dealer cohort. Goal: qualitative signal to inform changes before beta or GA — not to validate that launch succeeded. Findings feed directly into beta synthesis with no separate alpha readout.</p>
+
+    <div class="cs-goals">
+      <div class="cs-goal">
+        <div class="cs-goal-num">1</div>
+        <div class="cs-goal-title">Dealer understanding</div>
+        <div class="cs-goal-text">Can dealers explain what Labs is and their role, without prompting?</div>
+      </div>
+      <div class="cs-goal">
+        <div class="cs-goal-num">2</div>
+        <div class="cs-goal-title">Feature adoption intent</div>
+        <div class="cs-goal-text">Did dealers attempt to enable a feature? What drove or blocked that?</div>
+      </div>
+      <div class="cs-goal">
+        <div class="cs-goal-num">3</div>
+        <div class="cs-goal-title">Usability gaps</div>
+        <div class="cs-goal-text">Were there moments of confusion, friction, or missing context?</div>
+      </div>
+      <div class="cs-goal">
+        <div class="cs-goal-num">4</div>
+        <div class="cs-goal-title">Feedback loop quality</div>
+        <div class="cs-goal-text">Did dealers notice and use the thumbs up/down? Do they understand how their input is used?</div>
+      </div>
+    </div>
+
+    <div class="cs-callout" style="margin-top:32px">
+      <p><strong style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)">Pendo data to pull before calls:</strong></p>
+      <p style="margin-top:8px">Guide 1 views, Guide 1→2 handoff completion, Guide 2 step-level drop-off, time-on-step, Labs page return visits, feature toggle clicks, Tutorial/FAQ click rate.</p>
+    </div>
+  </section>
+
+  <!-- 06 — Success Criteria -->
+  <section class="cs-section" id="s06">
+    <span class="cs-num">06</span>
+    <div class="cs-label">GA Readiness</div>
+    <h2 class="cs-h2">What does GA actually require?</h2>
+    <p class="cs-p">Five dimensions define beta readiness. The overarching question: "Does vAuto Labs create visible dealer value, accelerate learning and iterative development, without introducing risk — at scale?"</p>
+
+    <div class="cs-decisions">
+      <div class="cs-decision">
+        <div class="cs-decision-num">01</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Dealer value &amp; engagement is proven</div>
+          <div class="cs-decision-text">Dealers understand Labs, use it intentionally, and can self-discover, self-service, and self-support.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">02</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Labs works as a scalable platform</div>
+          <div class="cs-decision-text">Functions reliably with minimal manual intervention. Dealers can access, enable/disable, and navigate without hand-holding.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">03</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Feedback loops are consistent and actionable</div>
+          <div class="cs-decision-text">At least one repeatable feedback mechanism dealers actually use. Feedback is understandable and tied to specific experiments.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">04</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Product teams can validate ideas faster</div>
+          <div class="cs-decision-text">Labs used to validate problem-solution fit, identify usability gaps early, and kill or pivot ideas before heavy investment.</div>
+        </div>
+      </div>
+      <div class="cs-decision">
+        <div class="cs-decision-num">05</div>
+        <div class="cs-decision-body">
+          <div class="cs-decision-title">Internal readiness &amp; confidence</div>
+          <div class="cs-decision-text">Product, Engineering, Support, and PMs understand what Labs is and is not, and know how to respond when something goes wrong.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — Content Gaps -->
+  <section class="cs-section cs-section--gaps" id="s07">
+    <span class="cs-num">07</span>
+    <div class="cs-label">What's missing</div>
+    <h2 class="cs-h2">Content gaps for this case study.</h2>
+    <div class="cs-gaps-flag">Flagged honestly — not yet available at time of writing</div>
+
+    <div class="cs-gaps-list">
+      <div class="cs-gaps-item">
+        <div class="cs-gaps-marker">1</div>
+        <div class="cs-gaps-body">
+          <div class="cs-gaps-title">No UI screenshots</div>
+          <div class="cs-gaps-text">Pendo guide visuals not yet documented. Mockups or screen recordings needed before this page can be fully illustrated.</div>
+        </div>
+      </div>
+      <div class="cs-gaps-item">
+        <div class="cs-gaps-marker">2</div>
+        <div class="cs-gaps-body">
+          <div class="cs-gaps-title">No post-alpha research findings</div>
+          <div class="cs-gaps-text">Alpha launched March 3, 2026. Interviews scheduled 1–2 weeks post-launch. Findings not yet available.</div>
+        </div>
+      </div>
+      <div class="cs-gaps-item">
+        <div class="cs-gaps-marker">3</div>
+        <div class="cs-gaps-body">
+          <div class="cs-gaps-title">No quantitative outcomes</div>
+          <div class="cs-gaps-text">Pendo data (guide views, toggle clicks, return visits) will be pulled before interviews. Not yet available at time of writing.</div>
+        </div>
+      </div>
+      <div class="cs-gaps-item">
+        <div class="cs-gaps-marker">4</div>
+        <div class="cs-gaps-body">
+          <div class="cs-gaps-title">Beta/GA not started</div>
+          <div class="cs-gaps-text">Success criteria are forward-looking. Outcomes against these criteria will be documented after beta completes.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /cs-container -->
+</div><!-- /cs-body -->
+
+<!-- ══════════════════════════════════════
+     FOOTER / NEXT PROJECT
+═══════════════════════════════════════ -->
+<footer class="cs-footer">
+  <a class="cs-footer-back" href="portfolio-2025.html">← Back to work</a>
+  <a class="cs-footer-next" href="#">
+    <div class="cs-footer-next-label">
+      <span class="cs-footer-eyebrow">Next project</span>
+      <span class="cs-footer-title">02 · cloudServe</span>
+    </div>
+    <span class="cs-footer-arrow">→</span>
+  </a>
+</footer>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+// ── CURSOR ───────────────────────────────────────────────
+const dotEl  = document.getElementById('cursor');
+const ringEl = document.getElementById('cursor-ring');
+
+let mx = window.innerWidth/2, my = window.innerHeight/2;
+let rx = mx, ry = my;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+});
+
+(function animateCursor() {
+  // dot: exact
+  dotEl.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  // ring: lerp
+  rx += (mx - rx) * 0.1;
+  ry += (my - ry) * 0.1;
+  ringEl.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animateCursor);
+})();
+
+// Expand ring on interactive elements
+document.querySelectorAll('a, button, .cs-tag, .cs-goal').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ringEl.style.width  = '50px';
+    ringEl.style.height = '50px';
+  });
+  el.addEventListener('mouseleave', () => {
+    ringEl.style.width  = '36px';
+    ringEl.style.height = '36px';
+  });
+});
+
+// ── FLOAT NAV — show on load ──────────────────────────────
+setTimeout(() => {
+  document.getElementById('float-nav').classList.add('is-visible');
+}, 600);
+
+// ── HERO CANVAS ILLUSTRATION ─────────────────────────────
+(function initHeroCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx    = canvas.getContext('2d');
+  const ACCENT = '#c4688c';
+  let dpr      = window.devicePixelRatio || 1;
+  let W, H;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width;
+    H = rect.height;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+  }
+
+  new ResizeObserver(resize).observe(canvas.parentElement);
+  resize();
+
+  let t = 0;
+
+  function draw() {
+    t += 0.012;
+    ctx.clearRect(0, 0, W, H);
+
+    // Subtle radial glow from center
+    const grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.min(W,H)*0.55);
+    grd.addColorStop(0, 'rgba(196,104,140,.08)');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+
+    // App window frame
+    const fw = W * 0.78;
+    const fh = H * 0.70;
+    const fx = (W - fw) / 2;
+    const fy = (H - fh) / 2;
+    const fr = 10;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(fx, fy, fw, fh, fr);
+    ctx.fillStyle = 'rgba(255,255,255,.05)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.10)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+
+    // Nav bar inside frame
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(fx, fy, fw, 28, [fr, fr, 0, 0]);
+    ctx.fillStyle = 'rgba(255,255,255,.07)';
+    ctx.fill();
+    ctx.restore();
+
+    // Nav bar dots (traffic lights)
+    [0,1,2].forEach((i) => {
+      ctx.beginPath();
+      ctx.arc(fx + 14 + i * 14, fy + 14, 3.5, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,.15)';
+      ctx.fill();
+    });
+
+    // Guide 1 modal card — floating
+    const floatY = Math.sin(t) * 4;  // amplitude 4px, sin wave
+    const cw = fw * 0.44;
+    const ch = fh * 0.56;
+    const cx = fx + (fw - cw) / 2;
+    const cy = fy + (fh - ch) / 2 + 10 + floatY;
+    const cr = 8;
+
+    // Card shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.35)';
+    ctx.shadowBlur  = 28;
+    ctx.shadowOffsetY = 8;
+    ctx.beginPath();
+    ctx.roundRect(cx, cy, cw, ch, cr);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.restore();
+
+    // Card content — title
+    ctx.save();
+    ctx.font = `bold ${Math.round(cw * 0.095)}px 'DM Mono', monospace`;
+    ctx.fillStyle = ACCENT;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('vAuto Labs', cx + cw/2, cy + ch * 0.12);
+    ctx.restore();
+
+    // Shimmer body lines
+    const lineColors = ['rgba(28,26,46,.10)', 'rgba(28,26,46,.07)', 'rgba(28,26,46,.05)'];
+    const lineWidths = [0.68, 0.52, 0.40];
+    lineColors.forEach((color, i) => {
+      const lw = cw * lineWidths[i];
+      const lx = cx + (cw - lw) / 2;
+      const ly = cy + ch * (0.30 + i * 0.09);
+      ctx.beginPath();
+      ctx.roundRect(lx, ly, lw, 7, 3.5);
+      ctx.fillStyle = color;
+      ctx.fill();
+    });
+
+    // CTA button
+    const bw = cw * 0.60;
+    const bh = 28;
+    const bx = cx + (cw - bw) / 2;
+    const by = cy + ch - bh - ch * 0.12;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(bx, by, bw, bh, 4);
+    ctx.fillStyle = ACCENT;
+    ctx.fill();
+
+    ctx.font = `300 ${Math.round(bh * 0.36)}px 'DM Mono', monospace`;
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Explore Labs →', bx + bw/2, by + bh/2);
+    ctx.restore();
+
+    // Small label at bottom left of canvas
+    ctx.save();
+    ctx.font = `300 8px 'DM Mono', monospace`;
+    ctx.fillStyle = 'rgba(255,255,255,.28)';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('Guide 1 — Announcement · Guide 2 — Onboarding', fx + 8, fy + fh - 8);
+    ctx.restore();
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+
+// ── HERO SCROLL DIM ───────────────────────────────────────
+(function initHeroScroll() {
+  const hero = document.getElementById('hero');
+  hero.style.transition = 'filter .6s ease';
+
+  function updateHeroFilter() {
+    const heroH = hero.offsetHeight || window.innerHeight;
+    const ratio  = Math.max(0, Math.min(1, 1 - window.scrollY / heroH));
+    hero.style.filter = `saturate(${0.3 + ratio * 0.7}) brightness(${0.75 + ratio * 0.25})`;
+  }
+
+  window.addEventListener('scroll', updateHeroFilter, { passive: true });
+  updateHeroFilter();
+})();
+
+// ── SECTION ENTRANCE (IntersectionObserver) ───────────────
+(function initSectionEntrance() {
+  const sections = document.querySelectorAll('.cs-section');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(s => obs.observe(s));
+})();
+</script>
+
+</body>
+</html>
