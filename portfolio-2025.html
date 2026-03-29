@@ -107,101 +107,58 @@ h1{
 }
 h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 
-/* ── INTERACTION UNIT ── */
-.interaction-unit{
-  width:100%;
-  display:flex;flex-direction:column;align-items:center;
-  gap:0;
-  opacity:0;animation:slideUp .9s cubic-bezier(.16,1,.3,1) 1s forwards;
-}
-
-#stage{
-  width:100%;
-  height:260px;
-  position:relative;
-  cursor:none;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:24px;
-}
-#stage canvas{position:absolute;inset:0;width:100%;height:100%}
-
-.click-hint{
-  font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);
-  display:flex;align-items:center;gap:7px;justify-content:center;
-  opacity:0;animation:fadeIn 1s ease 2.2s forwards;
-  pointer-events:none;white-space:nowrap;transition:opacity .4s;
-  margin-top:24px;
-  width:100%;
-}
-
-.callout-band{
-  width:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
-  padding:8px 24px 4px;
-  min-height:58px;
-}
-.callout-tag{
-  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:3px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  width:100%;text-align:center;
-  opacity:0;transition:opacity .4s,color .4s;
-}
-.callout-tag::before,.callout-tag::after{content:'';width:14px;height:1px;background:currentColor;display:block}
-.callout-tag.vis{opacity:1}
-.callout-title{
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:clamp(15px,1.9vw,21px);font-weight:300;line-height:1.15;
-  color:var(--ink);margin-bottom:3px;
-  text-align:center;width:100%;
-  opacity:0;transform:translateY(5px);transition:opacity .4s,transform .4s;
-}
-.callout-title.vis{opacity:1;transform:translateY(0)}
-.callout-body{
-  font-size:9px;letter-spacing:.06em;line-height:1.65;color:var(--ink-mid);
-  max-width:480px;text-align:center;
-  opacity:0;transform:translateY(3px);transition:opacity .4s .06s,transform .4s .06s;
-}
-.callout-body.vis{opacity:1;transform:translateY(0)}
-
-.progress{
-  display:flex;gap:7px;align-items:center;justify-content:center;
-  width:100%;
-  padding:0;
-  margin-bottom:12px;
-  opacity:0;animation:fadeIn 1s ease 2.3s forwards;
-}
-.prog-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--line);
-  transition:background .4s,transform .3s;
-  cursor:none;
-}
-.prog-dot.active{background:var(--accent);transform:scale(1.5)}
-
-.disc-section{
-  width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;
-  padding:0;
-}
-.disc-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);text-align:center}
-.tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;width:100%}
-.tag{
-  display:flex;align-items:center;gap:7px;
-  padding:6px 12px;
+/* ── DISCIPLINE PANELS ── */
+.disciplines{
+  width:100%;max-width:760px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;
   border:1px solid var(--line);
-  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-mid);cursor:none;
-  transition:border-color .25s,color .25s,background .25s;
+  opacity:0;animation:slideUp 1s cubic-bezier(.16,1,.3,1) 1.05s forwards;
+  margin-bottom:clamp(28px,4vh,48px);
 }
-.tag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
-.tag:hover .tag-dot{transform:scale(1.8)}
-.tag[data-g="hcd"]    {--ac:var(--warm);--ab:var(--warm-t)}
-.tag[data-g="systems"] {--ac:var(--sage);--ab:var(--sage-t)}
-.tag[data-g="research"]{--ac:var(--slate);--ab:var(--slate-t)}
-.tag[data-g="spec"]    {--ac:var(--warm);--ab:var(--warm-t)}
-.tag[data-g="content"] {--ac:var(--sage);--ab:var(--sage-t)}
-.tag.active{border-color:var(--ac);color:var(--ac);background:var(--ab)}
+.disc-panel{
+  padding:clamp(24px,3vw,38px) clamp(20px,2.5vw,30px);
+  display:flex;flex-direction:column;gap:16px;
+  cursor:none;
+  transition:opacity .45s ease, background .5s ease;
+  border-right:1px solid var(--line);
+  position:relative;
+}
+.disc-panel:last-child{border-right:none}
+.disciplines.has-hover .disc-panel:not(.is-active){opacity:.2}
+.disc-panel[data-disc="0"]{--pc:var(--sage)}
+.disc-panel[data-disc="1"]{--pc:var(--warm)}
+.disc-panel[data-disc="2"]{--pc:var(--slate)}
+.disc-panel-bar{
+  width:18px;height:1.5px;background:var(--pc);
+  opacity:.38;flex-shrink:0;
+  transition:width .55s cubic-bezier(.16,1,.3,1), opacity .4s;
+}
+.disc-panel.is-active .disc-panel-bar{width:36px;opacity:1}
+.disc-panel-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(40px,5.5vw,58px);font-weight:300;line-height:1;
+  color:rgba(237,232,224,.055);letter-spacing:-.04em;user-select:none;
+}
+.disc-panel-name{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--pc);opacity:.68;line-height:1.3;
+  transition:opacity .35s;
+}
+.disc-panel.is-active .disc-panel-name{opacity:1}
+.disc-panel-body{
+  font-size:9px;letter-spacing:.02em;line-height:1.78;
+  color:var(--ink-mid);
+}
+@media(prefers-reduced-motion:reduce){
+  .disciplines,.disc-panel,.disc-panel-bar{
+    animation:none!important;transition:none!important;opacity:1!important;
+  }
+}
+@media(max-width:600px){
+  .disciplines{grid-template-columns:1fr}
+  .disc-panel{border-right:none;border-bottom:1px solid var(--line)}
+  .disc-panel:last-child{border-bottom:none}
+}
 
 /* stats row */
 .stats-row{
@@ -682,29 +639,26 @@ body.is-transitioning {
     <p style="font-family:'DM Mono',monospace;font-size:13px;font-weight:300;letter-spacing:.04em;color:var(--ink-mid);margin-top:10px;line-height:1.5">Balancing human-centered design with technical rigor</p>
   </div>
 
-  <!-- interaction unit -->
-  <div class="interaction-unit">
-
-    <div id="stage">
-      <canvas id="c"></canvas>
+  <!-- discipline panels — all three competencies visible simultaneously, no interaction required -->
+  <div class="disciplines" id="disciplines">
+    <div class="disc-panel" data-disc="0" data-accent-rgb="130,168,130">
+      <div class="disc-panel-bar"></div>
+      <div class="disc-panel-num">01</div>
+      <div class="disc-panel-name">Systems Thinking</div>
+      <div class="disc-panel-body">Designing coherent workflows across roles, permissions, and edge cases, so the product behaves predictably at scale.</div>
     </div>
-
-    <div class="progress" id="progress"></div>
-
-    <div class="disc-section">
-      <div class="disc-label">disciplines</div>
-      <div class="tags">
-        <div class="tag" data-g="systems"><span class="tag-dot" style="background:#82a882"></span>Systems Thinking</div>
-        <div class="tag" data-g="hcd"><span class="tag-dot" style="background:#c8906a"></span>Human Centered UX</div>
-        <div class="tag" data-g="spec"><span class="tag-dot" style="background:#7090a8"></span>Spec-Driven Development</div>
-      </div>
+    <div class="disc-panel" data-disc="1" data-accent-rgb="200,144,106">
+      <div class="disc-panel-bar"></div>
+      <div class="disc-panel-num">02</div>
+      <div class="disc-panel-name">Human-Centered UX</div>
+      <div class="disc-panel-body">Turning real user needs into clear flows, language, and interactions optimized for trust, comprehension, and time-to-task.</div>
     </div>
-
-    <div class="click-hint" id="hint">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="currentColor" stroke-width=".8"/><path d="M4 6h4M6 4v4" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/></svg>
-      click to explore
+    <div class="disc-panel" data-disc="2" data-accent-rgb="112,144,168">
+      <div class="disc-panel-bar"></div>
+      <div class="disc-panel-num">03</div>
+      <div class="disc-panel-name">Spec-Driven Development</div>
+      <div class="disc-panel-body">Documenting states, rules, and responsive behavior so engineering can ship faster with fewer gaps.</div>
     </div>
-
   </div>
 
 </div><!-- /hero -->
@@ -807,315 +761,34 @@ let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{
   mx=e.clientX; my=e.clientY;
   cursorEl.style.transform=`translate(${mx-4}px,${my-4}px)`;
-  wakeHero();
 });
 (function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ringEl.style.left=rx+'px';ringEl.style.top=ry+'px';requestAnimationFrame(loop);})();
 
-// ── STOPS ───────────────────────────────────────────────
-const STOPS=[
-  {
-    rotX:5, rotY:-8, hero:0,
-    accent:'#82a882', rgb:'130,168,130', g:'systems',
-    tag:'Systems Thinking',
-    title:'Designing for scale',
-    body:'Designing coherent workflows across roles, permissions, and edge cases, so the product behaves predictably at scale.',
-  },
-  {
-    rotX:3, rotY:8, hero:1,
-    accent:'#c8906a', rgb:'200,144,106', g:'hcd',
-    tag:'Human Centered UX',
-    title:'Turning real user needs into clarity',
-    body:'Turning real user needs into clear flows, language, and interactions, optimized for trust, comprehension, and time-to-task.',
-  },
-  {
-    rotX:-4, rotY:10, hero:2,
-    accent:'#7090a8', rgb:'112,144,168', g:'spec',
-    tag:'Spec-Driven Development',
-    title:'No guessing in the build',
-    body:'Documenting states, rules, and responsive behavior, so engineering can ship faster with fewer gaps.',
-  },
-];
-
-const N=3;
-
-// ── FRAME INTERIOR ───────────────────────────────────────
-// No wireframe draws. Active card shows body text; inactive cards are clean surfaces.
-const DRAWS=[];
-
-// ── CANVAS ───────────────────────────────────────────────
-const canvas=document.getElementById('c');
-const ctx=canvas.getContext('2d');
-const stage=document.getElementById('stage');
-
-let W,H,CX,CY;
-
-function resize(){
-  const r=stage.getBoundingClientRect();
-  W=r.width;H=r.height;
-  canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;
-  canvas.style.width=W+'px';canvas.style.height=H+'px';
-  ctx.scale(devicePixelRatio,devicePixelRatio);
-  CX=W/2;CY=H/2;
-}
-
-let targetRX=6,targetRY=-6,curRX=6,curRY=-6;
-let heroIdx=0;
-let accentColor='#82a882';
-let accentRgb='130,168,130';
-let currentStop=-1;
-
-const fState=Array.from({length:N},(_,i)=>({idx:i,liftY:0,sc:1}));
-
-function project(x3,y3,z3,rx,ry){
-  const rxr=rx*Math.PI/180,ryr=ry*Math.PI/180;
-  const x1=x3*Math.cos(ryr)+z3*Math.sin(ryr);
-  const z1=-x3*Math.sin(ryr)+z3*Math.cos(ryr);
-  const y1=y3*Math.cos(rxr)-z1*Math.sin(rxr);
-  const z2=y3*Math.sin(rxr)+z1*Math.cos(rxr);
-  const fov=900;const sc=fov/(fov+z2);
-  return{x:x1*sc,y:y1*sc,s:sc};
-}
-
-let hoveredFrame=-1;
-const frameBounds=[];
-
-function drawFrame(f,t){
-  const isHero=f.idx===heroIdx;
-  const dist=f.idx-heroIdx;
-  // Hero card floats up slightly; background cards stay on baseline
-  f.liftY+=((isHero?-H*.03:0)-f.liftY)*.07;
-  f.sc+=((isHero?1.0:1.0)-f.sc)*.07;
-  const FW=Math.min(W*.55,500);
-  const FH=FW*.46;
-  // Background cards fan to the right only — positive dist = right offset
-  // Use absolute dist for peek so all backgrounds go right regardless of stop index
-  const absDist=Math.abs(dist);
-  const peekX=dist>0?absDist*FW*.18:dist<0?-absDist*FW*.18:0;
-  // Minimal z recession so scale change is ~6% per step, not perspective-dramatic
-  const bz3=isHero?60:-absDist*30;
-  const float=Math.sin(t*.0006+f.idx*.9)*3;
-  const p=project(peekX,f.liftY+float,bz3,curRX,curRY);
-  const fw=FW*p.s*f.sc;
-  const fh=FH*p.s*f.sc;
-  const fx=CX+p.x-fw/2;
-  const fy=CY+p.y-fh/2;
-  frameBounds[f.idx]={fx,fy,fw,fh};
-  const colRgb=isHero?accentRgb:'180,175,195';
-  const distFromHero=Math.abs(f.idx-heroIdx);
-  const bgA=isHero?.96:.82-distFromHero*.06;
-  const isHovered=f.idx===hoveredFrame&&!isHero;
-  ctx.save();
-  ctx.shadowColor=`rgba(${colRgb},${isHero?.22:isHovered?.14:.1})`;
-  ctx.shadowBlur=isHero?40:isHovered?20:8;
-  ctx.shadowOffsetY=isHero?8:4;
-  ctx.beginPath();ctx.roundRect(fx,fy,fw,fh,fw*.05);
-  ctx.fillStyle=`rgba(232,226,218,${bgA})`;ctx.fill();
-  ctx.restore();
-  ctx.beginPath();ctx.roundRect(fx,fy,fw,fh,fw*.05);
-  ctx.strokeStyle=`rgba(${colRgb},${isHero?.65:isHovered?.35:.14})`;
-  ctx.lineWidth=isHero?1.5:isHovered?1:.6;ctx.stroke();
-  const barH=fh*.1;
-  ctx.save();
-  ctx.beginPath();ctx.roundRect(fx,fy,fw,barH,[fw*.05,fw*.05,0,0]);
-  ctx.fillStyle=`rgba(${colRgb},${isHero?.13:isHovered?.08:.04})`;ctx.fill();
-  ctx.restore();
-  [.06,.12,.18].forEach(ox=>{
-    ctx.beginPath();ctx.arc(fx+fw*ox,fy+barH*.5,fw*.017,0,Math.PI*2);
-    ctx.fillStyle=isHero?accentColor:STOPS[f.idx].accent;
-    ctx.globalAlpha=isHero?.65:isHovered?.4:.18;ctx.fill();ctx.globalAlpha=1;
-  });
-  if(isHero){
-    const labelSize=Math.min(fw*.042,11);
-    ctx.font=`${labelSize}px 'DM Mono',monospace`;
-    ctx.fillStyle=accentColor;ctx.globalAlpha=.55;
-    ctx.textAlign='right';
-    ctx.fillText('· '+(STOPS[f.idx]?.tag||''),fx+fw*.96,fy+barH*.68);
-    ctx.globalAlpha=1;ctx.textAlign='left';
-  } else {
-    const labelSize=Math.min(fw*.036,9);
-    ctx.font=`${labelSize}px 'DM Mono',monospace`;
-    ctx.fillStyle=STOPS[f.idx].accent;
-    ctx.globalAlpha=isHovered?.45:.22;ctx.textAlign='right';
-    ctx.fillText(STOPS[f.idx]?.tag||'',fx+fw*.96,fy+barH*.68);
-    ctx.globalAlpha=1;ctx.textAlign='left';
-  }
-  ctx.save();
-  ctx.beginPath();ctx.roundRect(fx,fy+barH,fw,fh-barH,[0,0,fw*.05,fw*.05]);
-  ctx.clip();
-  if(isHero){
-    // Active card: render the stop's body text centered in the card interior
-    const stop=STOPS[f.idx];
-    const bodyText=stop?.body||'';
-    const fontSize=Math.min(fw*.038,9);
-    const lineH=fontSize*1.65;
-    const maxW=Math.min(fw*.72,280);
-    ctx.font=`300 ${fontSize}px 'DM Mono',monospace`;
-    ctx.fillStyle='#2e2840';
-    ctx.globalAlpha=.82;
-    ctx.textAlign='center';
-    // Word-wrap the body text
-    const words=bodyText.split(' ');
-    const lines=[];
-    let line='';
-    words.forEach(word=>{
-      const test=line?line+' '+word:word;
-      if(ctx.measureText(test).width>maxW&&line){lines.push(line);line=word;}
-      else line=test;
+// ── DISCIPLINE PANEL HOVER ───────────────────────────────
+const ambientEl=document.getElementById('ambient');
+const disciplinesEl=document.getElementById('disciplines');
+if(disciplinesEl){
+  document.querySelectorAll('.disc-panel').forEach(panel=>{
+    panel.addEventListener('mouseenter',()=>{
+      const rgb=panel.dataset.accentRgb;
+      disciplinesEl.classList.add('has-hover');
+      document.querySelectorAll('.disc-panel').forEach(p=>p.classList.remove('is-active'));
+      panel.classList.add('is-active');
+      panel.style.background=`rgba(${rgb},.045)`;
+      if(ambientEl) ambientEl.style.background=
+        `radial-gradient(ellipse 80% 65% at 50% 42%, rgba(${rgb},.18) 0%, transparent 68%)`;
+      ringEl.style.width='44px';ringEl.style.height='44px';
     });
-    if(line)lines.push(line);
-    const totalH=lines.length*lineH;
-    const startY=fy+barH+(fh-barH)/2-totalH/2+fontSize;
-    lines.forEach((l,li)=>{ctx.fillText(l,fx+fw/2,startY+li*lineH);});
-    ctx.globalAlpha=1;
-  }
-  if(isHovered){
-    ctx.fillStyle=`rgba(250,248,245,.15)`;
-    ctx.fillRect(fx,fy+barH,fw,fh-barH);
-    const labelSize=Math.min(fw*.038,9.5);
-    ctx.font=`${labelSize}px 'DM Mono',monospace`;
-    ctx.fillStyle=STOPS[f.idx].accent;ctx.globalAlpha=.7;ctx.textAlign='center';
-    ctx.fillText('click to view →',fx+fw*.5,fy+fh*.55);
-    ctx.globalAlpha=1;
-  }
-  ctx.restore();
-}
-
-let rafId=null;
-let needsDraw=true;
-
-function scheduleDraw(){
-  if(!rafId){ rafId=requestAnimationFrame(draw); }
-}
-
-function wakeHero(){
-  needsDraw=true;
-  scheduleDraw();
-}
-
-function draw(t){
-  rafId=null;
-  ctx.clearRect(0,0,W,H);
-  curRX+=(targetRX-curRX)*.05;
-  curRY+=(targetRY-curRY)*.05;
-  const sorted=[...fState].sort((a,b)=>{
-    if(a.idx===heroIdx) return 1;
-    if(b.idx===heroIdx) return -1;
-    return Math.abs(b.idx-heroIdx)-Math.abs(a.idx-heroIdx);
-  });
-  sorted.forEach(f=>drawFrame(f,t));
-  const rotSettled=Math.abs(targetRX-curRX)<0.01&&Math.abs(targetRY-curRY)<0.01;
-  const framesSettled=fState.every(f=>Math.abs(f.liftY)<0.1&&Math.abs(f.sc-(f.idx===heroIdx?1.12:1))<0.005);
-  if(!rotSettled||!framesSettled){
-    rafId=requestAnimationFrame(draw);
-  } else {
-    rafId=requestAnimationFrame(draw);
-  }
-}
-
-// ── INTERACTION ──────────────────────────────────────────
-const cTagEl  =document.getElementById('c-tag');
-const cTitleEl=document.getElementById('c-title');
-const cBodyEl =document.getElementById('c-body');
-const hintEl  =document.getElementById('hint');
-const progressEl=document.getElementById('progress');
-const ambientEl =document.getElementById('ambient');
-
-STOPS.forEach((_,i)=>{
-  const d=document.createElement('div');
-  d.className='prog-dot';
-  progressEl.appendChild(d);
-});
-
-function showCallout(stop){
-  // callout-band elements removed from DOM — guard against null
-  if(cTagEl&&cTitleEl&&cBodyEl){
-    [cTagEl,cTitleEl,cBodyEl].forEach(el=>el.classList.remove('vis'));
-    requestAnimationFrame(()=>{
-      cTagEl.textContent=stop.tag;
-      cTagEl.style.color=stop.accent;
-      cTitleEl.textContent=stop.title;
-      cBodyEl.textContent=stop.body;
-      requestAnimationFrame(()=>{
-        cTagEl.classList.add('vis');
-        cTitleEl.classList.add('vis');
-        cBodyEl.classList.add('vis');
-      });
+    panel.addEventListener('mouseleave',()=>{
+      panel.classList.remove('is-active');
+      panel.style.background='';
+      disciplinesEl.classList.remove('has-hover');
+      if(ambientEl) ambientEl.style.background=
+        `radial-gradient(ellipse 60% 50% at 50% 40%, rgba(200,144,106,.12) 0%, transparent 70%)`;
+      ringEl.style.width='36px';ringEl.style.height='36px';
     });
-  }
-}
-
-function applyAccent(stop){
-  document.documentElement.style.setProperty('--accent',stop.accent);
-  document.documentElement.style.setProperty('--accent-t',`rgba(${stop.rgb},.14)`);
-  document.documentElement.style.setProperty('--accent-rgb',stop.rgb);
-  cursorEl.style.background=stop.accent;
-  ringEl.style.borderColor=stop.accent+'55';
-  ambientEl.style.background=`radial-gradient(ellipse 60% 50% at 50% 40%, rgba(${stop.rgb},.14) 0%, transparent 70%)`;
-}
-
-function goTo(idx){
-  const s=STOPS[idx];
-  currentStop=idx;
-  targetRX=s.rotX;targetRY=s.rotY;
-  heroIdx=s.hero;
-  accentColor=s.accent;accentRgb=s.rgb;
-  showCallout(s);
-  applyAccent(s);
-  document.querySelectorAll('.prog-dot').forEach((d,i)=>{
-    d.classList.toggle('active',i===idx);
-    d.style.background=i===idx?s.accent:'';
   });
-  document.querySelectorAll('.tag').forEach(t=>{
-    t.classList.toggle('active',t.dataset.g===s.g);
-  });
-  hintEl.style.opacity='0';
-  wakeHero();
 }
-
-// ── FRAME HIT TESTING ────────────────────────────────────
-function getFrameAtPoint(ex,ey){
-  const r=canvas.getBoundingClientRect();
-  const px=ex-r.left, py=ey-r.top;
-  for(let i=0;i<N;i++){
-    if(i===heroIdx) continue;
-    const b=frameBounds[i];
-    if(b&&px>=b.fx&&px<=b.fx+b.fw&&py>=b.fy&&py<=b.fy+b.fh) return i;
-  }
-  return -1;
-}
-
-canvas.addEventListener('mousemove',e=>{
-  const hit=getFrameAtPoint(e.clientX,e.clientY);
-  if(hit!==hoveredFrame){
-    hoveredFrame=hit;
-    if(hit>=0){ringEl.style.width='50px';ringEl.style.height='50px';}
-    else{ringEl.style.width='36px';ringEl.style.height='36px';}
-    wakeHero();
-  }
-});
-
-canvas.addEventListener('mouseleave',()=>{
-  hoveredFrame=-1;
-  ringEl.style.width='36px';ringEl.style.height='36px';
-});
-
-stage.addEventListener('click',(e)=>{
-  const hit=getFrameAtPoint(e.clientX,e.clientY);
-  if(hit>=0){
-    goTo(hit);
-  } else {
-    goTo((currentStop+1)%N);
-  }
-  ringEl.style.width='54px';ringEl.style.height='54px';
-  setTimeout(()=>{ringEl.style.width='36px';ringEl.style.height='36px';},300);
-});
-
-const gToIdx={systems:0,hcd:1,spec:2};
-document.querySelectorAll('.tag').forEach((tag)=>{
-  tag.addEventListener('click',e=>{e.stopPropagation();const idx=gToIdx[tag.dataset.g];if(idx!==undefined)goTo(idx);});
-  tag.addEventListener('mouseenter',()=>{ringEl.style.width='50px';ringEl.style.height='50px';});
-  tag.addEventListener('mouseleave',()=>{ringEl.style.width='36px';ringEl.style.height='36px';});
-});
 
 // ── COUNTERS ─────────────────────────────────────────────
 setTimeout(()=>{
@@ -1124,21 +797,6 @@ setTimeout(()=>{
     (function step(n){const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target)+(p===1?suf:'');if(p<1)requestAnimationFrame(step);})(performance.now());
   });
 },2000);
-
-// ── INIT ─────────────────────────────────────────────────
-window.addEventListener('resize',()=>{ requestAnimationFrame(resize); });
-
-function initWhenReady(){
-  const r=stage.getBoundingClientRect();
-  if(r.width>0&&r.height>0){
-    resize();
-    scheduleDraw();
-    setTimeout(()=>goTo(0),1800);
-  }else{
-    requestAnimationFrame(initWhenReady);
-  }
-}
-requestAnimationFrame(initWhenReady);
 
 // ── WORK SCROLL — RIGHT PANE CANVAS DRAWS ────────────────
 const canvasDims = new Map();
