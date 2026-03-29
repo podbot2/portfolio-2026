@@ -10,18 +10,18 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg:#f5f2ee;
-  --surface:#faf8f5;
-  --ink:#1c1a2e;
-  --ink-mid:#4a4760;
-  --ink-dim:#9e9ab0;
-  --pink:#e88fa0;    --pink-t:rgba(232,143,160,.14);
-  --mint:#6ecfb8;    --mint-t:rgba(110,207,184,.14);
-  --lav:#a89dcc;     --lav-t:rgba(168,157,204,.14);
-  --navy:#2b2850;
-  --line:rgba(28,26,46,.08);
-  --accent:#e88fa0;  --accent-t:rgba(232,143,160,.14);
-  --accent-rgb:232,143,160;
+  --bg:#0c0b0e;
+  --surface:#131118;
+  --surface-raised:#1c1822;
+  --ink:#ede8e0;
+  --ink-mid:#a09a9e;
+  --ink-dim:#7a7480;
+  --warm:#c8906a;   --warm-t:rgba(200,144,106,.12);
+  --sage:#82a882;   --sage-t:rgba(130,168,130,.12);
+  --slate:#7090a8;  --slate-t:rgba(112,144,168,.12);
+  --line:rgba(240,234,220,.08);
+  --accent:#c8906a; --accent-t:rgba(200,144,106,.12);
+  --accent-rgb:200,144,106;
 }
 
 html{ scroll-behavior:smooth; }
@@ -42,7 +42,7 @@ body{
 /* ── AMBIENT LIGHT ── */
 #ambient{
   position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 40%, rgba(var(--accent-rgb),.07) 0%, transparent 70%);
+  background:radial-gradient(ellipse 60% 50% at 50% 40%, rgba(var(--accent-rgb),.12) 0%, transparent 70%);
   transition:background 1s ease;
 }
 
@@ -196,11 +196,11 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 }
 .tag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .tag:hover .tag-dot{transform:scale(1.8)}
-.tag[data-g="hcd"]    {--ac:var(--pink);--ab:var(--pink-t)}
-.tag[data-g="systems"] {--ac:var(--mint);--ab:var(--mint-t)}
-.tag[data-g="research"]{--ac:var(--lav);--ab:var(--lav-t)}
-.tag[data-g="spec"]    {--ac:var(--pink);--ab:var(--pink-t)}
-.tag[data-g="content"] {--ac:var(--mint);--ab:var(--mint-t)}
+.tag[data-g="hcd"]    {--ac:var(--warm);--ab:var(--warm-t)}
+.tag[data-g="systems"] {--ac:var(--sage);--ab:var(--sage-t)}
+.tag[data-g="research"]{--ac:var(--slate);--ab:var(--slate-t)}
+.tag[data-g="spec"]    {--ac:var(--warm);--ab:var(--warm-t)}
+.tag[data-g="content"] {--ac:var(--sage);--ab:var(--sage-t)}
 .tag.active{border-color:var(--ac);color:var(--ac);background:var(--ab)}
 
 /* stats row */
@@ -254,7 +254,7 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   overflow:hidden;
   transition:background 0.9s cubic-bezier(.16,1,.3,1);
   /* Opaque fallback; each card gets inline background from data-color via JS */
-  background:#1c1a2e;
+  background:var(--surface);
 }
 #proj-0{z-index:1}
 #proj-1{z-index:2}
@@ -301,16 +301,16 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 .proj-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(26px,3.2vw,44px);
-  font-weight:300;line-height:1.05;
-  letter-spacing:-.02em;
-  color:#fff;
+  font-weight:300;line-height:1.0;
+  letter-spacing:-.03em;
+  color:var(--ink);
   margin-bottom:clamp(16px,2.5vh,28px);
 }
 .proj-title em{font-style:italic;opacity:.75}
 
 .proj-desc{
-  font-size:9px;letter-spacing:.05em;line-height:1.75;
-  color:rgba(255,255,255,.55);
+  font-size:11px;letter-spacing:.01em;line-height:1.6;
+  color:rgba(237,232,224,.6);
   max-width:320px;
   margin-bottom:clamp(24px,3.5vh,40px);
 }
@@ -320,10 +320,10 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   margin-bottom:clamp(24px,3.5vh,40px);
 }
 .proj-year{
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(255,255,255,.3);
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(237,232,224,.5);
 }
-.proj-divider{width:1px;height:12px;background:rgba(255,255,255,.15)}
+.proj-divider{width:1px;height:12px;background:rgba(237,232,224,.2)}
 
 .proj-link{
   display:inline-flex;align-items:center;gap:10px;
@@ -336,19 +336,19 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   transition:background .25s,border-color .25s;
   cursor:none;
 }
-.proj-link:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.proj-link:hover{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.55);color:var(--accent)}
 .proj-link-arrow{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .proj-link:hover .proj-link-arrow{transform:translateX(4px)}
 
 /* progress strip */
 .proj-progress{
   position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:rgba(255,255,255,.08);
+  background:rgba(237,232,224,.06);
   z-index:3;
 }
 .proj-progress-fill{
   position:absolute;top:0;left:0;width:100%;
-  background:rgba(255,255,255,.45);
+  background:rgba(var(--accent-rgb),.7);
   height:0%;
   transition:height .6s cubic-bezier(.16,1,.3,1);
 }
@@ -381,7 +381,7 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 .proj-intro{
   height:100vh;
   display:flex;align-items:center;justify-content:center;
-  background:#f0ece6;
+  background:var(--bg);
   transition:background 0.9s ease;
 }
 .proj-intro-inner{text-align:center}
@@ -526,23 +526,23 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   justify-content: space-between;
   gap: 0;
   padding: 10px 10px 10px 20px;
-  background: rgba(28,26,46,.72);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(12,11,14,.88);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(240,234,220,.08);
   border-radius: 999px;
   transition: background 0.4s ease;
 }
 /* FIX 2: was rgba(255,255,255,.06) — nearly invisible, unreadable over both dark and light */
 .float-nav--dark .float-nav-inner {
-  background: rgba(15, 14, 28, 0.55);
+  background: rgba(8, 7, 10, 0.92);
 }
 .float-nav-identity {
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding-right: 12px;
-  border-right: 1px solid rgba(255,255,255,.1);
+  border-right: 1px solid rgba(240,234,220,.08);
   flex-shrink: 0;
 }
 .float-nav-name {
@@ -588,7 +588,7 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(255,255,255,.3);
+  background: rgba(var(--accent-rgb),.5);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.2s ease;
@@ -694,9 +694,9 @@ body.is-transitioning {
     <div class="disc-section">
       <div class="disc-label">disciplines</div>
       <div class="tags">
-        <div class="tag" data-g="systems"><span class="tag-dot" style="background:#e88fa0"></span>Systems Thinking</div>
-        <div class="tag" data-g="hcd"><span class="tag-dot" style="background:#a89dcc"></span>Human Centered UX</div>
-        <div class="tag" data-g="spec"><span class="tag-dot" style="background:#6ecfb8"></span>Spec-Driven Development</div>
+        <div class="tag" data-g="systems"><span class="tag-dot" style="background:#82a882"></span>Systems Thinking</div>
+        <div class="tag" data-g="hcd"><span class="tag-dot" style="background:#c8906a"></span>Human Centered UX</div>
+        <div class="tag" data-g="spec"><span class="tag-dot" style="background:#7090a8"></span>Spec-Driven Development</div>
       </div>
     </div>
 
@@ -725,7 +725,7 @@ body.is-transitioning {
   <div id="proj-stack">
 
   <!-- 01 -->
-  <div class="proj" id="proj-0" data-color="#c4688c" data-rgb="196,104,140" data-idx="0">
+  <div class="proj" id="proj-0" data-color="#1e0f16" data-rgb="30,15,22" data-idx="0">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">vAuto <em>Labs</em> platform</div>
@@ -743,7 +743,7 @@ body.is-transitioning {
   </div>
 
   <!-- 02 -->
-  <div class="proj" id="proj-1" data-color="#3d9e8a" data-rgb="61,158,138" data-idx="1">
+  <div class="proj" id="proj-1" data-color="#0c1520" data-rgb="12,21,32" data-idx="1">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">cloud<em>Serve</em></div>
@@ -761,7 +761,7 @@ body.is-transitioning {
   </div>
 
   <!-- 03 -->
-  <div class="proj" id="proj-2" data-color="#7060a8" data-rgb="112,96,168" data-idx="2">
+  <div class="proj" id="proj-2" data-color="#0f0e1c" data-rgb="15,14,28" data-idx="2">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">Maxis <em>Workspaces</em></div>
@@ -779,7 +779,7 @@ body.is-transitioning {
   </div>
 
   <!-- 04 -->
-  <div class="proj" id="proj-3" data-color="#b07840" data-rgb="176,120,64" data-idx="3">
+  <div class="proj" id="proj-3" data-color="#181408" data-rgb="24,20,8" data-idx="3">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">Data <em>Catalog</em></div>
@@ -815,21 +815,21 @@ document.addEventListener('mousemove',e=>{
 const STOPS=[
   {
     rotX:5, rotY:-8, hero:0,
-    accent:'#e88fa0', rgb:'232,143,160', g:'systems',
+    accent:'#82a882', rgb:'130,168,130', g:'systems',
     tag:'Systems Thinking',
     title:'Designing for scale',
     body:'Designing coherent workflows across roles, permissions, and edge cases, so the product behaves predictably at scale.',
   },
   {
     rotX:3, rotY:8, hero:1,
-    accent:'#a89dcc', rgb:'168,157,204', g:'hcd',
+    accent:'#c8906a', rgb:'200,144,106', g:'hcd',
     tag:'Human Centered UX',
     title:'Turning real user needs into clarity',
     body:'Turning real user needs into clear flows, language, and interactions, optimized for trust, comprehension, and time-to-task.',
   },
   {
     rotX:-4, rotY:10, hero:2,
-    accent:'#6ecfb8', rgb:'110,207,184', g:'spec',
+    accent:'#7090a8', rgb:'112,144,168', g:'spec',
     tag:'Spec-Driven Development',
     title:'No guessing in the build',
     body:'Documenting states, rules, and responsive behavior, so engineering can ship faster with fewer gaps.',
@@ -860,8 +860,8 @@ function resize(){
 
 let targetRX=6,targetRY=-6,curRX=6,curRY=-6;
 let heroIdx=0;
-let accentColor='#e88fa0';
-let accentRgb='232,143,160';
+let accentColor='#82a882';
+let accentRgb='130,168,130';
 let currentStop=-1;
 
 const fState=Array.from({length:N},(_,i)=>({idx:i,liftY:0,sc:1}));
@@ -909,7 +909,7 @@ function drawFrame(f,t){
   ctx.shadowBlur=isHero?40:isHovered?20:8;
   ctx.shadowOffsetY=isHero?8:4;
   ctx.beginPath();ctx.roundRect(fx,fy,fw,fh,fw*.05);
-  ctx.fillStyle=`rgba(250,248,245,${bgA})`;ctx.fill();
+  ctx.fillStyle=`rgba(232,226,218,${bgA})`;ctx.fill();
   ctx.restore();
   ctx.beginPath();ctx.roundRect(fx,fy,fw,fh,fw*.05);
   ctx.strokeStyle=`rgba(${colRgb},${isHero?.65:isHovered?.35:.14})`;
@@ -950,7 +950,7 @@ function drawFrame(f,t){
     const lineH=fontSize*1.65;
     const maxW=Math.min(fw*.72,280);
     ctx.font=`300 ${fontSize}px 'DM Mono',monospace`;
-    ctx.fillStyle='#4a4760';
+    ctx.fillStyle='#2e2840';
     ctx.globalAlpha=.82;
     ctx.textAlign='center';
     // Word-wrap the body text
@@ -1050,7 +1050,7 @@ function applyAccent(stop){
   document.documentElement.style.setProperty('--accent-rgb',stop.rgb);
   cursorEl.style.background=stop.accent;
   ringEl.style.borderColor=stop.accent+'55';
-  ambientEl.style.background=`radial-gradient(ellipse 60% 50% at 50% 40%, rgba(${stop.rgb},.09) 0%, transparent 70%)`;
+  ambientEl.style.background=`radial-gradient(ellipse 60% 50% at 50% 40%, rgba(${stop.rgb},.14) 0%, transparent 70%)`;
 }
 
 function goTo(idx){
@@ -1339,7 +1339,7 @@ function initScrollObserver(){
   if (intro) {
     const introObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) document.body.style.setProperty('--current-proj-bg','#f0ece6');
+        if (e.isIntersecting) document.body.style.setProperty('--current-proj-bg','#131118');
       });
     }, { root: null, threshold: 0.5 });
     introObs.observe(intro);
