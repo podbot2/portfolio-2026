@@ -74,7 +74,6 @@ body{
 .hero-stage{
   position:sticky;top:0;
   height:100vh;
-  overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
 
@@ -85,7 +84,7 @@ body{
   white-space:nowrap;
   font-family:'Barlow Condensed',sans-serif;
   font-weight:700;
-  font-size:clamp(18vw,20vw,22vw);
+  font-size:clamp(12vw,14vw,16vw);
   line-height:1;letter-spacing:-.01em;
   color:rgba(255,255,255,.08);
   pointer-events:none;user-select:none;
@@ -648,6 +647,7 @@ body.is-transitioning {
     <!-- Layer 1 — oversized wordmark, scroll-driven translateX -->
     <div class="hero-wordmark" id="hero-wordmark" aria-hidden="true">JENNIFER FLORES</div>
 
+    <!-- PLACEHOLDER: replace with final asset -->
     <!-- Layer 2 — media window, scroll-driven scale -->
     <div class="hero-window" id="hero-window">
       <div class="hero-slides">
@@ -659,8 +659,8 @@ body.is-transitioning {
     </div>
 
     <!-- Layer 3 — copy -->
-    <div class="hero-copy-tl">Creating clarity.</div>
-    <div class="hero-copy-br">Product Designer · GM · Cox Automotive · vAuto</div>
+    <div class="hero-copy-tl">Complex systems, made clear.</div>
+    <div class="hero-copy-br">Balancing human-centered design with technical rigor</div>
     <div class="hero-copy-bl">
       <span>Scroll</span>
       <span class="hero-arrow">↓</span>
