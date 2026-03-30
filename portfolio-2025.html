@@ -121,9 +121,9 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   opacity:0;animation:fadeIn .9s ease 1.1s forwards;
   transition:opacity .4s ease;
 }
-.disc-anchor[data-disc="0"]{left:6%;top:50%}
-.disc-anchor[data-disc="1"]{left:48%;top:63%}
-.disc-anchor[data-disc="2"]{right:6%;top:76%}
+.disc-anchor[data-disc="0"]{left:13%;top:52%}
+.disc-anchor[data-disc="1"]{left:calc(50% - 80px);top:65%}
+.disc-anchor[data-disc="2"]{right:13%;top:52%}
 
 .disc-dot{
   width:4px;height:4px;border-radius:50%;
@@ -152,9 +152,9 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
   transition:opacity .3s ease;
   white-space:pre-line;
 }
-.disc-note[data-disc="0"]{left:18%;top:34%}
-.disc-note[data-disc="1"]{left:24%;top:48%}
-.disc-note[data-disc="2"]{right:20%;top:58%}
+.disc-note[data-disc="0"]{left:17%;top:31%}
+.disc-note[data-disc="1"]{left:calc(50% - 80px);top:44%}
+.disc-note[data-disc="2"]{right:17%;top:31%}
 
 /* active state — dim everything else */
 .hero.has-active .headline{opacity:.38}
@@ -162,21 +162,37 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 .hero.has-active .disc-anchor.is-active .disc-label{color:var(--ink)}
 .hero.has-active .disc-anchor.is-active .disc-dot{animation:none;opacity:1}
 
+/* cursor invitation hint */
+.hero-hint{
+  position:absolute;
+  bottom:22%;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;
+  font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-dim);white-space:nowrap;
+  z-index:2;pointer-events:none;
+  opacity:0;animation:fadeIn .9s ease 2.8s forwards;
+  transition:opacity .6s ease;
+}
+.hint-cursor{margin-left:1px;animation:blinkCursor 1.1s step-end infinite}
+@keyframes blinkCursor{0%,100%{opacity:1}50%{opacity:0}}
+
 @media(prefers-reduced-motion:reduce){
   .disc-dot{animation:none!important;opacity:.7}
   .disc-anchor{animation:none!important;opacity:1}
   .headline{animation:none!important;opacity:1}
   .hero-lines{display:none}
   .disc-note{display:none}
+  .hero-hint{display:none}
   .hero.has-active .headline{opacity:1}
   .hero.has-active .disc-anchor:not(.is-active){opacity:1}
 }
 @media(max-width:660px){
-  .disc-anchor[data-disc="0"]{left:6%;top:auto;bottom:46%}
-  .disc-anchor[data-disc="1"]{left:auto;right:6%;top:auto;bottom:34%}
-  .disc-anchor[data-disc="2"]{left:6%;right:auto;top:auto;bottom:22%}
+  .disc-anchor[data-disc="0"]{left:8%;right:auto;top:auto;bottom:46%}
+  .disc-anchor[data-disc="1"]{left:auto;right:8%;top:auto;bottom:34%}
+  .disc-anchor[data-disc="2"]{left:8%;right:auto;top:auto;bottom:22%}
   .hero-lines{display:none}
   .disc-note{display:none}
+  .hero-hint{display:none}
   .hero.has-active .disc-anchor:not(.is-active){opacity:.38}
   .hero.has-active .headline{opacity:.38}
 }
@@ -682,6 +698,9 @@ body.is-transitioning {
   <p class="disc-note" data-disc="1" aria-hidden="true"></p>
   <p class="disc-note" data-disc="2" aria-hidden="true"></p>
 
+  <!-- cursor invitation — fades out permanently on first activation -->
+  <p class="hero-hint" id="hero-hint" aria-hidden="true">MOVE CURSOR TO EXPLORE<span class="hint-cursor">_</span></p>
+
 </div><!-- /hero -->
 
 <!-- ── SNAP SCROLL WORK SECTION ── -->
@@ -789,6 +808,8 @@ document.addEventListener('mousemove',e=>{
 const ambientEl   = document.getElementById('ambient');
 const heroEl      = document.querySelector('.hero');
 const heroLinesEl = document.getElementById('hero-lines');
+const hintEl      = document.getElementById('hero-hint');
+let   hintGone    = false;
 
 const DISC_DATA = [
   { id:0, rgb:'130,168,130',
@@ -826,6 +847,8 @@ function heroPos(el){
 
 function activateDisc(d){
   if(d.active||!d.dotEl) return;
+  // Permanently hide hint on first activation
+  if(!hintGone && hintEl){ hintGone=true; hintEl.style.opacity='0'; }
   d.active=true;
   heroEl.classList.add('has-active');
   d.anchorEl.classList.add('is-active');
@@ -892,6 +915,34 @@ document.addEventListener('mousemove',e=>{
   ringEl.style.width=nearAny?'48px':'36px';
   ringEl.style.height=nearAny?'48px':'36px';
 });
+
+// ── INTRO LINE DEMO — draws + retracts each line once on load ─
+(function introLines(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  discs.forEach((d,i)=>{
+    setTimeout(()=>{
+      if(!d.dotEl||!d.noteEl||!d.lineEl||d.active) return;
+      const dot=heroPos(d.dotEl);
+      const nr=d.noteEl.getBoundingClientRect(), hr=heroEl.getBoundingClientRect();
+      const nx=nr.left-hr.left, ny=nr.top+6-hr.top;
+      const len=Math.hypot(nx-dot.x, ny-dot.y)||120;
+      d.lineEl.setAttribute('x1',dot.x); d.lineEl.setAttribute('y1',dot.y);
+      d.lineEl.setAttribute('x2',nx);    d.lineEl.setAttribute('y2',ny);
+      d.lineEl.style.transition='none';
+      d.lineEl.style.strokeDasharray=len;
+      d.lineEl.style.strokeDashoffset=len;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        d.lineEl.style.transition='stroke-dashoffset .5s cubic-bezier(.16,1,.3,1)';
+        d.lineEl.style.strokeDashoffset=0;
+        setTimeout(()=>{
+          if(d.active) return;
+          d.lineEl.style.transition='stroke-dashoffset .38s cubic-bezier(.16,1,.3,1)';
+          d.lineEl.style.strokeDashoffset=len;
+        },620);
+      }));
+    },2200 + i*300);
+  });
+})();
 
 // ── COUNTERS ─────────────────────────────────────────────
 setTimeout(()=>{
