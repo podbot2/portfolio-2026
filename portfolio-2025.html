@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Product Designer · Portfolio 2025</title>
+
+<!-- Three.js (ES module via importmap) -->
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}
+</script>
+<!-- GSAP + ScrollTrigger (UMD globals, loaded before module) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
 
@@ -593,9 +602,56 @@ body.is-transitioning {
   filter: brightness(0.92) blur(1px);
   transition: filter 0.25s ease;
 }
+
+/* ── ORB CANVAS ── */
+#orb-canvas{
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  z-index:-2;
+  pointer-events:none;
+}
+
+/* ── WORD CLIP-REVEAL ── */
+.cr-word{
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:bottom;
+  padding-bottom:.08em;
+  margin-bottom:-.08em;
+}
+.cr-inner{
+  display:inline-block;
+  transform:translateY(105%);
+  will-change:transform;
+}
+
+/* ── HERO RESTYLE for orb hero ── */
+/* Remove fixed position from hero-copy-tl, make it the centered headline */
+.hero-copy-tl{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-56%);
+  text-align:center;
+  width:min(88vw,860px);
+  font-family:'Cormorant Garamond',serif;
+  font-weight:300;
+  font-size:clamp(38px,5.8vw,80px);
+  line-height:1.0;
+  letter-spacing:-.03em;
+  color:rgba(237,232,224,.92);
+  z-index:3;pointer-events:none;
+}
+.hero-copy-br{
+  font-family:'DM Mono',monospace;
+  font-size:clamp(9px,1vw,12px);
+  letter-spacing:.08em;
+  color:rgba(237,232,224,.45);
+  max-width:340px;text-align:right;
+}
 </style>
 <body>
 
+<canvas id="orb-canvas" aria-hidden="true"></canvas>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 <div id="ambient"></div>
@@ -647,20 +703,11 @@ body.is-transitioning {
     <!-- Layer 1 — oversized wordmark, scroll-driven translateX -->
     <div class="hero-wordmark" id="hero-wordmark" aria-hidden="true">JENNIFER FLORES</div>
 
-    <!-- PLACEHOLDER: replace with final asset -->
-    <!-- Layer 2 — media window, scroll-driven scale -->
-    <div class="hero-window" id="hero-window">
-      <div class="hero-slides">
-        <img class="hero-slide" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/67315b49bbcbbaeeb212c305_cloudserve.png" alt="cloudServe interface" loading="eager">
-        <img class="hero-slide" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/66f9d7924ea4ef567176086e_maxis-workspaces.png" alt="Maxis Workspaces" loading="lazy">
-        <img class="hero-slide" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup.png" alt="Data Catalog" loading="lazy">
-        <img class="hero-slide" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/67327b665def0f837b87f3f8_Home%20page%20with%20accounts%20(1).png" alt="cloudServe dashboard" loading="lazy">
-      </div>
-    </div>
+    <!-- Layer 2 — headline (orb is the visual; no image window) -->
+    <div class="hero-copy-tl" data-clip-reveal>Complex systems, made clear.</div>
 
-    <!-- Layer 3 — copy -->
-    <div class="hero-copy-tl">Complex systems, made clear.</div>
-    <div class="hero-copy-br">Balancing human-centered design with technical rigor</div>
+    <!-- Layer 3 — supporting copy + scroll cue -->
+    <div class="hero-copy-br" data-clip-reveal>Balancing human-centered design with technical rigor</div>
     <div class="hero-copy-bl">
       <span>Scroll</span>
       <span class="hero-arrow">↓</span>
@@ -1097,6 +1144,406 @@ initScrollObserver();
 setTimeout(() => {
   document.getElementById('float-nav')?.classList.add('is-visible');
 }, 1200);
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     THREE.JS ORB  ·  BlueYard-inspired cinematic hero sphere
+     Sphere: FBM cloud shader + Fresnel rim glow + Phong light
+     Particles: 10k curl-noise orbital swarm
+     Post-processing: chromatic aberration · vignette · grain
+     Scroll: GSAP ScrollTrigger camera drift + spin boost
+════════════════════════════════════════════════════════════ -->
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass }     from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass }     from 'three/addons/postprocessing/ShaderPass.js';
+
+const gsap          = window.gsap;
+const ScrollTrigger = window.ScrollTrigger;
+gsap.registerPlugin(ScrollTrigger);
+
+// ── RENDERER ────────────────────────────────────────────────
+const canvas = document.getElementById('orb-canvas');
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: true,
+  alpha: true,
+  powerPreference: 'high-performance',
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 0);
+
+// ── SCENE / CAMERA ──────────────────────────────────────────
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0.3, 8.5);
+
+// ─────────────────────────────────────────────────────────────
+// SHADERS
+// ─────────────────────────────────────────────────────────────
+
+// ── Sphere vertex ────────────────────────────────────────────
+const orbVert = /* glsl */`
+varying vec3 vNormal;
+varying vec3 vWorldPos;
+varying vec3 vViewDir;
+void main(){
+  vNormal   = normalize(normalMatrix * normal);
+  vec4 wp4  = modelMatrix * vec4(position,1.0);
+  vWorldPos = wp4.xyz;
+  vec4 mvp  = modelViewMatrix * vec4(position,1.0);
+  vViewDir  = normalize(-mvp.xyz);
+  gl_Position = projectionMatrix * mvp;
+}`;
+
+// ── Sphere fragment  — FBM clouds + Phong + Fresnel ──────────
+const orbFrag = /* glsl */`
+precision highp float;
+uniform float uTime;
+uniform vec3  uLightDir;
+uniform vec3  uLightDir2;
+uniform vec3  uBaseColor;
+uniform vec3  uCloudColor;
+uniform vec3  uFresnelColor;
+uniform float uFresnelPower;
+uniform float uCloudCoverage;
+varying vec3  vNormal;
+varying vec3  vWorldPos;
+varying vec3  vViewDir;
+
+float h3(vec3 p){
+  p=fract(p*0.3183099+0.1); p*=17.0;
+  return fract(p.x*p.y*p.z*(p.x+p.y+p.z));
+}
+float n3(vec3 p){
+  vec3 i=floor(p), f=fract(p);
+  f=f*f*(3.0-2.0*f);
+  return mix(
+    mix(mix(h3(i),h3(i+vec3(1,0,0)),f.x), mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x), f.y),
+    mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x), mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x), f.y),
+    f.z);
+}
+float fbm(vec3 p){
+  float v=0.0,a=0.5;
+  for(int i=0;i<6;i++){
+    v+=a*n3(p);
+    p=p*2.07+vec3(1.3,2.1,0.7);
+    a*=0.5;
+  }
+  return v;
+}
+void main(){
+  vec3 N=normalize(vNormal), V=normalize(vViewDir);
+
+  /* FBM clouds — animated world-space position */
+  float cloud = fbm(vWorldPos*1.15 + vec3(uTime*0.026, uTime*0.012, 0.0));
+  cloud = smoothstep(0.35, 0.78, cloud*(0.68+uCloudCoverage*0.52));
+
+  /* Phong diffuse from two lights */
+  vec3 L1=normalize(uLightDir), L2=normalize(uLightDir2);
+  float diff = max(dot(N,L1),0.0)*0.88 + max(dot(N,L2),0.0)*0.28;
+  float amb  = 0.12;
+
+  /* Blinn-Phong specular */
+  vec3 H=normalize(L1+V);
+  float spec=pow(max(dot(N,H),0.0),80.0)*0.58;
+
+  vec3 baseCol  = uBaseColor*(amb+diff) + spec*vec3(0.88,0.93,1.0);
+  vec3 cloudCol = uCloudColor*(amb*2.2+diff*0.85+spec*0.25);
+  vec3 col      = mix(baseCol, cloudCol, cloud);
+
+  /* Fresnel rim */
+  float rim=pow(1.0-max(dot(N,V),0.0), uFresnelPower);
+  col = mix(col, uFresnelColor, rim*0.72);
+  col += uFresnelColor * rim*rim * 0.22;
+
+  gl_FragColor=vec4(col,1.0);
+}`;
+
+// ── Particle vertex — curl-noise orbital swarm ───────────────
+const ptVert = /* glsl */`
+precision highp float;
+uniform float uTime;
+uniform float uBoost;
+attribute vec3  aSeed;
+attribute float aRnd;
+attribute float aSpd;
+attribute float aSz;
+varying  float  vAlpha;
+
+float nh(float n){ return fract(sin(n)*43758.5453); }
+float no3(vec3 p){
+  vec3 i=floor(p),f=fract(p);
+  f=f*f*(3.0-2.0*f);
+  float n=i.x+i.y*57.0+i.z*113.0;
+  return mix(
+    mix(mix(nh(n),nh(n+1.0),f.x), mix(nh(n+57.0),nh(n+58.0),f.x), f.y),
+    mix(mix(nh(n+113.0),nh(n+114.0),f.x), mix(nh(n+170.0),nh(n+171.0),f.x), f.y),
+    f.z);
+}
+vec3 curl(vec3 p){
+  float e=0.1;
+  float nx1=no3(p+vec3(e,0,0)),nx2=no3(p-vec3(e,0,0));
+  float ny1=no3(p+vec3(0,e,0)),ny2=no3(p-vec3(0,e,0));
+  float nz1=no3(p+vec3(0,0,e)),nz2=no3(p-vec3(0,0,e));
+  return normalize(vec3(ny1-ny2-(nz1-nz2), nz1-nz2-(nx1-nx2), nx1-nx2-(ny1-ny2)));
+}
+void main(){
+  /* radial bob */
+  float r=length(aSeed);
+  vec3  pos=normalize(aSeed)*(r + 0.14*sin(uTime*1.6*aSpd+aRnd*6.28));
+  /* curl displacement */
+  pos += curl(pos*0.38+uTime*0.07)*0.32;
+  /* slow orbital drift */
+  float theta=atan(pos.z,pos.x)+uTime*aSpd*0.09;
+  float phi=acos(clamp(pos.y/length(pos),-1.0,1.0));
+  float rr=length(pos);
+  pos=vec3(rr*sin(phi)*cos(theta), rr*cos(phi), rr*sin(phi)*sin(theta));
+
+  vec4 mvp=modelViewMatrix*vec4(pos,1.0);
+  gl_PointSize=clamp(aSz*(1.0+uBoost*0.55)*(430.0/-mvp.z), 0.5, 9.0);
+  gl_Position=projectionMatrix*mvp;
+
+  float df=clamp((length(aSeed)-2.05)/1.35,0.0,1.0);
+  vAlpha=(1.0-df*0.55)*(aRnd*0.52+0.28);
+}`;
+
+// ── Particle fragment ────────────────────────────────────────
+const ptFrag = /* glsl */`
+precision highp float;
+uniform vec3 uColor;
+varying float vAlpha;
+void main(){
+  vec2 uv=gl_PointCoord*2.0-1.0;
+  if(length(uv)>1.0) discard;
+  float a=(1.0-dot(uv,uv))*vAlpha;
+  gl_FragColor=vec4(uColor, a*0.62);
+}`;
+
+// ── Final composite — chromatic aberration + vignette + grain ─
+const finalVert = /* glsl */`
+varying vec2 vUv;
+void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`;
+
+const finalFrag = /* glsl */`
+precision highp float;
+uniform sampler2D tDiffuse;
+uniform float uTime;
+uniform float uAberr;
+uniform float uVig;
+uniform float uGrain;
+varying vec2 vUv;
+float rand2(vec2 c){ return fract(sin(dot(c,vec2(12.9898,78.233)))*43758.5453); }
+void main(){
+  vec2  ctr=vUv-0.5;
+  float d=length(ctr);
+  vec2  ab=ctr*d*uAberr;
+  float r=texture2D(tDiffuse,vUv+ab).r;
+  float g=texture2D(tDiffuse,vUv).g;
+  float b=texture2D(tDiffuse,vUv-ab).b;
+  vec3 col=vec3(r,g,b);
+  /* vignette */
+  col *= 1.0-smoothstep(0.42,1.08,d*uVig);
+  /* grain */
+  col += (rand2(vUv+fract(uTime*0.29))-0.5)*uGrain;
+  gl_FragColor=vec4(col,1.0);
+}`;
+
+// ─────────────────────────────────────────────────────────────
+// ORB MESH
+// ─────────────────────────────────────────────────────────────
+const orbGeo = new THREE.SphereGeometry(2.0, 96, 96);
+const orbMat = new THREE.ShaderMaterial({
+  vertexShader:   orbVert,
+  fragmentShader: orbFrag,
+  uniforms: {
+    uTime:          { value: 0 },
+    uLightDir:      { value: new THREE.Vector3( 3,  4,  5).normalize() },
+    uLightDir2:     { value: new THREE.Vector3(-2, -1,  3).normalize() },
+    uBaseColor:     { value: new THREE.Color(0x05112a) },   // deep navy
+    uCloudColor:    { value: new THREE.Color(0xc4d8f2) },   // cool silver
+    uFresnelColor:  { value: new THREE.Color(0xc8906a) },   // warm accent
+    uFresnelPower:  { value: 3.6 },
+    uCloudCoverage: { value: 0.62 },
+  },
+});
+const orb = new THREE.Mesh(orbGeo, orbMat);
+scene.add(orb);
+
+// ─────────────────────────────────────────────────────────────
+// PARTICLE SWARM
+// ─────────────────────────────────────────────────────────────
+const N = 10000;
+const ptGeo = new THREE.BufferGeometry();
+
+const seedArr = new Float32Array(N * 3);
+const rndArr  = new Float32Array(N);
+const spdArr  = new Float32Array(N);
+const szArr   = new Float32Array(N);
+
+for (let i = 0; i < N; i++) {
+  // Shell from r = 2.15 → 3.7  (outside sphere surface)
+  const r     = 2.15 + Math.random() * 1.55;
+  const theta = Math.random() * Math.PI * 2;
+  const phi   = Math.acos(2 * Math.random() - 1);
+  seedArr[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+  seedArr[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+  seedArr[i*3+2] = r * Math.cos(phi);
+  rndArr[i] = Math.random();
+  spdArr[i] = 0.3 + Math.random() * 0.9;
+  szArr[i]  = 1.4 + Math.random() * 2.8;
+}
+
+// dummy position attr (required by Three.js BufferGeometry)
+ptGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+ptGeo.setAttribute('aSeed', new THREE.BufferAttribute(seedArr, 3));
+ptGeo.setAttribute('aRnd',  new THREE.BufferAttribute(rndArr,  1));
+ptGeo.setAttribute('aSpd',  new THREE.BufferAttribute(spdArr,  1));
+ptGeo.setAttribute('aSz',   new THREE.BufferAttribute(szArr,   1));
+
+const ptMat = new THREE.ShaderMaterial({
+  vertexShader:   ptVert,
+  fragmentShader: ptFrag,
+  uniforms: {
+    uTime:  { value: 0 },
+    uBoost: { value: 0 },
+    uColor: { value: new THREE.Color(0xd6e6ff) },
+  },
+  transparent: true,
+  depthWrite:  false,
+  blending:    THREE.AdditiveBlending,
+});
+const particles = new THREE.Points(ptGeo, ptMat);
+scene.add(particles);
+
+// ─────────────────────────────────────────────────────────────
+// POST-PROCESSING
+// ─────────────────────────────────────────────────────────────
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const finalPass = new ShaderPass({
+  vertexShader:   finalVert,
+  fragmentShader: finalFrag,
+  uniforms: {
+    tDiffuse: { value: null },
+    uTime:    { value: 0 },
+    uAberr:   { value: 0.016 },
+    uVig:     { value: 1.35 },
+    uGrain:   { value: 0.020 },
+  },
+});
+finalPass.renderToScreen = true;
+composer.addPass(finalPass);
+
+// ─────────────────────────────────────────────────────────────
+// GSAP SCROLL — camera drift + intro word reveals
+// ─────────────────────────────────────────────────────────────
+// Camera scrolls from hero start → hero end
+ScrollTrigger.create({
+  trigger: '.hero-scroll',
+  start: 'top top',
+  end:   'bottom top',
+  scrub: 1.2,
+  onUpdate(self) {
+    const p = self.progress;
+    // Drift right+down, zoom slightly in — mirrors BlueYard's camera arc
+    camera.position.x = p * 2.1;
+    camera.position.y = 0.3 - p * 1.55;
+    camera.position.z = 8.5 - p * 1.4;
+  },
+});
+
+// Scroll velocity → spin boost
+let scrollBoost = 0, lastY = window.scrollY;
+window.addEventListener('scroll', () => {
+  scrollBoost = Math.min(scrollBoost + Math.abs(window.scrollY - lastY) * 0.004, 2.2);
+  lastY = window.scrollY;
+}, { passive: true });
+
+// ─────────────────────────────────────────────────────────────
+// WORD CLIP-UP REVEALS  (BlueYard SplitText / ClipUp style)
+// ─────────────────────────────────────────────────────────────
+function initClipReveals() {
+  document.querySelectorAll('[data-clip-reveal]').forEach(el => {
+    const raw = el.textContent.trim().split(/\s+/);
+    el.innerHTML = raw.map(w =>
+      `<span class="cr-word"><span class="cr-inner">${w}</span></span>`
+    ).join(' ');
+
+    gsap.from(el.querySelectorAll('.cr-inner'), {
+      yPercent: 106,
+      duration: 1.05,
+      stagger: 0.09,
+      ease: 'power3.out',
+      delay: 0.3,
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+      },
+    });
+  });
+}
+
+// Wait for fonts/DOM, then init
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initClipReveals);
+} else {
+  initClipReveals();
+}
+
+// Project section headings
+setTimeout(() => {
+  document.querySelectorAll('.proj-title').forEach(el => {
+    el.setAttribute('data-clip-reveal', '');
+  });
+  initClipReveals();
+}, 200);
+
+// ─────────────────────────────────────────────────────────────
+// INTRO ANIMATION  — orb tilts into frame (like BlueYard)
+// ─────────────────────────────────────────────────────────────
+orb.rotation.x = 0.6;
+gsap.to(orb.rotation, { x: 0, duration: 2.2, ease: 'power2.out', delay: 0.4 });
+
+ptMat.uniforms.uBoost.value = 1.8;
+gsap.to(ptMat.uniforms.uBoost, { value: 0, duration: 2.5, ease: 'power2.out', delay: 0.3 });
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION LOOP
+// ─────────────────────────────────────────────────────────────
+function animate(ts) {
+  requestAnimationFrame(animate);
+  const t = ts * 0.001;
+
+  orbMat.uniforms.uTime.value = t;
+  ptMat.uniforms.uTime.value  = t;
+  finalPass.uniforms.uTime.value = t;
+
+  // Continuous rotation — speeds up with scroll velocity
+  orb.rotation.y      += 0.0022 + scrollBoost * 0.007;
+  particles.rotation.y = orb.rotation.y * 0.25; // slower trailing rotate
+  scrollBoost *= 0.93;
+
+  ptMat.uniforms.uBoost.value = scrollBoost;
+
+  camera.lookAt(0, 0, 0);
+  composer.render();
+}
+requestAnimationFrame(animate);
+
+// ─────────────────────────────────────────────────────────────
+// RESIZE
+// ─────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  composer.setSize(w, h);
+});
 </script>
 </body>
 </html>
