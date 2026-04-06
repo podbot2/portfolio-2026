@@ -38,7 +38,7 @@ html{ scroll-behavior:smooth; }
 body{
   min-height:100vh;
   overflow-y:auto; overflow-x:hidden;
-  background:var(--bg);
+  background:transparent; /* canvas is now the bg */
   color:var(--ink);
   font-family:'DM Mono',monospace;
   cursor:none;
@@ -240,8 +240,9 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 
 .proj::before{
   content:'';
-  position:absolute;inset:0;
-  /* Fix 1: inherit the card's own solid background color */
+  position:absolute;
+  top:0;left:0;bottom:0;
+  width:42%; /* covers only the left text pane */
   background:inherit;
   z-index:0;
 }
@@ -332,11 +333,21 @@ h1 em{font-style:italic;color:var(--accent);transition:color .5s}
 .proj.active .proj-progress-fill{height:100%}
 
 /* ── RIGHT PANE ── */
+/* Transparent so the fixed orb canvas shows through.
+   A left-edge gradient bridges the left pane's dark color. */
 .proj-right{
   position:relative;z-index:2;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;
-  isolation:isolate;
+  background:transparent;
+}
+.proj-right::before{
+  content:'';
+  position:absolute;
+  inset:0;right:auto;
+  width:120px;
+  background:linear-gradient(to right, var(--proj-edge,rgba(12,11,14,.96)), transparent);
+  z-index:4;pointer-events:none;
 }
 
 .proj-canvas{
@@ -732,7 +743,7 @@ body.is-transitioning {
   <div id="proj-stack">
 
   <!-- 01 -->
-  <div class="proj" id="proj-0" data-color="#1e0f16" data-rgb="30,15,22" data-idx="0">
+  <div class="proj" id="proj-0" data-color="#1e0f16" data-rgb="30,15,22" data-idx="0" style="--proj-edge:rgba(30,15,22,.96)">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">vAuto <em>Labs</em> platform</div>
@@ -750,7 +761,7 @@ body.is-transitioning {
   </div>
 
   <!-- 02 -->
-  <div class="proj" id="proj-1" data-color="#0c1520" data-rgb="12,21,32" data-idx="1">
+  <div class="proj" id="proj-1" data-color="#0c1520" data-rgb="12,21,32" data-idx="1" style="--proj-edge:rgba(12,21,32,.96)">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">cloud<em>Serve</em></div>
@@ -768,7 +779,7 @@ body.is-transitioning {
   </div>
 
   <!-- 03 -->
-  <div class="proj" id="proj-2" data-color="#0f0e1c" data-rgb="15,14,28" data-idx="2">
+  <div class="proj" id="proj-2" data-color="#0f0e1c" data-rgb="15,14,28" data-idx="2" style="--proj-edge:rgba(15,14,28,.96)">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">Maxis <em>Workspaces</em></div>
@@ -786,7 +797,7 @@ body.is-transitioning {
   </div>
 
   <!-- 04 -->
-  <div class="proj" id="proj-3" data-color="#181408" data-rgb="24,20,8" data-idx="3">
+  <div class="proj" id="proj-3" data-color="#181408" data-rgb="24,20,8" data-idx="3" style="--proj-edge:rgba(24,20,8,.96)">
     <div class="proj-progress"><div class="proj-progress-fill"></div></div>
     <div class="proj-left">
       <div class="proj-title">Data <em>Catalog</em></div>
@@ -1168,12 +1179,12 @@ const canvas = document.getElementById('orb-canvas');
 const renderer = new THREE.WebGLRenderer({
   canvas,
   antialias: true,
-  alpha: true,
   powerPreference: 'high-performance',
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x000000, 0);
+// Opaque dark bg — canvas replaces body background
+renderer.setClearColor(0x0c0b0e, 1);
 
 // ── SCENE / CAMERA ──────────────────────────────────────────
 const scene  = new THREE.Scene();
