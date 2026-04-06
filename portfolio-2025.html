@@ -1439,22 +1439,52 @@ finalPass.renderToScreen = true;
 composer.addPass(finalPass);
 
 // ─────────────────────────────────────────────────────────────
-// GSAP SCROLL — camera drift + intro word reveals
+// GSAP SCROLL — full-page camera journey
+// The orb drifts to a different position for every section so
+// it always feels present but never competes with the content.
+// Timeline is scrubbed to total page scroll (body top → bottom).
 // ─────────────────────────────────────────────────────────────
-// Camera scrolls from hero start → hero end
-ScrollTrigger.create({
-  trigger: '.hero-scroll',
-  start: 'top top',
-  end:   'bottom top',
-  scrub: 1.2,
-  onUpdate(self) {
-    const p = self.progress;
-    // Drift right+down, zoom slightly in — mirrors BlueYard's camera arc
-    camera.position.x = p * 2.1;
-    camera.position.y = 0.3 - p * 1.55;
-    camera.position.z = 8.5 - p * 1.4;
+
+// Page proportions (approx scroll distances):
+//   Hero           200vh → 25 %
+//   proj-intro     100vh → 12 %
+//   proj-0         100vh → 16 %
+//   proj-1         100vh → 16 %
+//   proj-2         100vh → 16 %
+//   proj-3         100vh → 15 %  (total ≈ 100)
+
+const camTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: 'body',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1.8,          // lag smooths the drift beautifully
   },
 });
+
+// Hero — orb centered, drifts right + slightly toward camera
+camTl.to(camera.position,
+  { x: 1.8, y: -0.7, z: 7.4, ease: 'power1.inOut', duration: 25 }, 0);
+
+// proj-intro — swing back left, pull away
+camTl.to(camera.position,
+  { x: -1.6, y: 0.5, z: 10.2, ease: 'power1.inOut', duration: 12 }, 25);
+
+// proj-0 vAuto Labs — upper-left, farther back
+camTl.to(camera.position,
+  { x: -2.8, y: 1.6, z: 10.8, ease: 'power1.inOut', duration: 16 }, 37);
+
+// proj-1 cloudServe — cross to right/low
+camTl.to(camera.position,
+  { x: 3.0, y: -1.6, z: 9.4, ease: 'power1.inOut', duration: 16 }, 53);
+
+// proj-2 Maxis — upper-left again, even farther (depth sense)
+camTl.to(camera.position,
+  { x: -2.2, y: 2.2, z: 11.6, ease: 'power1.inOut', duration: 16 }, 69);
+
+// proj-3 Data Catalog — settle near-center as page ends
+camTl.to(camera.position,
+  { x: 0.6, y: -0.8, z: 8.6, ease: 'power1.inOut', duration: 15 }, 85);
 
 // Scroll velocity → spin boost
 let scrollBoost = 0, lastY = window.scrollY;
