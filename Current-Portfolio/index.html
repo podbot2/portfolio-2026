@@ -306,43 +306,40 @@ window.addEventListener("DOMContentLoaded", function () {
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
   renderer.setSize(W, H, false);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // cap to reduce GPU load
   renderer.setClearColor(0x000000, 0);
 
-  /* Globe group — tilted like a real globe */
+  /* Globe group */
   var globe = new THREE.Group();
   globe.rotation.z = 0.28;
   scene.add(globe);
 
-  /* Lighting */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
-  var sun = new THREE.DirectionalLight(0x99aaff, 1.4);
-  sun.position.set(2.5, 1.5, 2);
-  scene.add(sun);
-  var rim = new THREE.DirectionalLight(0x334466, 0.6);
-  rim.position.set(-2, -1, -1);
-  scene.add(rim);
+  /* Neutral lighting — matches site's grey/dark palette */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.18));
+  var keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  keyLight.position.set(2, 1.5, 2);
+  scene.add(keyLight);
 
-  /* Dark sphere body */
+  /* Sphere body — matches page background */
   globe.add(new THREE.Mesh(
     new THREE.SphereGeometry(1, 64, 64),
-    new THREE.MeshStandardMaterial({ color: 0x0a0a14, roughness: 0.85, metalness: 0.15 })
+    new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.05 })
   ));
 
-  /* Lat / lon wireframe */
+  /* Lat/lon grid — very subtle grey */
   globe.add(new THREE.LineSegments(
     new THREE.EdgesGeometry(new THREE.SphereGeometry(1.003, 28, 18)),
-    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.09 })
+    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07 })
   ));
 
-  /* Atmospheric halo */
+  /* Soft neutral halo */
   globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(1.22, 32, 32),
-    new THREE.MeshBasicMaterial({ color: 0x1133aa, transparent: true, opacity: 0.06, side: THREE.BackSide })
+    new THREE.SphereGeometry(1.2, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.08, side: THREE.BackSide })
   ));
 
-  /* Surface dot cloud */
-  var N = 700, pts = new Float32Array(N * 3);
+  /* Surface dots */
+  var N = 500, pts = new Float32Array(N * 3);
   for (var i = 0; i < N; i++) {
     var phi = Math.acos(2 * Math.random() - 1);
     var theta = 2 * Math.PI * Math.random();
@@ -353,7 +350,7 @@ window.addEventListener("DOMContentLoaded", function () {
   var dotGeo = new THREE.BufferGeometry();
   dotGeo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
   globe.add(new THREE.Points(dotGeo,
-    new THREE.PointsMaterial({ color: 0xffffff, size: 0.009, transparent: true, opacity: 0.45 })
+    new THREE.PointsMaterial({ color: 0xffffff, size: 0.008, transparent: true, opacity: 0.3 })
   ));
 
   /* Scroll tracking */
@@ -364,15 +361,21 @@ window.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
   }
 
-  /* Animation loop */
-  var autoAngle = 0, prev = 0;
-  (function tick(now) {
-    requestAnimationFrame(tick);
-    var dt = Math.min((now - prev) / 1000, 0.05); prev = now;
-    autoAngle += dt * 0.22;
+  /* Pause rendering when hero is off-screen — eliminates scroll lag */
+  var heroVisible = true;
+  var observer = new IntersectionObserver(function (entries) {
+    heroVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  observer.observe(parent);
+
+  /* Integrate into GSAP ticker (shared with Lenis) instead of a separate RAF */
+  var autoAngle = 0;
+  gsap.ticker.add(function (time, deltaTime) {
+    if (!heroVisible) return;
+    autoAngle += (deltaTime / 1000) * 0.22;
     globe.rotation.y = autoAngle + scrollY * 0.0028;
     renderer.render(scene, camera);
-  })(0);
+  });
 
   /* Resize */
   window.addEventListener("resize", function () {
