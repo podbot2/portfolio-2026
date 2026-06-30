@@ -354,20 +354,28 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ── Card border trace on hover ── */
+  /* ── Card border trace on hover ──
+     SVG lives on the <a> tag (outside overflow:hidden) so all 4 edges are visible */
   var ns = "http://www.w3.org/2000/svg";
-  document.querySelectorAll(".project-container").forEach(function (card) {
-    var w   = card.offsetWidth;
-    var h   = card.offsetHeight;
-    var rx  = 10;
-    var sw  = 1.5;
-    // perimeter of a rounded rect = 2*(w+h) + rx*(2π−8)
+  document.querySelectorAll(".project-link-box").forEach(function (link) {
+    var card = link.querySelector(".project-container");
+    if (!card) return;
+
+    // Make the link a positioning context so offsetTop/Left resolve to it
+    link.style.position = "relative";
+
+    var w     = card.offsetWidth;
+    var h     = card.offsetHeight;
+    var top   = card.offsetTop;
+    var left  = card.offsetLeft;
+    var rx    = 10;
+    var sw    = 1.5;
     var perim = 2 * (w - sw + h - sw) + (2 * Math.PI - 8) * rx;
 
     var svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("width",  w);
-    svg.setAttribute("height", h);
-    svg.style.cssText = "position:absolute;top:0;left:0;pointer-events:none;z-index:10;overflow:visible;";
+    svg.style.cssText = "position:absolute;top:" + top + "px;left:" + left + "px;" +
+                        "width:" + w + "px;height:" + h + "px;" +
+                        "pointer-events:none;z-index:10;overflow:visible;";
 
     var rect = document.createElementNS(ns, "rect");
     rect.setAttribute("x",      sw / 2);
@@ -376,24 +384,21 @@ window.addEventListener("DOMContentLoaded", function () {
     rect.setAttribute("height", h - sw);
     rect.setAttribute("rx",     rx);
     rect.setAttribute("fill",   "none");
-    rect.setAttribute("stroke", "rgba(255,255,255,0.55)");
+    rect.setAttribute("stroke", "rgba(255,255,255,0.25)");
     rect.setAttribute("stroke-width", sw);
     rect.setAttribute("stroke-dasharray",  perim);
     rect.setAttribute("stroke-dashoffset", perim);
     rect.style.transition = "stroke-dashoffset 0.9s cubic-bezier(0.65,0,0.35,1)";
 
     svg.appendChild(rect);
-    card.appendChild(svg);
+    link.appendChild(svg);
 
-    var link = card.closest(".project-link-box");
-    if (link) {
-      link.addEventListener("mouseenter", function () {
-        rect.style.strokeDashoffset = "0";
-      });
-      link.addEventListener("mouseleave", function () {
-        rect.style.strokeDashoffset = perim;
-      });
-    }
+    link.addEventListener("mouseenter", function () {
+      rect.style.strokeDashoffset = "0";
+    });
+    link.addEventListener("mouseleave", function () {
+      rect.style.strokeDashoffset = perim;
+    });
   });
 });
 </script>
