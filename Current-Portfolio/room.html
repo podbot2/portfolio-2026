@@ -340,12 +340,7 @@ const fill = new THREE.DirectionalLight(0xc8daff, 0.55);
 fill.position.set(-8, 5, 0);
 scene.add(fill);
 
-// Desk lamp — warm amber
-const lampPt = new THREE.PointLight(0xff9f28, 7.0, 4.5, 2);
-lampPt.position.set(-3.0, 2.0, -3.45);
-lampPt.castShadow = true;
-lampPt.shadow.mapSize.set(512, 512);
-scene.add(lampPt);
+// (Desk light provided by Smiski lamp — defined below with geometry)
 
 // Monitor glow
 const monPt = new THREE.PointLight(0x4466ee, 2.0, 2.8, 2);
@@ -479,14 +474,30 @@ const pcCup = cyl(0.038, 0.033, 0.088, 14, std({ color: 0x7a3a1a, roughness: 0.8
   tip.position.set(Math.sin(a) * 0.02, 0.166, Math.cos(a) * 0.02); pcG.add(tip);
 });
 
-// ── Desk lamp ─────────────────────────────────────────────────────────────────
-const lampG = new THREE.Group(); lampG.position.set(-3.0, 0.803, -3.45); scene.add(lampG);
-const lBase  = cyl(0.1, 0.12, 0.022, 24, std({ color: 0x1a1a1a, roughness: 0.3, metalness: 0.72 })); lBase.position.y = 0.011;  lampG.add(lBase);
-const lVert  = cyl(0.013, 0.013, 0.5, 8,  std({ color: 0x222222, roughness: 0.3, metalness: 0.7  })); lVert.position.y = 0.26;   lampG.add(lVert);
-const lJoint = cyl(0.024, 0.024, 0.03, 10, std({ color: 0x1a1a1a, roughness: 0.3, metalness: 0.7  })); lJoint.position.y = 0.52;  lampG.add(lJoint);
-const lArm   = cyl(0.01, 0.01, 0.3, 8,    std({ color: 0x222222, roughness: 0.3, metalness: 0.7  })); lArm.rotation.z = -Math.PI / 4; lArm.position.set(0.1, 0.63, 0); lampG.add(lArm);
-const lShade = cyl(0.02, 0.072, 0.11, 16,  std({ color: 0x181818, roughness: 0.25, metalness: 0.65 })); lShade.rotation.z = Math.PI / 4.2; lShade.position.set(0.24, 0.5, 0); lampG.add(lShade);
-const lGlow  = cyl(0.058, 0.058, 0.004, 16, std({ color: 0xffd090, roughness: 0.3, emissive: new THREE.Color(0xffa020), emissiveIntensity: 2.2 })); lGlow.rotation.z = Math.PI / 4.2; lGlow.position.set(0.26, 0.48, 0); lampG.add(lGlow);
+// ── Smiski lamp (glowing ghost collectible — acts as desk lamp) ───────────────
+const smiskiG = new THREE.Group(); smiskiG.position.set(-3.0, 0.803, -3.4); scene.add(smiskiG);
+const mSmiski = std({ color: 0xeef8f0, roughness: 0.18, emissive: new THREE.Color(0x55ee88), emissiveIntensity: 0.62 });
+const mSkEye  = std({ color: 0x111111, roughness: 0.4 });
+// Main body blob (slightly tall oval)
+const skBody = sph(0.072, 14, 14, mSmiski); skBody.scale.set(1, 1.28, 1); skBody.position.y = 0.072; smiskiG.add(skBody);
+// Head bump on top
+const skHead = sph(0.055, 12, 12, mSmiski); skHead.position.y = 0.175; smiskiG.add(skHead);
+// Eyes — two small dark dots on front face
+[-0.024, 0.024].forEach(x => {
+  const e = sph(0.013, 8, 8, mSkEye); e.position.set(x, 0.165, 0.062); smiskiG.add(e);
+});
+// Tiny arm nubs on sides
+[-0.08, 0.08].forEach(x => {
+  const a = sph(0.033, 8, 8, mSmiski); a.scale.set(1, 0.78, 0.82); a.position.set(x, 0.092, 0.01); smiskiG.add(a);
+});
+// Foot bumps at base
+[-0.028, 0.028].forEach(x => {
+  const f = sph(0.025, 7, 7, mSmiski); f.position.set(x, 0.02, 0.022); smiskiG.add(f);
+});
+// Green-white glow light emitted from Smiski
+const skPt = new THREE.PointLight(0xaaffcc, 5.8, 4.0, 2);
+skPt.position.set(-3.0, 1.08, -3.4);
+scene.add(skPt);
 
 // ── Desk succulent ────────────────────────────────────────────────────────────
 const sucG = new THREE.Group(); sucG.position.set(-2.62, 0.803, -3.3); scene.add(sucG);
@@ -582,90 +593,91 @@ const rugBM = std({ color: 0x302020, roughness: 0.96 });
   const r = box(w, h, d, rugBM); r.position.set(x, 0.014, z); scene.add(r);
 });
 
-// ── Jennifer figurine (chibi) ─────────────────────────────────────────────────
-// Skin: warm medium brown. Position: between bookshelf and desk.
+// ── Jennifer figurine — seated at desk ─────────────────────────────────────────
+// figG faces the monitor: rotation.y = π means local +Z → world -Z (toward monitor)
 const mSkin = std({ color: 0xc8906c, roughness: 0.72 });
 const mHair = std({ color: 0x180a02, roughness: 0.78 });
-const mTop  = std({ color: 0xcc3355, roughness: 0.78 }); // coral top
-const mPant = std({ color: 0x1e2244, roughness: 0.82 }); // navy pants
+const mTop  = std({ color: 0xcc3355, roughness: 0.78 });
+const mPant = std({ color: 0x1e2244, roughness: 0.82 });
 const mShoe = std({ color: 0x111111, roughness: 0.85 });
 
-const figG  = new THREE.Group(); figG.position.set(-4.0, 0, -1.2); scene.add(figG);
+const figG = new THREE.Group();
+figG.position.set(-1, 0, -1.0);
+figG.rotation.y = Math.PI;
+scene.add(figG);
 
-// Feet
-[-0.055, 0.055].forEach(x => {
-  const foot = box(0.072, 0.038, 0.11, mShoe); foot.position.set(x, 0.019, 0.02); figG.add(foot);
+// Hips sitting on chair seat (seat at world Y=0.51)
+const hips = box(0.24, 0.1, 0.18, mPant); hips.position.set(0, 0.52, -0.06); figG.add(hips);
+// Thighs: horizontal, extending toward desk (local +Z)
+[-0.07, 0.07].forEach(x => {
+  const thigh = box(0.092, 0.095, 0.28, mPant); thigh.position.set(x, 0.50, 0.10); figG.add(thigh);
+  // Lower legs: vertical, hanging from knee
+  const lleg = box(0.082, 0.27, 0.082, mPant); lleg.position.set(x, 0.34, 0.24); figG.add(lleg);
+  // Feet
+  const foot = box(0.082, 0.04, 0.13, mShoe); foot.position.set(x, 0.20, 0.26); figG.add(foot);
 });
-// Legs (pants)
-[-0.055, 0.055].forEach(x => {
-  const leg = box(0.072, 0.22, 0.072, mPant); leg.position.set(x, 0.15, 0); figG.add(leg);
-});
-// Hips
-const hips = box(0.24, 0.08, 0.14, mPant); hips.position.set(0, 0.3, 0); figG.add(hips);
-// Torso / top
-const torso = box(0.26, 0.28, 0.15, mTop); torso.position.set(0, 0.49, 0); figG.add(torso);
-// Arms
-[-0.18, 0.18].forEach(x => {
-  const uArm = box(0.068, 0.2, 0.068, mTop); uArm.position.set(x, 0.49, 0); figG.add(uArm);
-  const lArm = box(0.062, 0.18, 0.062, mSkin); lArm.position.set(x, 0.32, 0); figG.add(lArm);
-  const hand = sph(0.038, 7, 7, mSkin); hand.position.set(x, 0.225, 0); figG.add(hand);
+// Torso
+const torso = box(0.27, 0.28, 0.16, mTop); torso.position.set(0, 0.67, -0.03); figG.add(torso);
+// Arms reaching toward keyboard
+[-0.19, 0.19].forEach(x => {
+  const uArm = box(0.072, 0.2, 0.072, mTop); uArm.position.set(x, 0.655, 0.0); figG.add(uArm);
+  const fArm = box(0.066, 0.066, 0.22, mSkin); fArm.position.set(x, 0.565, 0.10); figG.add(fArm);
+  const hand = sph(0.04, 8, 8, mSkin); hand.position.set(x, 0.565, 0.22); figG.add(hand);
 });
 // Neck
-const neck = cyl(0.038, 0.04, 0.07, 10, mSkin); neck.position.set(0, 0.665, 0); figG.add(neck);
+const neck = cyl(0.038, 0.042, 0.075, 10, mSkin); neck.position.set(0, 0.825, -0.02); figG.add(neck);
 
-// Head group — this is what rotates to follow the mouse
-const figHead = new THREE.Group(); figHead.position.set(0, 0.72, 0); figG.add(figHead);
+// Head group — rotates to track mouse
+const figHead = new THREE.Group(); figHead.position.set(0, 0.875, 0.04); figG.add(figHead);
 
 // Head sphere (big chibi head)
-const headMesh = sph(0.145, 16, 16, mSkin); headMesh.position.y = 0.145; figHead.add(headMesh);
+const headMesh = sph(0.145, 16, 16, mSkin); headMesh.position.y = 0.13; figHead.add(headMesh);
 
 // Eyes
 [-0.052, 0.052].forEach(x => {
   const eye = sph(0.022, 8, 8, std({ color: 0x111111, roughness: 0.5 }));
-  eye.position.set(x, 0.17, 0.138); figHead.add(eye);
+  eye.position.set(x, 0.155, 0.137); figHead.add(eye);
   const shine = sph(0.008, 6, 6, std({ color: 0xffffff, roughness: 0.2, emissive: new THREE.Color(0xffffff), emissiveIntensity: 0.5 }));
-  shine.position.set(x + 0.008, 0.18, 0.158); figHead.add(shine);
+  shine.position.set(x + 0.008, 0.165, 0.152); figHead.add(shine);
 });
 // Nose
 const nose = sph(0.012, 6, 6, std({ color: 0xb87058, roughness: 0.8 }));
-nose.position.set(0, 0.138, 0.148); figHead.add(nose);
-// Smile (two small spheres)
+nose.position.set(0, 0.126, 0.144); figHead.add(nose);
+// Smile
 [-0.028, 0.028].forEach(x => {
   const sm = sph(0.01, 6, 6, std({ color: 0x883838, roughness: 0.6 }));
-  sm.position.set(x, 0.11, 0.148); figHead.add(sm);
+  sm.position.set(x, 0.100, 0.144); figHead.add(sm);
 });
 // Cheeks
 [-0.085, 0.085].forEach(x => {
   const cheek = sph(0.028, 8, 8, std({ color: 0xdd8870, roughness: 0.9, transparent: true, opacity: 0.45 }));
-  cheek.position.set(x, 0.138, 0.128); figHead.add(cheek);
+  cheek.position.set(x, 0.128, 0.124); figHead.add(cheek);
 });
-
-// Hair — large base sphere covering back/top + curls
-const hairBase = sph(0.158, 14, 14, mHair);
-hairBase.position.set(0, 0.155, -0.018); figHead.add(hairBase);
-// Front bang strips
-[-0.07, 0, 0.07].forEach((x, i) => {
+// Hair base (large sphere covering top and back)
+const hairBase = sph(0.158, 14, 14, mHair); hairBase.position.set(0, 0.142, -0.018); figHead.add(hairBase);
+// Bangs
+[-0.07, 0, 0.07].forEach(x => {
   const bang = sph(0.06, 8, 8, mHair);
-  bang.position.set(x, 0.268 - Math.abs(x) * 0.2, 0.1 - Math.abs(x) * 0.02); figHead.add(bang);
+  bang.position.set(x, 0.255 - Math.abs(x) * 0.18, 0.1 - Math.abs(x) * 0.02); figHead.add(bang);
 });
 // Side puffs
 [-0.155, 0.155].forEach(x => {
-  const side = sph(0.072, 8, 8, mHair); side.position.set(x, 0.16, 0.02); figHead.add(side);
+  const side = sph(0.072, 8, 8, mHair); side.position.set(x, 0.148, 0.018); figHead.add(side);
 });
 // Curl bumps on top
 for (let i = 0; i < 10; i++) {
   const a = (i / 10) * Math.PI * 2;
   const curl = sph(0.028 + Math.random() * 0.018, 7, 7, mHair);
   const r = 0.1 + Math.random() * 0.04;
-  curl.position.set(Math.sin(a) * r, 0.29 + Math.random() * 0.05, Math.cos(a) * r * 0.5 - 0.01);
+  curl.position.set(Math.sin(a) * r, 0.275 + Math.random() * 0.05, Math.cos(a) * r * 0.5 - 0.01);
   figHead.add(curl);
 }
 // Back volume
-const hairBack = sph(0.14, 10, 10, mHair); hairBack.position.set(0, 0.13, -0.12); figHead.add(hairBack);
+const hairBack = sph(0.14, 10, 10, mHair); hairBack.position.set(0, 0.12, -0.12); figHead.add(hairBack);
 
-// Figurine hitbox for tooltip
-const figHit = box(0.4, 1.0, 0.35, std({ color: 0xffffff, transparent: true, opacity: 0 }));
-figHit.position.set(-4.0, 0.5, -1.2); figHit.castShadow = false; figHit.receiveShadow = false; scene.add(figHit);
+// Invisible hitbox over upper body for hover tooltip
+const figHit = box(0.52, 0.7, 0.55, std({ color: 0xffffff, transparent: true, opacity: 0 }));
+figHit.position.set(-1, 0.9, -1.0); figHit.castShadow = false; figHit.receiveShadow = false; scene.add(figHit);
 
 // ── Interactives ──────────────────────────────────────────────────────────────
 const interactives = [
@@ -736,9 +748,9 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
-  // Head tracking — ONLY animation in the room
-  figHead.rotation.y += (pointer.x * 0.55 - figHead.rotation.y) * 0.06;
-  figHead.rotation.x += (-pointer.y * 0.25 - figHead.rotation.x) * 0.06;
+  // Head tracking — figure faces monitor so X/Y signs are flipped relative to camera
+  figHead.rotation.y += (-pointer.x * 0.52 - figHead.rotation.y) * 0.06;
+  figHead.rotation.x += ( pointer.y * 0.22 - figHead.rotation.x) * 0.06;
 
   // Hover detection
   raycaster.setFromCamera(pointer, camera);
