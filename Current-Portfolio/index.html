@@ -289,56 +289,66 @@ document.addEventListener("keyup", function (e) {
 });
 </script>
 
-<!-- Three.js rotating sphere -->
+<!-- Three.js rotating sphere (hero + floating pip) -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<style>
+/* Floating mini orb that appears when hero scrolls out */
+#orb-pip {
+  position: fixed;
+  right: 48px;
+  bottom: 52px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 50;
+}
+#orb-pip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 16px 48px rgba(0,0,0,0.55);
+  pointer-events: none;
+}
+@media (max-width: 767px) {
+  #orb-pip { width: 90px; height: 90px; right: 20px; bottom: 24px; }
+}
+</style>
 <script>
 window.addEventListener("DOMContentLoaded", function () {
-  var canvas = document.getElementById("hero-sphere");
-  if (!canvas || typeof THREE === "undefined") return;
+  var heroCanvas = document.getElementById("hero-sphere");
+  if (!heroCanvas || typeof THREE === "undefined") return;
 
-  var parent = canvas.parentElement;
-  var W = parent.offsetWidth, H = parent.offsetHeight;
+  var heroSection = heroCanvas.parentElement;
+  var W = heroSection.offsetWidth, H = heroSection.offsetHeight;
+  var PIP_SIZE = window.innerWidth <= 767 ? 90 : 140;
 
-  /* Scene */
+  /* ── Shared scene ── */
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
-  camera.position.z = 3.6;
-
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-  renderer.setSize(W, H, false);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // cap to reduce GPU load
-  renderer.setClearColor(0x000000, 0);
-
-  /* Globe group */
-  var globe = new THREE.Group();
-  globe.rotation.z = 0.28;
-  scene.add(globe);
-
-  /* Neutral lighting — matches site's grey/dark palette */
   scene.add(new THREE.AmbientLight(0xffffff, 0.18));
   var keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
   keyLight.position.set(2, 1.5, 2);
   scene.add(keyLight);
 
-  /* Sphere body — matches page background */
+  /* ── Globe (shared between both renderers) ── */
+  var globe = new THREE.Group();
+  globe.rotation.z = 0.28;
+  scene.add(globe);
+
   globe.add(new THREE.Mesh(
     new THREE.SphereGeometry(1, 64, 64),
     new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.05 })
   ));
-
-  /* Lat/lon grid — very subtle grey */
   globe.add(new THREE.LineSegments(
     new THREE.EdgesGeometry(new THREE.SphereGeometry(1.003, 28, 18)),
     new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07 })
   ));
-
-  /* Soft neutral halo */
   globe.add(new THREE.Mesh(
     new THREE.SphereGeometry(1.2, 32, 32),
     new THREE.MeshBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.08, side: THREE.BackSide })
   ));
-
-  /* Surface dots */
   var N = 500, pts = new Float32Array(N * 3);
   for (var i = 0; i < N; i++) {
     var phi = Math.acos(2 * Math.random() - 1);
@@ -353,36 +363,75 @@ window.addEventListener("DOMContentLoaded", function () {
     new THREE.PointsMaterial({ color: 0xffffff, size: 0.008, transparent: true, opacity: 0.3 })
   ));
 
-  /* Scroll tracking */
-  var scrollY = 0;
-  if (window._lenis) {
-    window._lenis.on("scroll", function (e) { scrollY = e.scroll; });
-  } else {
-    window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
-  }
+  /* ── Hero renderer ── */
+  var heroRenderer = new THREE.WebGLRenderer({ canvas: heroCanvas, antialias: true, alpha: true });
+  heroRenderer.setSize(W, H, false);
+  heroRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  heroRenderer.setClearColor(0x000000, 0);
+  var heroCamera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
+  heroCamera.position.z = 3.6;
 
-  /* Pause rendering when hero is off-screen — eliminates scroll lag */
-  var heroVisible = true;
-  var observer = new IntersectionObserver(function (entries) {
-    heroVisible = entries[0].isIntersecting;
-  }, { threshold: 0 });
-  observer.observe(parent);
+  /* ── Pip DOM + renderer ── */
+  var pipContainer = document.createElement("div");
+  pipContainer.id = "orb-pip";
+  var pipCanvas = document.createElement("canvas");
+  pipCanvas.style.cssText = "width:" + PIP_SIZE + "px;height:" + PIP_SIZE + "px;display:block;";
+  pipContainer.appendChild(pipCanvas);
+  document.body.appendChild(pipContainer);
 
-  /* Integrate into GSAP ticker (shared with Lenis) instead of a separate RAF */
-  var autoAngle = 0;
-  gsap.ticker.add(function (time, deltaTime) {
-    if (!heroVisible) return;
-    autoAngle += (deltaTime / 1000) * 0.22;
-    globe.rotation.y = autoAngle + scrollY * 0.0028;
-    renderer.render(scene, camera);
+  var pipRenderer = new THREE.WebGLRenderer({ canvas: pipCanvas, antialias: true, alpha: true });
+  pipRenderer.setSize(PIP_SIZE, PIP_SIZE, false);
+  pipRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  pipRenderer.setClearColor(0x000000, 0);
+  var pipCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+  pipCamera.position.z = 3.2;
+
+  /* ── Pip starts hidden ── */
+  gsap.set(pipContainer, { opacity: 0, scale: 0.6, transformOrigin: "center center" });
+
+  /* ── Hero / pip swap driven by ScrollTrigger ── */
+  var heroInView = true;
+  var pipShowing = false;
+
+  ScrollTrigger.create({
+    trigger: heroSection,
+    start: "bottom top",
+    onLeave: function () {
+      heroInView = false;
+      pipShowing = true;
+      gsap.to(pipContainer, { opacity: 1, scale: 1, duration: 0.65, ease: "back.out(1.4)" });
+    },
+    onEnterBack: function () {
+      heroInView = true;
+      gsap.to(pipContainer, {
+        opacity: 0, scale: 0.6, duration: 0.45, ease: "power2.in",
+        onComplete: function () { pipShowing = false; }
+      });
+    }
   });
 
-  /* Resize */
+  /* ── Scroll tracking ── */
+  var scrollY = 0;
+  window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
+
+  /* ── Unified tick — only one renderer fires per frame ── */
+  var autoAngle = 0;
+  gsap.ticker.add(function (time, deltaTime) {
+    autoAngle += (deltaTime / 1000) * 0.22;
+    globe.rotation.y = autoAngle + scrollY * 0.0028;
+    if (heroInView) {
+      heroRenderer.render(scene, heroCamera);
+    } else if (pipShowing) {
+      pipRenderer.render(scene, pipCamera);
+    }
+  });
+
+  /* ── Resize ── */
   window.addEventListener("resize", function () {
-    W = parent.offsetWidth; H = parent.offsetHeight;
-    camera.aspect = W / H;
-    camera.updateProjectionMatrix();
-    renderer.setSize(W, H, false);
+    W = heroSection.offsetWidth; H = heroSection.offsetHeight;
+    heroCamera.aspect = W / H;
+    heroCamera.updateProjectionMatrix();
+    heroRenderer.setSize(W, H, false);
   });
 });
 </script>
