@@ -355,33 +355,31 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ── Card border trace on hover ──
-     SVG lives on the <a> tag (outside overflow:hidden) so all 4 edges are visible */
+     SVG lives inside .project-container so it scales with the card's transform.
+     Uses clientWidth/clientHeight (inner dims) and insets rect by sw so the
+     stroke stays fully within overflow:hidden on all 4 edges. */
   var ns = "http://www.w3.org/2000/svg";
   document.querySelectorAll(".project-link-box").forEach(function (link) {
     var card = link.querySelector(".project-container");
     if (!card) return;
 
-    // Make the link a positioning context so offsetTop/Left resolve to it
-    link.style.position = "relative";
-
-    var w     = card.offsetWidth;
-    var h     = card.offsetHeight;
-    var top   = card.offsetTop;
-    var left  = card.offsetLeft;
-    var rx    = 10;
-    var sw    = 1.5;
-    var perim = 2 * (w - sw + h - sw) + (2 * Math.PI - 8) * rx;
+    var cw  = card.clientWidth;
+    var ch  = card.clientHeight;
+    var rx  = 10;
+    var sw  = 1.5;
+    // inset rect by sw so outer stroke edge (path ± sw/2) stays within [0, cw/ch]
+    var rw  = cw - 2 * sw;
+    var rh  = ch - 2 * sw;
+    var perim = 2 * (rw + rh) + (2 * Math.PI - 8) * rx;
 
     var svg = document.createElementNS(ns, "svg");
-    svg.style.cssText = "position:absolute;top:" + top + "px;left:" + left + "px;" +
-                        "width:" + w + "px;height:" + h + "px;" +
-                        "pointer-events:none;z-index:10;overflow:visible;";
+    svg.style.cssText = "position:absolute;top:0;left:0;width:" + cw + "px;height:" + ch + "px;pointer-events:none;z-index:10;";
 
     var rect = document.createElementNS(ns, "rect");
-    rect.setAttribute("x",      sw / 2);
-    rect.setAttribute("y",      sw / 2);
-    rect.setAttribute("width",  w - sw);
-    rect.setAttribute("height", h - sw);
+    rect.setAttribute("x",      sw);
+    rect.setAttribute("y",      sw);
+    rect.setAttribute("width",  rw);
+    rect.setAttribute("height", rh);
     rect.setAttribute("rx",     rx);
     rect.setAttribute("fill",   "none");
     rect.setAttribute("stroke", "rgba(255,255,255,0.25)");
@@ -391,7 +389,7 @@ window.addEventListener("DOMContentLoaded", function () {
     rect.style.transition = "stroke-dashoffset 0.9s cubic-bezier(0.65,0,0.35,1)";
 
     svg.appendChild(rect);
-    link.appendChild(svg);
+    card.appendChild(svg);
 
     link.addEventListener("mouseenter", function () {
       rect.style.strokeDashoffset = "0";
