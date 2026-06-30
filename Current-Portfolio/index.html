@@ -291,9 +291,9 @@ document.addEventListener("keyup", function (e) {
 
 <!-- Blueyard-style animations: smooth scroll + text/card reveals -->
 <style>
-/* Subtle gradient reveal on project card hover */
-.project-link-box { position: relative; }
-.project-link-box::after {
+/* Subtle gradient reveal on project card hover — scoped to the card boundary */
+.project-container { position: relative; }
+.project-container::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -304,7 +304,7 @@ document.addEventListener("keyup", function (e) {
   pointer-events: none;
   z-index: 2;
 }
-.project-link-box:hover::after { opacity: 1; }
+.project-link-box:hover .project-container::after { opacity: 1; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
