@@ -287,4 +287,72 @@ document.addEventListener("keyup", function (e) {
     keyEl.removeAttribute("data-pressed");
   }
 });
-</script></body></html>
+</script>
+
+<!-- Blueyard-style animations: smooth scroll + text/card reveals -->
+<style>
+/* Subtle gradient reveal on project card hover */
+.project-link-box { position: relative; }
+.project-link-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.33, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+.project-link-box:hover::after { opacity: 1; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", function () {
+
+  /* ── Lenis smooth scrolling ── */
+  var lenis = new Lenis({
+    duration: 1.2,
+    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+    smoothWheel: true,
+    wheelMultiplier: 0.8
+  });
+  lenis.on("scroll", function () {
+    if (typeof ScrollTrigger !== "undefined") ScrollTrigger.update();
+  });
+  gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  /* ── "Selected UX Work" heading — blueyard char stagger reveal ── */
+  var subheading = document.querySelector(".home-subheading");
+  if (subheading) {
+    var original = subheading.textContent;
+    subheading.innerHTML = original.split("").map(function (ch) {
+      var inner = ch === " " ? "&nbsp;" : ch;
+      return '<span style="display:inline-block;overflow:hidden;vertical-align:bottom"><span class="ch-inner" style="display:inline-block">' + inner + "</span></span>";
+    }).join("");
+
+    gsap.from(".ch-inner", {
+      scrollTrigger: { trigger: subheading, start: "top 88%" },
+      yPercent: 110,
+      duration: 0.75,
+      stagger: 0.018,
+      ease: "power3.out"
+    });
+  }
+
+  /* ── Footer heading reveal ── */
+  var footerH1 = document.querySelector(".footer_h1");
+  if (footerH1) {
+    gsap.from(footerH1, {
+      scrollTrigger: { trigger: footerH1, start: "top 90%" },
+      yPercent: 40,
+      opacity: 0,
+      duration: 0.9,
+      ease: "power3.out"
+    });
+  }
+});
+</script>
+</body></html>
