@@ -157,6 +157,14 @@
     document.body.appendChild(win);
 
     var messages = document.getElementById("jf-chat-messages");
+    messages.addEventListener("wheel", function (e) {
+      var atTop = messages.scrollTop === 0;
+      var atBottom = messages.scrollTop + messages.clientHeight >= messages.scrollHeight - 1;
+      if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+        e.preventDefault();
+      }
+      e.stopPropagation();
+    }, { passive: false });
     var input = document.getElementById("jf-chat-input");
     var sugWrap = document.getElementById("jf-suggestions");
     var isOpen = false;
