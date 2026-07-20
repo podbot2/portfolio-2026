@@ -27,7 +27,7 @@
     },
     {
       keywords: ["why", "hire", "stand out", "unique", "strength", "best", "amazing", "great", "good"],
-      answer: "A few things set me apart:\n\n<b>1. I ship real impact</b> — 2.5x engagement lift, 33% cognitive load reduction, 18% fewer support tickets. I measure my work by outcomes, not outputs.\n\n<b>2. Research-driven</b> — I don't guess. I run contextual interviews, usability tests, and synthesize findings into actionable direction.\n\n<b>3. I bridge design + engineering</b> — I speak both languages. I write specs, build in HTML/CSS, and collaborate directly with developers.\n\n<b>4. Enterprise scale</b> — I've designed for platforms serving 30K–220K+ users across automotive and cloud infrastructure."
+      answer: "Jennifer doesn't just design screens; she takes ownership of the whole product experience. She comes in wanting to understand the strategy, not just the brief, and she brings research, systems thinking, and detailed interaction design together in a way that's hard to find in one person. She's shipped features at scale, run her own research, pushed back on stakeholders when the data supported it, and documented her decisions so engineering isn't left guessing. If you need someone who treats design as a craft and a business function at the same time, that's her."
     },
     {
       keywords: ["research", "usability", "testing", "interview", "user research"],
