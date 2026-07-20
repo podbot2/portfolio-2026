@@ -11,7 +11,7 @@
     },
     {
       keywords: ["skill", "tools", "software", "figma", "technical", "tech stack", "programs"],
-      answer: "My toolkit includes:\n\n<b>Design:</b> Figma, Sketch, Adobe XD, InVision\n<b>Technical:</b> HTML, CSS, Material UI, React (basic)\n<b>Methods:</b> User Research, Usability Testing, Prototyping, Wireframing, Design Systems, WCAG Accessibility, Interaction Design\n<b>Other:</b> Pendo, Claude AI, Spec-Driven Development"
+      answer: "Her specific stack matters less than her ability to ramp on whatever a team is using. She picks up new tools fast and has a track record of not just learning them but finding ways to use them better than the team was before. That said, Figma is her home base for design. She uses Pendo and Amplitude for research and behavioral data, and she's comfortable enough with HTML, CSS, and React to have real conversations with engineers. She's also been building out AI-assisted workflows with Claude and Cursor, which she uses to speed up documentation and decision logging."
     },
     {
       keywords: ["education", "school", "degree", "university", "study", "college", "ucr"],
