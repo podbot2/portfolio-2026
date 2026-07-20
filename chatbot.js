@@ -19,7 +19,7 @@
     },
     {
       keywords: ["vauto", "cox", "cox automotive", "test drive", "labs", "current"],
-      answer: "At Cox Automotive / vAuto, I'm a Product Designer II working on vAuto Labs — an experimental feature platform that lets beta dealers discover, enable, and give feedback on new features before they roll out to 220K+ users. I designed the full onboarding experience using Pendo guides, which lifted engagement by 2.5x. I also designed enablement and waitlist flows that reduced support tickets by 18%."
+      answer: "At Cox Automotive / vAuto, I'm a Product Designer II working on vAuto Test Drive — an experimental feature platform that lets beta dealers discover, enable, and give feedback on new features before they roll out to 220K+ users. I designed the full onboarding experience using Pendo guides, which lifted engagement by 2.5x. I also designed enablement and waitlist flows that reduced support tickets by 18%."
     },
     {
       keywords: ["gm", "general motors", "maxis", "cloud", "cloudserve"],
@@ -71,7 +71,7 @@
     "Why should I hire Jennifer?",
     "What's her experience?",
     "What tools does she use?",
-    "Tell me about vAuto Labs"
+    "Tell me about vAuto Test Drive"
   ];
 
   /* ── Match user input to Q&A ── */
