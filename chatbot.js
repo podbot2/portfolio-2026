@@ -184,11 +184,11 @@
 
     function sendMessage(text) {
       addMessage(text, "user");
-      sugWrap.innerHTML = "";
       input.value = "";
 
       setTimeout(function () {
         addMessage(findAnswer(text), "bot");
+        showSuggestions();
       }, 400);
     }
 
