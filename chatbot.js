@@ -100,9 +100,15 @@
   function init() {
     var css = document.createElement("style");
     css.textContent = [
-      "#jf-chat-toggle{position:fixed;bottom:28px;right:28px;z-index:9999;width:56px;height:56px;border-radius:50%;background:#DCFF7D;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(220,255,125,.3);display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}",
-      "#jf-chat-toggle:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(220,255,125,.45)}",
-      "#jf-chat-toggle svg{width:28px;height:28px;fill:#000}",
+      /* ── Orb toggle ── */
+      "#jf-chat-toggle{position:fixed;bottom:2.5rem;right:2.5rem;z-index:9999;width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.45) 0%,rgba(255,255,255,.08) 30%,#333 60%,#111 100%);box-shadow:0 0 20px rgba(220,255,125,.2),0 0 60px rgba(220,255,125,.08);transition:filter .25s,transform .15s;animation:orb-breathe 4s ease-in-out infinite}",
+      "#jf-chat-toggle::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,#DCFF7D,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#DCFF7D);animation:orb-rainbow 4s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px))}",
+      "#jf-chat-toggle::after{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 180deg,#DCFF7D,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#DCFF7D);animation:orb-rainbow 5s linear infinite reverse;opacity:.25;filter:blur(10px);z-index:-1}",
+      "#jf-chat-toggle:hover{filter:brightness(1.2);transform:scale(1.06)}",
+      "#jf-chat-toggle:active{transform:scale(0.95)}",
+      "#jf-chat-toggle svg{width:22px;height:22px;fill:rgba(255,255,255,.85);position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}",
+      "@keyframes orb-rainbow{to{transform:rotate(360deg)}}",
+      "@keyframes orb-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}",
       "#jf-chat-window{position:fixed;bottom:96px;right:28px;z-index:9998;width:380px;max-height:520px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:16px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif}",
       "#jf-chat-window.open{display:flex}",
       "#jf-chat-header{padding:16px 20px;background:#111;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}",
@@ -125,7 +131,7 @@
       "#jf-chat-send:hover{transform:scale(1.1)}",
       "#jf-chat-send svg{width:16px;height:16px;fill:#000}",
       "@keyframes jf-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
-      "@media(max-width:479px){#jf-chat-window{right:12px;left:12px;width:auto;bottom:88px;max-height:70vh}#jf-chat-toggle{bottom:20px;right:20px}}"
+      "@media(max-width:479px){#jf-chat-window{right:12px;left:12px;width:auto;bottom:80px;max-height:70vh}#jf-chat-toggle{bottom:1.25rem;right:1.25rem}}"
     ].join("\n");
     document.head.appendChild(css);
 
