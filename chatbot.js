@@ -7,7 +7,7 @@
     },
     {
       keywords: ["experience", "work", "career", "background", "history", "resume"],
-      answer: "I've worked across enterprise and consumer products:\n\n<b>Cox Automotive / vAuto</b> (2025–Present) — Product Designer II, leading UX research for a beta platform with 5,000+ users. Designed onboarding flows that lifted engagement 2.5x.\n\n<b>General Motors</b> (2023–2025) — Product Designer, shipped 2 products to 30,000+ users, led AI + UX strategy for Maxis 3.0, and reduced cognitive load by 33%.\n\n<b>WEDO</b> (2022) — UX Designer, redesigned the website and built an accessible design system.\n\n<b>Bridge of the Americas</b> (2021–2022) — Product Designer for cross-platform fundraising experiences."
+      answer: "Jennifer has about five years of experience designing for complex, high-stakes products, the kind where getting the UX wrong has real consequences for real people. She's worked across enterprise software, consumer-facing tools, and nonprofit platforms, so she's comfortable in both scrappy and highly structured environments. She tends to care about more than just the design layer; she wants to understand the strategy behind what she's building and have a real say in shaping it, not just executing on someone else's vision."
     },
     {
       keywords: ["skill", "tools", "software", "figma", "technical", "tech stack", "programs"],
