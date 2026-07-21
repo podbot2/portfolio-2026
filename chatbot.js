@@ -54,6 +54,10 @@
       answer: "I'm actively working at the intersection of AI and UX. At GM, I led the AI + UX strategy for Maxis 3.0, designing AI-driven web workflows that reduced cognitive load by 33%. I'm also proficient with Claude AI as a design and productivity tool. I believe AI should augment human decision-making, not replace it."
     },
     {
+      keywords: ["built with", "stack", "framework", "react", "next", "vue", "html", "how was this", "what is this built", "portfolio built"],
+      answer: "This portfolio was originally designed in Webflow and exported as static HTML, CSS, and JS. From there, Jennifer has been iterating on it directly in code using Claude Code as a development partner. The 3D globe on the home page uses Three.js, animations use GSAP and ScrollTrigger, and the chatbot you're talking to right now is a custom vanilla JS widget. No frameworks, no build step — just clean static files hosted on GitHub Pages."
+    },
+    {
       keywords: ["hobby", "hobbies", "fun", "interest", "outside", "free time", "personal"],
       answer: "Outside of design, I love video games, traveling, and spending time with my fur babies! These interests actually fuel my creativity and empathy as a designer — understanding what brings people joy is at the heart of good UX."
     }
