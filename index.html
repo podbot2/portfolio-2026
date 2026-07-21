@@ -443,9 +443,8 @@ window.addEventListener("DOMContentLoaded", function () {
   display: block; pointer-events: none;
 }
 /* Hero section must be transparent so fixed sphere shows through */
-.space { align-items: center !important; }
-.home-section.home { position: relative; background: transparent !important; }
-.home-section.home .content { position: relative; z-index: 2; margin-top: 0 !important; }
+.home-section.home { position: relative; background: transparent !important; height: 100vh !important; justify-content: center !important; }
+.home-section.home .content { position: relative; z-index: 2; margin-top: 0 !important; margin-bottom: 0 !important; }
 /* Subtle gradient reveal on project card hover — scoped to the card boundary */
 .project-container { position: relative; }
 .project-container::after {
