@@ -77,71 +77,30 @@ html.w-editor [text-split] {opacity: 1;}
   opacity: 0.55;
 }
 </style>
-<!-- Original navbar hidden -->
-<div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" style="display:none;"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button"><div class="w-icon-nav-menu"></div></div></div></div>
+<!-- Original navbar: logo only, nav links hidden (moved to glass pill) -->
+<div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation" style="display:none;"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button" style="display:none;"><div class="w-icon-nav-menu"></div></div></div></div>
 
-<!-- Glassmorphism nav pill -->
-<div id="glass-nav" class="open">
-  <a href="index.html" class="glass-nav-logo">
-    <span class="glass-nav-name">Jennifer Flores</span>
-    <span class="glass-nav-role">Product Designer</span>
-  </a>
-  <div id="glass-nav-links">
-    <a href="index.html" class="glass-nav-link active">Home</a>
-    <a href="about.html" class="glass-nav-link">About</a>
-  </div>
+<!-- Glassmorphism nav pill (links only, top-right) -->
+<div id="glass-nav">
+  <a href="index.html" class="glass-nav-link active">Home</a>
+  <a href="about.html" class="glass-nav-link">About</a>
 </div>
 
 <style>
 #glass-nav {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 24px;
   z-index: 9990;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
-  padding: 6px 8px 6px 16px;
-  transition: gap 0.4s cubic-bezier(.4,0,.2,1);
-}
-.glass-nav-logo {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  margin-right: 4px;
-  flex-shrink: 0;
-}
-.glass-nav-name {
-  color: #fff;
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-.glass-nav-role {
-  color: rgba(255,255,255,0.45);
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1.2;
-}
-#glass-nav-links {
-  display: flex;
-  gap: 2px;
-  overflow: hidden;
-  transition: max-width 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
-  max-width: 200px;
-  opacity: 1;
-}
-#glass-nav:not(.open) #glass-nav-links {
-  max-width: 0;
-  opacity: 0;
+  padding: 4px;
 }
 .glass-nav-link {
   color: rgba(255,255,255,0.65);
@@ -149,7 +108,7 @@ html.w-editor [text-split] {opacity: 1;}
   font-family: Inter, system-ui, sans-serif;
   font-size: 13px;
   font-weight: 400;
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 999px;
   white-space: nowrap;
   transition: color 0.2s, background 0.2s;
