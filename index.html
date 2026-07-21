@@ -56,7 +56,15 @@ html.w-editor [text-split] {opacity: 1;}
 <video id="koi-pond-bg" autoplay loop muted playsinline>
 <source src="koi-pond.mp4" type="video/mp4"/>
 </video>
+<canvas id="spline-koi"></canvas>
 <style>
+#spline-koi {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
 #koi-pond-bg {
   position: fixed;
   top: 0; left: 0;
@@ -556,5 +564,13 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script src="water-surface.js"></script>
+<script type="module">
+import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.82/build/runtime.js';
+const c = document.getElementById('spline-koi');
+if (c) {
+  const app = new Application(c);
+  app.load('https://prod.spline.design/CYsZWbOrQfh6QRGK/scene.splinecode');
+}
+</script>
 <script src="chatbot.js"></script>
 </body></html>
