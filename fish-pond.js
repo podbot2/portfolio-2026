@@ -438,6 +438,38 @@
   /* ── Animation loop ── */
   var clock = new THREE.Clock();
 
+  /* ── Vignette overlay (screen-space quad) ── */
+  var vignetteScene = new THREE.Scene();
+  var vignetteCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  var vignetteMat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthTest: false,
+    depthWrite: false,
+    uniforms: {},
+    vertexShader: "varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }",
+    fragmentShader: [
+      "varying vec2 vUv;",
+      "void main(){",
+      "  float d = length(vUv - 0.5) * 1.8;",
+      "  float v = smoothstep(0.2, 1.1, d);",
+      "  gl_FragColor = vec4(0.02, 0.06, 0.12, v * 0.55);",
+      "}"
+    ].join("\n")
+  });
+  var vignetteQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), vignetteMat);
+  vignetteScene.add(vignetteQuad);
+  renderer.autoClear = false;
+
+  /* ── Reduce fish count on mobile for performance ── */
+  var isMobile = W < 768;
+  if (isMobile) {
+    /* Remove some background fish on mobile */
+    for (var ri = fishList.length - 1; ri >= 5; ri--) {
+      scene.remove(fishList[ri].mesh);
+      fishList.splice(ri, 1);
+    }
+  }
+
   /* ── Performance: pause when tab hidden ── */
   var tabVisible = true;
   document.addEventListener("visibilitychange", function () {
@@ -501,6 +533,18 @@
       }
       if (f.fleeing < 0.3) {
         f.angle += angleWrap(f.turnTarget - f.angle) * 0.015;
+      }
+
+      /* Fish-to-fish avoidance */
+      for (var j = 0; j < fishList.length; j++) {
+        if (j === i) continue;
+        var ox = m.position.x - fishList[j].mesh.position.x;
+        var oz = m.position.z - fishList[j].mesh.position.z;
+        var od = Math.sqrt(ox * ox + oz * oz);
+        if (od < 4 && od > 0) {
+          var avoidAngle = Math.atan2(ox, oz);
+          f.angle += angleWrap(avoidAngle - f.angle) * 0.03;
+        }
       }
 
       /* Boundary steering */
@@ -601,7 +645,10 @@
       }
     }
 
+    renderer.clear();
     renderer.render(scene, camera);
+    renderer.clearDepth();
+    renderer.render(vignetteScene, vignetteCamera);
   }
 
   animate();
@@ -613,6 +660,9 @@
     renderer.setSize(W, H);
     camera.aspect = W / H;
     camera.updateProjectionMatrix();
+
+    /* Recalculate mobile state */
+    isMobile = W < 768;
   });
 
 })();
