@@ -53,6 +53,16 @@ html.w-editor [text-split] {opacity: 1;}
 -moz-transform: translate3d(0, 0, 0)
 }
 </style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style></head><body>
+<!-- Loading screen -->
+<div id="page-loader" style="position:fixed;inset:0;z-index:99999;background:#06111e;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease;">
+<style>
+#page-loader .loader-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);display:inline-block;margin:0 4px;animation:loader-bounce .6s ease-in-out infinite alternate}
+#page-loader .loader-dot:nth-child(2){animation-delay:.2s}
+#page-loader .loader-dot:nth-child(3){animation-delay:.4s}
+@keyframes loader-bounce{to{opacity:1;transform:translateY(-6px)}}
+</style>
+<div><span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span></div>
+</div>
 <video id="koi-pond-bg" autoplay loop muted playsinline>
 <source src="koi-pond.mp4" type="video/mp4"/>
 </video>
@@ -570,17 +580,27 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+<script>
+/* Fade out loader once page is ready */
+window.addEventListener('load', function() {
+  var loader = document.getElementById('page-loader');
+  if (loader) {
+    loader.style.opacity = '0';
+    setTimeout(function() { loader.style.display = 'none'; }, 600);
+  }
+});
+</script>
 <script src="water-surface.js"></script>
 <script type="module">
-import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.82/build/runtime.js';
-const c = document.getElementById('spline-koi');
-if (c) {
+/* Defer Spline load until after initial paint */
+setTimeout(async function() {
+  const { Application } = await import('https://unpkg.com/@splinetool/runtime@1.9.82/build/runtime.js');
+  const c = document.getElementById('spline-koi');
+  if (!c) return;
   const app = new Application(c);
-  app.load('https://prod.spline.design/RsFEQRGX6T5-vpJ5/scene.splinecode').then(() => {
-    c.style.background = 'transparent';
-  });
+  await app.load('https://prod.spline.design/RsFEQRGX6T5-vpJ5/scene.splinecode');
+  c.style.background = 'transparent';
 
-  /* Shift koi to center-right after scrolling past hero */
   const hero = document.querySelector('.home-section.home');
   function onScroll() {
     if (!hero) return;
@@ -593,7 +613,7 @@ if (c) {
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-}
+}, 200);
 </script>
 <script src="chatbot.js"></script>
 </body></html>
