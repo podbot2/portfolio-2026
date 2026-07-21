@@ -63,6 +63,7 @@ html.w-editor [text-split] {opacity: 1;}
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   z-index: -1;
+  transition: transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 #koi-pond-bg {
   position: fixed;
@@ -569,6 +570,21 @@ const c = document.getElementById('spline-koi');
 if (c) {
   const app = new Application(c);
   app.load('https://prod.spline.design/RsFEQRGX6T5-vpJ5/scene.splinecode');
+
+  /* Shift koi to center-right after scrolling past hero */
+  const hero = document.querySelector('.home-section.home');
+  function onScroll() {
+    if (!hero) return;
+    const heroBottom = hero.offsetHeight;
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > heroBottom * 0.7) {
+      c.style.transform = 'translate(25vw, 10vh) scale(0.6)';
+    } else {
+      c.style.transform = 'translate(0, 0) scale(1)';
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 </script>
 <script src="chatbot.js"></script>
