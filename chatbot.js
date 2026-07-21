@@ -496,6 +496,12 @@
         if (text) sendMessage(text);
       }
     });
+
+    /* Auto-open on homepage */
+    var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    if (currentPage === 'index.html' || currentPage === '' || currentPage === 'portfolio-2026') {
+      setTimeout(openChat, 1500);
+    }
   }
 
   /* ── Start ── */
