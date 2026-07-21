@@ -302,11 +302,24 @@
   var SUGGESTIONS = pageSuggestions;
   var GREETING = pageGreeting;
 
-  var FALLBACK = "Great question! I don't have a specific answer for that, but Jennifer would love to chat with you directly. Reach out at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#6a6ff7'>flores.jennifer1000@gmail.com</a> or connect on <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#6a6ff7'>LinkedIn</a>.";
+  var REDIRECT = "That's a great question for Jennifer directly. You can reach her at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#6a6ff7'>flores.jennifer1000@gmail.com</a> or on <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#6a6ff7'>LinkedIn</a>.";
+
+  var OFFTOPIC = "I'm here to help you learn more about Jennifer's work. Want me to tell you about a specific project or her background?";
+
+  var FALLBACK = "I don't have details on that one, but Jennifer would be happy to speak to it directly. You can reach her at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#6a6ff7'>flores.jennifer1000@gmail.com</a>.";
+
+  /* ── Topics to redirect to Jennifer ── */
+  var REDIRECT_KEYWORDS = ["salary", "compensation", "rate", "pay", "money", "how much", "start date", "availability", "available", "when can you start", "freelance", "full-time", "full time", "contract", "reference", "work sample", "nda", "legal"];
 
   /* ── Match user input to Q&A ── */
   function findAnswer(input) {
     var lower = input.toLowerCase().replace(/[^\w\s]/g, "");
+
+    /* Check for redirect topics first */
+    for (var r = 0; r < REDIRECT_KEYWORDS.length; r++) {
+      if (lower.indexOf(REDIRECT_KEYWORDS[r]) !== -1) return REDIRECT;
+    }
+
     var best = null;
     var bestScore = 0;
 
