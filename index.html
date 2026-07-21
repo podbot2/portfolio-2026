@@ -63,9 +63,11 @@ html.w-editor [text-split] {opacity: 1;}
 </style>
 <div><span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span></div>
 </div>
+<!-- Video background: uncomment when koi-pond.mp4 is added
 <video id="koi-pond-bg" autoplay loop muted playsinline>
 <source src="koi-pond.mp4" type="video/mp4"/>
 </video>
+-->
 <canvas id="spline-koi"></canvas>
 <style>
 #spline-koi {
@@ -180,9 +182,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
 });
 </script>
 <!-- General text lines animation -->
-<script src="https://unpkg.com/split-type"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
 <script>
 window.addEventListener("DOMContentLoaded", (event) => {
   setTimeout(() => {
@@ -243,8 +242,6 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <!-- scroll active switch animation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
 <script>
 $(".section_services-process").each(function (index) {
   let childTriggers = $(this).find(".home-services_card");
@@ -277,8 +274,6 @@ $('.menu-overlay').on('click', function() {
   $('.navbar-toggle').click();
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
 <script>
 //Hero image light up trigger
 document.querySelectorAll(".hero-img-wrap").forEach((heroWrap) => {
@@ -336,141 +331,7 @@ document.addEventListener("keyup", function (e) {
 });
 </script>
 
-<!-- Globe removed for now -->
-<script>
-window.addEventListener("DOMContentLoaded", function () {
-  /* Globe code removed — will be restored later */
-  var _globeRemoved = true;
-  if (_globeRemoved) return;
-
-  var heroSection = document.querySelector(".home-section.home");
-
-  /* ── Move canvas into a fixed fullscreen wrapper ──
-     The wrapper lives at z-index:-1 (below all page content).
-     Hero section has background:transparent so the sphere shows through. */
-  var wrap = document.createElement("div");
-  wrap.id = "sphere-wrap";
-  document.body.insertBefore(wrap, document.body.firstChild);
-  wrap.appendChild(heroCanvas);
-
-  var W = window.innerWidth, H = window.innerHeight;
-
-  /* ── Scene ── */
-  var scene = new THREE.Scene();
-  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
-  var keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
-  keyLight.position.set(2, 2, 2);
-  scene.add(keyLight);
-  var rimLight = new THREE.DirectionalLight(0xffffff, 0.55);
-  rimLight.position.set(-2.5, 0.5, -2);
-  scene.add(rimLight);
-
-  /* ── Globe ── */
-  var globe = new THREE.Group();
-  globe.rotation.z = 0.28;
-  scene.add(globe);
-  globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(1, 64, 64),
-    new THREE.MeshStandardMaterial({ color: 0x2e2e2e, roughness: 0.82, metalness: 0.08 })
-  ));
-  globe.add(new THREE.LineSegments(
-    new THREE.EdgesGeometry(new THREE.SphereGeometry(1.003, 28, 18)),
-    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.18 })
-  ));
-  globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(1.22, 32, 32),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.04, side: THREE.BackSide })
-  ));
-  var N = 500, pts = new Float32Array(N * 3);
-  for (var i = 0; i < N; i++) {
-    var phi = Math.acos(2 * Math.random() - 1);
-    var theta = 2 * Math.PI * Math.random();
-    pts[i*3]   = 1.004 * Math.sin(phi) * Math.cos(theta);
-    pts[i*3+1] = 1.004 * Math.sin(phi) * Math.sin(theta);
-    pts[i*3+2] = 1.004 * Math.cos(phi);
-  }
-  var dotGeo = new THREE.BufferGeometry();
-  dotGeo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
-  globe.add(new THREE.Points(dotGeo,
-    new THREE.PointsMaterial({ color: 0xffffff, size: 0.009, transparent: true, opacity: 0.5 })
-  ));
-
-  /* ── Renderer ── */
-  var renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, antialias: true, alpha: true });
-  renderer.setSize(W, H, false);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setClearColor(0x000000, 0);
-  var camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
-  camera.position.z = 3.6;
-
-  /* ── Pip dimensions ── */
-  var PIP     = window.innerWidth <= 767 ? 90 : 140;
-  var PIP_R   = 48;
-  var PIP_B   = 52;
-
-  /* ── Scroll-driven shrink via ScrollTrigger scrub ──
-     As the hero section scrolls off the top, the wrapper smoothly
-     contracts from full-viewport to a small circle at the bottom-right.
-     The renderer is resized each frame to keep the sphere sharp. */
-  var lastW = W, lastH = H;
-
-  ScrollTrigger.create({
-    trigger: heroSection,
-    start: "bottom bottom",   // hero bottom reaches viewport bottom → start shrink
-    end:   "bottom top",      // hero bottom reaches viewport top → fully a pip
-    scrub: 1.2,
-    onUpdate: function (self) {
-      var p  = self.progress;
-      var vw = window.innerWidth, vh = window.innerHeight;
-
-      var finalL = vw  - PIP_R - PIP;
-      var finalT = vh  - PIP_B - PIP;
-
-      var curW = Math.round(vw  + (PIP - vw)  * p);
-      var curH = Math.round(vh  + (PIP - vh)  * p);
-      var curL = Math.round(finalL * p);
-      var curT = Math.round(finalT * p);
-      var curR = Math.round(PIP / 2 * p); // 0px → 70px = perfect circle at pip size
-
-      wrap.style.width        = curW + "px";
-      wrap.style.height       = curH + "px";
-      wrap.style.left         = curL + "px";
-      wrap.style.top          = curT + "px";
-      wrap.style.borderRadius = curR + "px";
-
-      if (curW !== lastW || curH !== lastH) {
-        lastW = curW; lastH = curH;
-        W = curW; H = curH;
-        renderer.setSize(W, H, false);
-        camera.aspect = W / H;
-        camera.updateProjectionMatrix();
-      }
-    }
-  });
-
-  /* ── Scroll tracking for globe rotation ── */
-  var scrollY = 0;
-  window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
-
-  /* ── Tick ── */
-  var autoAngle = 0;
-  gsap.ticker.add(function (time, deltaTime) {
-    autoAngle += (deltaTime / 1000) * 0.22;
-    globe.rotation.y = autoAngle + scrollY * 0.0028;
-    renderer.render(scene, camera);
-  });
-
-  /* ── Window resize (reset to full viewport when hero is fully in view) ── */
-  window.addEventListener("resize", function () {
-    W = window.innerWidth; H = window.innerHeight;
-    wrap.style.width  = W + "px";
-    wrap.style.height = H + "px";
-    renderer.setSize(W, H, false);
-    camera.aspect = W / H;
-    camera.updateProjectionMatrix();
-  });
-});
-</script>
+<!-- Globe removed -->
 
 <!-- Blueyard-style animations: smooth scroll + text/card reveals -->
 <style>
