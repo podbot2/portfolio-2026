@@ -91,8 +91,7 @@ html.w-editor [text-split] {opacity: 1;}
     <a href="about.html" class="glass-nav-link">About</a>
   </div>
   <button id="glass-nav-toggle" aria-label="Toggle navigation">
-    <span class="glass-nav-bar"></span>
-    <span class="glass-nav-bar"></span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
   </button>
 </div>
 
@@ -179,20 +178,6 @@ html.w-editor [text-split] {opacity: 1;}
 }
 #glass-nav-toggle:hover {
   background: rgba(255,255,255,0.18);
-}
-.glass-nav-bar {
-  display: block;
-  width: 14px;
-  height: 1.5px;
-  background: rgba(255,255,255,0.7);
-  border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
-}
-#glass-nav.open .glass-nav-bar:first-child {
-  transform: rotate(45deg) translate(2px, 2px);
-}
-#glass-nav.open .glass-nav-bar:last-child {
-  transform: rotate(-45deg) translate(2px, -2px);
 }
 </style>
 
