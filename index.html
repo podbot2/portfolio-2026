@@ -474,10 +474,11 @@ window.addEventListener("DOMContentLoaded", function () {
 
 <!-- Blueyard-style animations: smooth scroll + text/card reveals -->
 <style>
-/* Hero section */
-.home-section.home { position: relative; background: transparent !important; height: 100vh !important; justify-content: flex-end !important; padding-bottom: 8vh !important; }
+/* Hero section — override Webflow defaults */
+.space { height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+.home-section.home { position: relative; background: transparent !important; height: auto !important; width: 100% !important; justify-content: center !important; align-items: flex-start !important; padding: 0 !important; margin: 0 !important; }
 .home-section.home .content { position: relative; z-index: 2; margin-top: 0 !important; margin-bottom: 0 !important; align-items: flex-start !important; padding-left: 90px !important; padding-right: 90px !important; }
-.home-section.home .home-heading { font-size: clamp(4rem, 10vw, 8rem) !important; line-height: 0.95 !important; letter-spacing: -0.02em !important; text-transform: uppercase !important; }
+.home-section.home .home-heading { font-size: clamp(4rem, 10vw, 8rem) !important; line-height: 0.95 !important; letter-spacing: -0.02em !important; text-transform: uppercase !important; width: 100% !important; }
 @media (max-width: 767px) {
   .home-section.home .content { padding-left: 24px !important; padding-right: 24px !important; }
   .home-section.home .home-heading { font-size: clamp(2.5rem, 12vw, 4.5rem) !important; }
