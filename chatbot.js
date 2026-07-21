@@ -472,6 +472,7 @@
     function closeChat() {
       isOpen = false;
       win.classList.remove("open");
+      try { sessionStorage.setItem("jf-chat-closed", "1"); } catch(e) {}
     }
 
     /* Events */
@@ -497,9 +498,11 @@
       }
     });
 
-    /* Auto-open on homepage */
+    /* Auto-open on homepage (unless user closed it this session) */
     var currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    if (currentPage === 'index.html' || currentPage === '' || currentPage === 'portfolio-2026') {
+    var wasClosed = false;
+    try { wasClosed = sessionStorage.getItem("jf-chat-closed") === "1"; } catch(e) {}
+    if (!wasClosed && (currentPage === 'index.html' || currentPage === '' || currentPage === 'portfolio-2026')) {
       setTimeout(openChat, 1500);
     }
   }
