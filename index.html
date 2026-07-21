@@ -52,66 +52,7 @@ html.w-editor [text-split] {opacity: 1;}
 -webkit-transform: translate3d(0, 0, 0);
 -moz-transform: translate3d(0, 0, 0)
 }
-</style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style>
-<style>
-/* ── Chip marquee ── */
-.chip-marquee {
-  position: relative;
-  overflow: hidden;
-  padding: 4rem 0;
-  z-index: 0;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-}
-.chip-row {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  padding: 6px 0;
-}
-.chip-track {
-  display: flex;
-  gap: 12px;
-  width: max-content;
-  will-change: transform;
-}
-.chip-row--left .chip-track { animation: chip-scroll-left 32s linear infinite; }
-.chip-row--right .chip-track { animation: chip-scroll-right 36s linear infinite; }
-.chip-row--slow .chip-track { animation-duration: 48s; }
-.chip-row--fast .chip-track { animation-duration: 26s; }
-.chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.1);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.3);
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: .03em;
-  white-space: nowrap;
-  user-select: none;
-}
-@keyframes chip-scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-@keyframes chip-scroll-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-</style>
-</head><body><div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button"><div class="w-icon-nav-menu"></div></div></div></div><div class="space"><div class="home-section home" data-w-id="89fbbecb-93b6-793e-b4a7-fa1c309e77fd" style="-webkit-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0"><canvas id="hero-discs-canvas"></canvas><div class="content"><div class="title-pill home"><p class="paragraph">Product Design</p><div class="bullet home"></div><p class="paragraph">UX UI</p></div><h1 class="home-heading"><strong>Turning complexity into efficiency and lasting engagement.</strong><br/></h1><div class="w-layout-hflex flex-block-2"><a class="flex-block yt w-inline-block" href="#"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65f56e0d41f9dd583343_youtube_activity_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">Youtube</h1></a><a class="flex-block w-inline-block" href="https://www.linkedin.com/in/jenniferflo/" target="_blank"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65576e0d41f9dd57a4f5_work_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">LinkedIn</h1></a></div></div></div><div class="notice-wrap"><div class="notice-inner"><div>This project is a Webflow rebuild of <a class="notice-link" href="https://linear.app/" target="_blank">linear.app</a> and was made by <a class="notice-link" href="https://www.moritz-petersen.de/en" target="_blank">Moritz Petersen</a> for educational purposes. It's not affiliated with Linear in any way, all rights of the graphics and texts belong to Linear.</div><div class="notice-btn-wrap"><a class="cta-button w-inline-block" href="https://webflow.grsm.io/3423979-linear-rebuild" target="_blank"><div>Clone this project</div></a><div class="cta-button cta-button--sec" data-w-id="0131a31a-b7a7-332a-3142-6e12d2120283"><div>Close</div></div></div></div></div></div><!-- ── Floating chip marquee ── -->
-<div class="chip-marquee">
-<div class="chip-row chip-row--left"><div class="chip-track"><span class="chip">User Research</span><span class="chip">Figma</span><span class="chip">Prototyping</span><span class="chip">Design Systems</span><span class="chip">Usability Testing</span><span class="chip">Interaction Design</span><span class="chip">Wireframing</span><span class="chip">WCAG Accessibility</span><span class="chip">User Research</span><span class="chip">Figma</span><span class="chip">Prototyping</span><span class="chip">Design Systems</span><span class="chip">Usability Testing</span><span class="chip">Interaction Design</span><span class="chip">Wireframing</span><span class="chip">WCAG Accessibility</span></div></div>
-<div class="chip-row chip-row--right"><div class="chip-track"><span class="chip">Pendo</span><span class="chip">Product Strategy</span><span class="chip">Spec-Driven Dev</span><span class="chip">HTML &amp; CSS</span><span class="chip">Stakeholder Alignment</span><span class="chip">React</span><span class="chip">Journey Mapping</span><span class="chip">Affinity Mapping</span><span class="chip">Pendo</span><span class="chip">Product Strategy</span><span class="chip">Spec-Driven Dev</span><span class="chip">HTML &amp; CSS</span><span class="chip">Stakeholder Alignment</span><span class="chip">React</span><span class="chip">Journey Mapping</span><span class="chip">Affinity Mapping</span></div></div>
-<div class="chip-row chip-row--left chip-row--slow"><div class="chip-track"><span class="chip">Enterprise SaaS</span><span class="chip">AI + UX Strategy</span><span class="chip">Cross-functional Collab</span><span class="chip">Contextual Interviews</span><span class="chip">Persona Frameworks</span><span class="chip">Claude &amp; Cursor</span><span class="chip">Amplitude</span><span class="chip">Mobile Design</span><span class="chip">Enterprise SaaS</span><span class="chip">AI + UX Strategy</span><span class="chip">Cross-functional Collab</span><span class="chip">Contextual Interviews</span><span class="chip">Persona Frameworks</span><span class="chip">Claude &amp; Cursor</span><span class="chip">Amplitude</span><span class="chip">Mobile Design</span></div></div>
-<div class="chip-row chip-row--right chip-row--fast"><div class="chip-track"><span class="chip">Design Thinking</span><span class="chip">UX Writing</span><span class="chip">Onboarding Flows</span><span class="chip">Material UI</span><span class="chip">Data Visualization</span><span class="chip">A/B Testing</span><span class="chip">Information Architecture</span><span class="chip">Heuristic Evaluation</span><span class="chip">Design Thinking</span><span class="chip">UX Writing</span><span class="chip">Onboarding Flows</span><span class="chip">Material UI</span><span class="chip">Data Visualization</span><span class="chip">A/B Testing</span><span class="chip">Information Architecture</span><span class="chip">Heuristic Evaluation</span></div></div>
-</div>
-<div class="projects-home"><h1 class="home-subheading">Selected UX Work</h1><a class="project-link-box workspaces w-inline-block" href="vauto-labs.html"><div class="project-container" data-w-id="a1b2c3d4-e5f6-7890-abcd-ef1234567890"><div class="first-half"><h1 class="project-title">01 | vAuto Test Drive</h1><div><img alt="" loading="lazy" src="vauto%20logo.png" style="max-height:35px;width:auto;"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="vauto-testdrive-cover.png"/></div><div class="text-half"><h1 class="project-title _2">vAuto Test Drive</h1><p class="cs-text text-color-graytrue300">An experimental feature platform letting beta dealers discover, enable, and give feedback on new vAuto features before GA release across 220K+ users.</p></div></div></div></a><a class="project-link-box workspaces w-inline-block" href="cloudserve.html"><div class="project-container" data-w-id="aebb3c7f-5e79-9770-3806-875f37928995"><div class="first-half"><h1 class="project-title">02 | cloudServe</h1><div><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b44f0808496676994f88d_CloudServe%20Logo%203.png"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/67315b49bbcbbaeeb212c305_cloudserve.png"/></div><div class="text-half"><h1 class="project-title _2">cloudServe</h1><p class="cs-text text-color-graytrue300">Centralizes cloud infrastructure management for platforms like AWS, Azure, and GCP at GM.</p></div></div></div></a><a class="project-link-box workspaces w-inline-block" href="maxis-workspaces.html"><div class="project-container" data-w-id="d4a52815-f131-2c51-351c-ca8a057bdf0a"><div class="first-half"><h1 class="project-title">03 | Maxis Workspaces</h1><div><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b496d617aa1aeefa693a3_maxis-logo%201%20(1).png"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/66f9d7924ea4ef567176086e_maxis-workspaces.png"/></div><div class="text-half"><h1 class="project-title _2">Deploy Feature</h1><p class="cs-text text-color-graytrue300">Enables GM data scientists and business analysts to innovate with and deploy datasets.</p></div></div></div></a><a class="project-link-box data-catalog w-inline-block" href="data-catalog.html"><div class="project-container" data-w-id="7b080de4-1bb4-6212-8d59-d48f46dae5c4"><div class="first-half"><h1 class="project-title">04 | Data Catalog</h1><div><img alt="" class="gm" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b4a743da8fbb1b3a1c604_gm%202.png"/></div></div><div class="second-half"><div class="project-img data-catalog"><img alt="" loading="lazy" sizes="(max-width: 2860px) 100vw, 2860px" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup.png" srcset="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-500.png 500w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-800.png 800w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-1080.png 1080w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-1600.png 1600w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-2000.png 2000w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-2600.png 2600w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup.png 2860w"/></div><div class="text-half"><h1 class="project-title _2">Data Catalog</h1><p class="cs-text text-color-graytrue300">An internal GM Cloud Data Catalog that hosts cloud and on-prem data, curates valuable datasets and data lineage.</p></div></div></div></a></div><footer class="footer" id="Footer"><div class="padding-global"><div class="container-large"><div class="padding-section-large og-footer"><div class="footer_layout" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba963"><div class="footer_left" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba964-0bfba95f"><div class="footer_main-text-wrapper is-desktop" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba965-0bfba95f"><h1 class="_1 footer_h1" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba966-0bfba95f">Let's Connect</h1></div><div class="button-group is-footer"><a class="button is-icon is-glow w-inline-block" fs-copyclip-element="click" href="mailto:flores.jennifer1000@gmail.com"><div class="clip"><div class="button-text"><div class="text-color-graytrue100">Email Me</div></div><div class="button-text is-bottom"><div class="text-color-graytrue100">Email Me</div></div></div><div class="clip"><div class="button-icon"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bdc_ungroup.svg"/></div><div class="button-icon is-bottom"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bdc_ungroup.svg"/></div></div></a><a class="button is-icon is-glow w-inline-block" fs-copyclip-element="click" href="https://www.linkedin.com/in/jenniferflo/"><div class="clip"><div class="button-text"><div class="text-color-graytrue100">LinkedIn</div></div><div class="button-text is-bottom"><div class="text-color-graytrue100">LinkedIn</div></div></div><div class="clip"><div class="button-icon"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bd7_arrow-yellow.svg"/></div><div class="button-icon is-bottom"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bd5_arrow-black.svg"/></div></div></a></div></div><div class="footer_right" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba978-0bfba95f"><div class="footer_navigation-wrapper"><a aria-current="page" class="footer_navlink _1 w-inline-block w--current" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba97a" href="index.html" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba97a-0bfba95f"><div class="clip"><div class="button-text"><div class="footer-text">Home</div></div><div class="button-text is-bottom"><div class="footer-text">Home</div></div></div></a><a class="footer_navlink _2 w-inline-block" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba982" href="about.html" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba982-0bfba95f"><div class="clip"><div class="button-text"><div class="footer-text">About</div></div><div class="button-text is-bottom"><div class="footer-text">About</div></div></div></a></div><div id="w-node-f49fff61-01b7-62af-f2a1-59730bfba9a2-0bfba95f"><p class="text-color-graytrue400 text-size-tiny">Copyright ©2025 Jennifer Flores<br/></p></div></div></div></div></div></div></footer><script crossorigin="anonymous" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=662b1bf555950e4333f17ac6" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-4abIlA5/v7XaW1HMXKBgnUuhnjBYJ/Z9C1OSg4OhmVw9O3QeHJ/qJqFBERCDPv7G" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.schunk.36b8fb49256177c8.js" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-dRgQUoZLGaorBCZRj8zE8PLGgpaUxr9IJ2QVjazOKZU/+f2yotyhEAGQa2uHfJlG" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.schunk.4db63a610eba4aad.js" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-CzeATtASo8frrlBeukK2uBW59w+Xv/oObJ+6fyNonhlVrVBwiMRy7QzHFSwGzDvy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.1cb4b9ed.561b63ff48dc54cf.js" type="text/javascript"></script><!-- [Attributes by Finsweet] Copy to clipboard -->
+</style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style></head><body><div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button"><div class="w-icon-nav-menu"></div></div></div></div><div class="space"><div class="home-section home" data-w-id="89fbbecb-93b6-793e-b4a7-fa1c309e77fd" style="-webkit-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0"><canvas id="hero-sphere"></canvas><div class="content"><div class="title-pill home"><p class="paragraph">Product Design</p><div class="bullet home"></div><p class="paragraph">UX UI</p></div><h1 class="home-heading"><strong>Turning complexity into efficiency and lasting engagement.</strong><br/></h1><div class="w-layout-hflex flex-block-2"><a class="flex-block yt w-inline-block" href="#"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65f56e0d41f9dd583343_youtube_activity_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">Youtube</h1></a><a class="flex-block w-inline-block" href="https://www.linkedin.com/in/jenniferflo/" target="_blank"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65576e0d41f9dd57a4f5_work_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">LinkedIn</h1></a></div></div></div><div class="notice-wrap"><div class="notice-inner"><div>This project is a Webflow rebuild of <a class="notice-link" href="https://linear.app/" target="_blank">linear.app</a> and was made by <a class="notice-link" href="https://www.moritz-petersen.de/en" target="_blank">Moritz Petersen</a> for educational purposes. It's not affiliated with Linear in any way, all rights of the graphics and texts belong to Linear.</div><div class="notice-btn-wrap"><a class="cta-button w-inline-block" href="https://webflow.grsm.io/3423979-linear-rebuild" target="_blank"><div>Clone this project</div></a><div class="cta-button cta-button--sec" data-w-id="0131a31a-b7a7-332a-3142-6e12d2120283"><div>Close</div></div></div></div></div></div><div class="projects-home"><h1 class="home-subheading">Selected UX Work</h1><a class="project-link-box workspaces w-inline-block" href="vauto-labs.html"><div class="project-container" data-w-id="a1b2c3d4-e5f6-7890-abcd-ef1234567890"><div class="first-half"><h1 class="project-title">01 | vAuto Test Drive</h1><div><img alt="" loading="lazy" src="vauto%20logo.png" style="max-height:35px;width:auto;"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="vauto-testdrive-cover.png"/></div><div class="text-half"><h1 class="project-title _2">vAuto Test Drive</h1><p class="cs-text text-color-graytrue300">An experimental feature platform letting beta dealers discover, enable, and give feedback on new vAuto features before GA release across 220K+ users.</p></div></div></div></a><a class="project-link-box workspaces w-inline-block" href="cloudserve.html"><div class="project-container" data-w-id="aebb3c7f-5e79-9770-3806-875f37928995"><div class="first-half"><h1 class="project-title">02 | cloudServe</h1><div><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b44f0808496676994f88d_CloudServe%20Logo%203.png"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/67315b49bbcbbaeeb212c305_cloudserve.png"/></div><div class="text-half"><h1 class="project-title _2">cloudServe</h1><p class="cs-text text-color-graytrue300">Centralizes cloud infrastructure management for platforms like AWS, Azure, and GCP at GM.</p></div></div></div></a><a class="project-link-box workspaces w-inline-block" href="maxis-workspaces.html"><div class="project-container" data-w-id="d4a52815-f131-2c51-351c-ca8a057bdf0a"><div class="first-half"><h1 class="project-title">03 | Maxis Workspaces</h1><div><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b496d617aa1aeefa693a3_maxis-logo%201%20(1).png"/></div></div><div class="second-half"><div class="project-img"><img alt="" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/66f9d7924ea4ef567176086e_maxis-workspaces.png"/></div><div class="text-half"><h1 class="project-title _2">Deploy Feature</h1><p class="cs-text text-color-graytrue300">Enables GM data scientists and business analysts to innovate with and deploy datasets.</p></div></div></div></a><a class="project-link-box data-catalog w-inline-block" href="data-catalog.html"><div class="project-container" data-w-id="7b080de4-1bb4-6212-8d59-d48f46dae5c4"><div class="first-half"><h1 class="project-title">04 | Data Catalog</h1><div><img alt="" class="gm" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/677b4a743da8fbb1b3a1c604_gm%202.png"/></div></div><div class="second-half"><div class="project-img data-catalog"><img alt="" loading="lazy" sizes="(max-width: 2860px) 100vw, 2860px" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup.png" srcset="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-500.png 500w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-800.png 800w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-1080.png 1080w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-1600.png 1600w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-2000.png 2000w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup-p-2600.png 2600w, https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662c55e6de6d4a5a1b97656f_dc-mockup.png 2860w"/></div><div class="text-half"><h1 class="project-title _2">Data Catalog</h1><p class="cs-text text-color-graytrue300">An internal GM Cloud Data Catalog that hosts cloud and on-prem data, curates valuable datasets and data lineage.</p></div></div></div></a></div><footer class="footer" id="Footer"><div class="padding-global"><div class="container-large"><div class="padding-section-large og-footer"><div class="footer_layout" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba963"><div class="footer_left" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba964-0bfba95f"><div class="footer_main-text-wrapper is-desktop" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba965-0bfba95f"><h1 class="_1 footer_h1" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba966-0bfba95f">Let's Connect</h1></div><div class="button-group is-footer"><a class="button is-icon is-glow w-inline-block" fs-copyclip-element="click" href="mailto:flores.jennifer1000@gmail.com"><div class="clip"><div class="button-text"><div class="text-color-graytrue100">Email Me</div></div><div class="button-text is-bottom"><div class="text-color-graytrue100">Email Me</div></div></div><div class="clip"><div class="button-icon"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bdc_ungroup.svg"/></div><div class="button-icon is-bottom"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bdc_ungroup.svg"/></div></div></a><a class="button is-icon is-glow w-inline-block" fs-copyclip-element="click" href="https://www.linkedin.com/in/jenniferflo/"><div class="clip"><div class="button-text"><div class="text-color-graytrue100">LinkedIn</div></div><div class="button-text is-bottom"><div class="text-color-graytrue100">LinkedIn</div></div></div><div class="clip"><div class="button-icon"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bd7_arrow-yellow.svg"/></div><div class="button-icon is-bottom"><img alt="" class="icon-1x1-xxsmall" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/662b1bf655950e4333f17bd5_arrow-black.svg"/></div></div></a></div></div><div class="footer_right" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba978-0bfba95f"><div class="footer_navigation-wrapper"><a aria-current="page" class="footer_navlink _1 w-inline-block w--current" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba97a" href="index.html" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba97a-0bfba95f"><div class="clip"><div class="button-text"><div class="footer-text">Home</div></div><div class="button-text is-bottom"><div class="footer-text">Home</div></div></div></a><a class="footer_navlink _2 w-inline-block" data-w-id="f49fff61-01b7-62af-f2a1-59730bfba982" href="about.html" id="w-node-f49fff61-01b7-62af-f2a1-59730bfba982-0bfba95f"><div class="clip"><div class="button-text"><div class="footer-text">About</div></div><div class="button-text is-bottom"><div class="footer-text">About</div></div></div></a></div><div id="w-node-f49fff61-01b7-62af-f2a1-59730bfba9a2-0bfba95f"><p class="text-color-graytrue400 text-size-tiny">Copyright ©2025 Jennifer Flores<br/></p></div></div></div></div></div></div></footer><script crossorigin="anonymous" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=662b1bf555950e4333f17ac6" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-4abIlA5/v7XaW1HMXKBgnUuhnjBYJ/Z9C1OSg4OhmVw9O3QeHJ/qJqFBERCDPv7G" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.schunk.36b8fb49256177c8.js" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-dRgQUoZLGaorBCZRj8zE8PLGgpaUxr9IJ2QVjazOKZU/+f2yotyhEAGQa2uHfJlG" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.schunk.4db63a610eba4aad.js" type="text/javascript"></script><script crossorigin="anonymous" integrity="sha384-CzeATtASo8frrlBeukK2uBW59w+Xv/oObJ+6fyNonhlVrVBwiMRy7QzHFSwGzDvy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/js/webflow.1cb4b9ed.561b63ff48dc54cf.js" type="text/javascript"></script><!-- [Attributes by Finsweet] Copy to clipboard -->
 <script defer="" src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-copyclip@1/copyclip.js"></script>
 <!-- Page transition -->
 <script>
@@ -348,24 +289,161 @@ document.addEventListener("keyup", function (e) {
 });
 </script>
 
+<!-- Three.js rotating sphere — fixed canvas, shrinks to corner pip on scroll -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", function () {
+  var heroCanvas = document.getElementById("hero-sphere");
+  if (!heroCanvas || typeof THREE === "undefined") return;
+
+  var heroSection = document.querySelector(".home-section.home");
+
+  /* ── Move canvas into a fixed fullscreen wrapper ──
+     The wrapper lives at z-index:-1 (below all page content).
+     Hero section has background:transparent so the sphere shows through. */
+  var wrap = document.createElement("div");
+  wrap.id = "sphere-wrap";
+  document.body.insertBefore(wrap, document.body.firstChild);
+  wrap.appendChild(heroCanvas);
+
+  var W = window.innerWidth, H = window.innerHeight;
+
+  /* ── Scene ── */
+  var scene = new THREE.Scene();
+  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
+  var keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+  keyLight.position.set(2, 2, 2);
+  scene.add(keyLight);
+  var rimLight = new THREE.DirectionalLight(0xffffff, 0.55);
+  rimLight.position.set(-2.5, 0.5, -2);
+  scene.add(rimLight);
+
+  /* ── Globe ── */
+  var globe = new THREE.Group();
+  globe.rotation.z = 0.28;
+  scene.add(globe);
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1, 64, 64),
+    new THREE.MeshStandardMaterial({ color: 0x2e2e2e, roughness: 0.82, metalness: 0.08 })
+  ));
+  globe.add(new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.SphereGeometry(1.003, 28, 18)),
+    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.18 })
+  ));
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.22, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.04, side: THREE.BackSide })
+  ));
+  var N = 500, pts = new Float32Array(N * 3);
+  for (var i = 0; i < N; i++) {
+    var phi = Math.acos(2 * Math.random() - 1);
+    var theta = 2 * Math.PI * Math.random();
+    pts[i*3]   = 1.004 * Math.sin(phi) * Math.cos(theta);
+    pts[i*3+1] = 1.004 * Math.sin(phi) * Math.sin(theta);
+    pts[i*3+2] = 1.004 * Math.cos(phi);
+  }
+  var dotGeo = new THREE.BufferGeometry();
+  dotGeo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
+  globe.add(new THREE.Points(dotGeo,
+    new THREE.PointsMaterial({ color: 0xffffff, size: 0.009, transparent: true, opacity: 0.5 })
+  ));
+
+  /* ── Renderer ── */
+  var renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, antialias: true, alpha: true });
+  renderer.setSize(W, H, false);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setClearColor(0x000000, 0);
+  var camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
+  camera.position.z = 3.6;
+
+  /* ── Pip dimensions ── */
+  var PIP     = window.innerWidth <= 767 ? 90 : 140;
+  var PIP_R   = 48;
+  var PIP_B   = 52;
+
+  /* ── Scroll-driven shrink via ScrollTrigger scrub ──
+     As the hero section scrolls off the top, the wrapper smoothly
+     contracts from full-viewport to a small circle at the bottom-right.
+     The renderer is resized each frame to keep the sphere sharp. */
+  var lastW = W, lastH = H;
+
+  ScrollTrigger.create({
+    trigger: heroSection,
+    start: "bottom bottom",   // hero bottom reaches viewport bottom → start shrink
+    end:   "bottom top",      // hero bottom reaches viewport top → fully a pip
+    scrub: 1.2,
+    onUpdate: function (self) {
+      var p  = self.progress;
+      var vw = window.innerWidth, vh = window.innerHeight;
+
+      var finalL = vw  - PIP_R - PIP;
+      var finalT = vh  - PIP_B - PIP;
+
+      var curW = Math.round(vw  + (PIP - vw)  * p);
+      var curH = Math.round(vh  + (PIP - vh)  * p);
+      var curL = Math.round(finalL * p);
+      var curT = Math.round(finalT * p);
+      var curR = Math.round(PIP / 2 * p); // 0px → 70px = perfect circle at pip size
+
+      wrap.style.width        = curW + "px";
+      wrap.style.height       = curH + "px";
+      wrap.style.left         = curL + "px";
+      wrap.style.top          = curT + "px";
+      wrap.style.borderRadius = curR + "px";
+
+      if (curW !== lastW || curH !== lastH) {
+        lastW = curW; lastH = curH;
+        W = curW; H = curH;
+        renderer.setSize(W, H, false);
+        camera.aspect = W / H;
+        camera.updateProjectionMatrix();
+      }
+    }
+  });
+
+  /* ── Scroll tracking for globe rotation ── */
+  var scrollY = 0;
+  window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
+
+  /* ── Tick ── */
+  var autoAngle = 0;
+  gsap.ticker.add(function (time, deltaTime) {
+    autoAngle += (deltaTime / 1000) * 0.22;
+    globe.rotation.y = autoAngle + scrollY * 0.0028;
+    renderer.render(scene, camera);
+  });
+
+  /* ── Window resize (reset to full viewport when hero is fully in view) ── */
+  window.addEventListener("resize", function () {
+    W = window.innerWidth; H = window.innerHeight;
+    wrap.style.width  = W + "px";
+    wrap.style.height = H + "px";
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  });
+});
+</script>
+
 <!-- Blueyard-style animations: smooth scroll + text/card reveals -->
 <style>
-/* Hero section with warm gradient + 3D discs */
-.home-section.home {
-  position: relative;
-  background: linear-gradient(145deg, #d4620a 0%, #e8832e 30%, #f0a050 55%, #f5c888 75%, #f8e8d0 90%, #fff 100%) !important;
-  overflow: hidden;
-}
-.home-section.home .content { position: relative; z-index: 2; }
-#hero-discs-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+/* Fixed fullscreen sphere wrapper — sphere lives here, below all page content */
+#sphere-wrap {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
   pointer-events: none;
-  display: block;
+  z-index: -1;
+  overflow: hidden;
+  will-change: width, height, top, left, border-radius;
 }
+#hero-sphere {
+  width: 100%; height: 100%;
+  display: block; pointer-events: none;
+}
+/* Hero section must be transparent so fixed sphere shows through */
+.home-section.home { position: relative; background: transparent !important; }
+.home-section.home .content { position: relative; z-index: 2; }
 /* Subtle gradient reveal on project card hover — scoped to the card boundary */
 .project-container { position: relative; }
 .project-container::after {
@@ -381,180 +459,6 @@ document.addEventListener("keyup", function (e) {
 }
 .project-link-box:hover .project-container::after { opacity: 1; }
 </style>
-
-<!-- Three.js glass discs -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script>
-window.addEventListener("DOMContentLoaded", function () {
-  var canvas = document.getElementById("hero-discs-canvas");
-  if (!canvas || typeof THREE === "undefined") return;
-
-  var hero = document.querySelector(".home-section.home");
-  var W = hero.offsetWidth, H = hero.offsetHeight;
-
-  /* ── Scene + renderer ── */
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-  renderer.setSize(W, H, false);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.2;
-
-  var scene = new THREE.Scene();
-
-  /* ── Camera ── */
-  var camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-  camera.position.set(1.5, 0.3, 5);
-  camera.lookAt(1.5, 0, 0);
-
-  /* ── Lighting ── */
-  scene.add(new THREE.AmbientLight(0xfff5e6, 0.6));
-
-  var key = new THREE.DirectionalLight(0xffffff, 2.0);
-  key.position.set(3, 4, 5);
-  scene.add(key);
-
-  var fill = new THREE.DirectionalLight(0xffd4a8, 0.8);
-  fill.position.set(-3, 1, 3);
-  scene.add(fill);
-
-  var rim = new THREE.DirectionalLight(0xffe0c0, 1.2);
-  rim.position.set(0, -2, -3);
-  scene.add(rim);
-
-  var top = new THREE.PointLight(0xffffff, 1.5, 12);
-  top.position.set(2, 5, 2);
-  scene.add(top);
-
-  /* ── Environment map for reflections ── */
-  var pmrem = new THREE.PMREMGenerator(renderer);
-  pmrem.compileEquirectangularShader();
-  var envScene = new THREE.Scene();
-  envScene.background = new THREE.Color(0xf0a050);
-  var envLight1 = new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
-  );
-  envLight1.position.set(0, 3, -5);
-  envScene.add(envLight1);
-  var envLight2 = new THREE.Mesh(
-    new THREE.PlaneGeometry(8, 8),
-    new THREE.MeshBasicMaterial({ color: 0xffd4a8, side: THREE.DoubleSide })
-  );
-  envLight2.position.set(-4, -1, -3);
-  envLight2.rotation.y = 0.6;
-  envScene.add(envLight2);
-  var envLight3 = new THREE.Mesh(
-    new THREE.PlaneGeometry(6, 6),
-    new THREE.MeshBasicMaterial({ color: 0xffe8cc, side: THREE.DoubleSide })
-  );
-  envLight3.position.set(4, 0, -4);
-  envLight3.rotation.y = -0.5;
-  envScene.add(envLight3);
-  var envMap = pmrem.fromScene(envScene, 0.04).texture;
-  pmrem.dispose();
-
-  /* ── Glass material ── */
-  var glassMat = new THREE.MeshPhysicalMaterial({
-    color: 0xffeedd,
-    metalness: 0.08,
-    roughness: 0.03,
-    transmission: 0.92,
-    thickness: 0.5,
-    ior: 1.5,
-    transparent: true,
-    opacity: 0.88,
-    envMap: envMap,
-    envMapIntensity: 1.8,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.03,
-    specularIntensity: 1.0,
-    specularColor: new THREE.Color(0xffffff),
-    side: THREE.DoubleSide
-  });
-
-  /* ── Disc geometry (flat cylinder) ── */
-  var discGeo = new THREE.CylinderGeometry(1, 1, 0.06, 64);
-
-  /* ── Create discs ── */
-  var discs = [];
-  var configs = [
-    { s: 1.4,  x: 2.2,  y: 0.8,  z: 0,    rx: 1.1,  rz: -0.3 },
-    { s: 1.1,  x: 3.0,  y: -0.2, z: -0.8, rx: 0.8,  rz: 0.5  },
-    { s: 0.8,  x: 1.5,  y: -0.6, z: 0.5,  rx: 1.3,  rz: -0.6 },
-    { s: 0.6,  x: 2.8,  y: -1.2, z: 0.3,  rx: 0.6,  rz: 0.2  },
-    { s: 0.45, x: 1.0,  y: 1.0,  z: -0.4, rx: 1.5,  rz: 0.8  }
-  ];
-
-  configs.forEach(function (c, i) {
-    var mesh = new THREE.Mesh(discGeo, glassMat.clone());
-    mesh.scale.setScalar(c.s);
-    mesh.position.set(c.x, c.y, c.z);
-    mesh.rotation.set(c.rx, 0, c.rz);
-    mesh.userData = { baseY: c.y, baseRx: c.rx, idx: i };
-    scene.add(mesh);
-    discs.push(mesh);
-  });
-
-  /* ── Mouse tracking ── */
-  var mouseX = 0, mouseY = 0, smoothMX = 0, smoothMY = 0;
-  hero.addEventListener("mousemove", function (e) {
-    var rect = hero.getBoundingClientRect();
-    mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-  });
-  hero.addEventListener("mouseleave", function () { mouseX = 0; mouseY = 0; });
-
-  /* ── Scroll tracking ── */
-  var scrollY = 0;
-  window.addEventListener("scroll", function () { scrollY = window.scrollY; }, { passive: true });
-
-  /* ── Store base positions for parallax ── */
-  discs.forEach(function (d) {
-    d.userData.baseX = d.position.x;
-  });
-
-  /* ── Animate ── */
-  var clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    var t = clock.getElapsedTime();
-
-    /* Smooth mouse follow */
-    smoothMX += (mouseX - smoothMX) * 0.05;
-    smoothMY += (mouseY - smoothMY) * 0.05;
-
-    /* Scroll parallax factor */
-    var scrollFactor = scrollY * 0.001;
-
-    discs.forEach(function (d) {
-      var i = d.userData.idx;
-      var speed = 0.4 + i * 0.08;
-      var amp = 0.12 + i * 0.03;
-
-      /* Float + scroll parallax (deeper discs move slower) */
-      var depth = 1.0 - i * 0.15;
-      d.position.y = d.userData.baseY + Math.sin(t * speed + i * 1.2) * amp - scrollFactor * depth * 0.8;
-      d.position.x = d.userData.baseX + Math.cos(t * 0.2 + i * 1.5) * 0.04;
-
-      /* Rotation: base + time + mouse tilt */
-      d.rotation.x = d.userData.baseRx + Math.sin(t * 0.3 + i * 0.8) * 0.08 + smoothMY * 0.15 * depth;
-      d.rotation.y = t * (0.06 + i * 0.02) + smoothMX * 0.1 * depth;
-    });
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  /* ── Resize ── */
-  window.addEventListener("resize", function () {
-    W = hero.offsetWidth; H = hero.offsetHeight;
-    renderer.setSize(W, H, false);
-    camera.aspect = W / H;
-    camera.updateProjectionMatrix();
-  });
-});
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
