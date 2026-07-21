@@ -39,7 +39,7 @@
     },
     {
       keywords: ["contact", "email", "reach", "connect", "hire", "phone", "linkedin"],
-      answer: "I'd love to connect! You can reach me at:\n\n<b>Email:</b> flores.jennifer1000@gmail.com\n<b>LinkedIn:</b> <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#DCFF7D'>linkedin.com/in/jenniferflo</a>"
+      answer: "I'd love to connect! You can reach me at:\n\n<b>Email:</b> flores.jennifer1000@gmail.com\n<b>LinkedIn:</b> <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#FFB88C'>linkedin.com/in/jenniferflo</a>"
     },
     {
       keywords: ["project", "portfolio", "case study", "work sample"],
@@ -65,7 +65,7 @@
 
   var GREETING = "Hey there! I'm Jennifer's portfolio assistant. Ask me anything about her experience, skills, projects, or why she'd be a great fit for your team!";
 
-  var FALLBACK = "Great question! I don't have a specific answer for that, but Jennifer would love to chat with you directly. Reach out at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#DCFF7D'>flores.jennifer1000@gmail.com</a> or connect on <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#DCFF7D'>LinkedIn</a>.";
+  var FALLBACK = "Great question! I don't have a specific answer for that, but Jennifer would love to chat with you directly. Reach out at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#FFB88C'>flores.jennifer1000@gmail.com</a> or connect on <a href='https://www.linkedin.com/in/jenniferflo/' target='_blank' style='color:#FFB88C'>LinkedIn</a>.";
 
   var SUGGESTIONS = [
     "Why should I hire Jennifer?",
@@ -101,9 +101,9 @@
     var css = document.createElement("style");
     css.textContent = [
       /* ── Orb toggle ── */
-      "#jf-chat-toggle{position:fixed;bottom:2.5rem;right:2.5rem;z-index:9999;width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.45) 0%,rgba(255,255,255,.08) 30%,#333 60%,#111 100%);box-shadow:0 0 20px rgba(220,255,125,.2),0 0 60px rgba(220,255,125,.08);transition:filter .25s,transform .15s;animation:orb-breathe 4s ease-in-out infinite}",
-      "#jf-chat-toggle::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,#DCFF7D,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#DCFF7D);animation:orb-rainbow 4s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px))}",
-      "#jf-chat-toggle::after{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 180deg,#DCFF7D,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#DCFF7D);animation:orb-rainbow 5s linear infinite reverse;opacity:.25;filter:blur(10px);z-index:-1}",
+      "#jf-chat-toggle{position:fixed;bottom:2.5rem;right:2.5rem;z-index:9999;width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.45) 0%,rgba(255,255,255,.08) 30%,#333 60%,#111 100%);box-shadow:0 0 20px rgba(255,184,140,.2),0 0 60px rgba(255,184,140,.08);transition:filter .25s,transform .15s;animation:orb-breathe 4s ease-in-out infinite}",
+      "#jf-chat-toggle::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,#FFB88C,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#FFB88C);animation:orb-rainbow 4s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px))}",
+      "#jf-chat-toggle::after{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 180deg,#FFB88C,#7df0c4,#7db8ff,#c47dff,#ff7dca,#ffb07d,#FFB88C);animation:orb-rainbow 5s linear infinite reverse;opacity:.25;filter:blur(10px);z-index:-1}",
       "#jf-chat-toggle:hover{filter:brightness(1.2);transform:scale(1.06)}",
       "#jf-chat-toggle:active{transform:scale(0.95)}",
       "#jf-chat-toggle svg{width:22px;height:22px;fill:rgba(255,255,255,.85);position:relative;z-index:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}",
@@ -112,22 +112,22 @@
       "#jf-chat-window{position:fixed;bottom:96px;right:28px;z-index:9998;width:380px;max-height:520px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:16px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif}",
       "#jf-chat-window.open{display:flex}",
       "#jf-chat-header{padding:16px 20px;background:#111;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}",
-      "#jf-chat-header .dot{width:8px;height:8px;border-radius:50%;background:#DCFF7D}",
+      "#jf-chat-header .dot{width:8px;height:8px;border-radius:50%;background:#FFB88C}",
       "#jf-chat-header span{color:#fff;font-size:14px;font-weight:500}",
       "#jf-chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none;-ms-overflow-style:none}",
       "#jf-chat-messages::-webkit-scrollbar{display:none}",
       ".jf-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.55;animation:jf-fade .25s ease}",
-      ".jf-msg a{color:#DCFF7D}",
+      ".jf-msg a{color:#FFB88C}",
       ".jf-msg.bot{background:#2a2a2a;color:#e0e0e0;align-self:flex-start;border-bottom-left-radius:4px}",
-      ".jf-msg.user{background:#DCFF7D;color:#000;align-self:flex-end;border-bottom-right-radius:4px}",
+      ".jf-msg.user{background:#FFB88C;color:#000;align-self:flex-end;border-bottom-right-radius:4px}",
       ".jf-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 12px}",
       ".jf-sug{background:transparent;border:1px solid rgba(255,255,255,.15);color:#aaa;font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:inherit;transition:border-color .2s,color .2s}",
-      ".jf-sug:hover{border-color:#DCFF7D;color:#DCFF7D}",
+      ".jf-sug:hover{border-color:#FFB88C;color:#FFB88C}",
       "#jf-chat-input-wrap{padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;background:#111}",
       "#jf-chat-input{flex:1;background:#2a2a2a;border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:10px 16px;color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}",
-      "#jf-chat-input:focus{border-color:#DCFF7D}",
+      "#jf-chat-input:focus{border-color:#FFB88C}",
       "#jf-chat-input::placeholder{color:#666}",
-      "#jf-chat-send{background:#DCFF7D;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}",
+      "#jf-chat-send{background:#FFB88C;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}",
       "#jf-chat-send:hover{transform:scale(1.1)}",
       "#jf-chat-send svg{width:16px;height:16px;fill:#000}",
       "@keyframes jf-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
