@@ -355,7 +355,7 @@
       /* ── Chat window ── */
       "#jf-chat-window{position:fixed;bottom:96px;right:28px;z-index:9998;width:380px;max-height:520px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:16px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif;transition:width .3s ease,max-height .3s ease}",
       "#jf-chat-window.open{display:flex}",
-      "#jf-chat-window.expanded{width:560px;max-height:700px}",
+      "#jf-chat-window.expanded{max-height:80vh}",
       /* ── Header ── */
       "#jf-chat-header{padding:12px 16px;background:#111;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}",
       "#jf-chat-header .dot{width:8px;height:8px;border-radius:50%;background:#6a6ff7}",
@@ -383,7 +383,7 @@
       "#jf-chat-send:hover{transform:scale(1.1)}",
       "#jf-chat-send svg{width:16px;height:16px;fill:#fff}",
       "@keyframes jf-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
-      "@media(max-width:479px){#jf-chat-window{right:12px;left:12px;width:auto;bottom:80px;max-height:70vh}#jf-chat-window.expanded{width:auto;max-height:85vh}#jf-chat-toggle{bottom:1.25rem;right:1.25rem}}"
+      "@media(max-width:479px){#jf-chat-window{right:12px;left:12px;width:auto;bottom:80px;max-height:70vh}#jf-chat-window.expanded{max-height:90vh}#jf-chat-toggle{bottom:1.25rem;right:1.25rem}}"
     ].join("\n");
     document.head.appendChild(css);
 
@@ -402,7 +402,7 @@
       '<div class="dot"></div>',
       '<span>Chat with Jennifer\'s Assistant</span>',
       '<button id="jf-chat-expand" aria-label="Expand"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>',
-      '<button id="jf-chat-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>',
+      '<button id="jf-chat-close" aria-label="Minimize"><svg viewBox="0 0 24 24"><path d="M6 12h12v2H6z"/></svg></button>',
       '</div>',
       '<div id="jf-chat-messages"></div>',
       '<div class="jf-suggestions" id="jf-suggestions"></div>',
