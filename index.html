@@ -73,6 +73,7 @@ html.w-editor [text-split] {opacity: 1;}
   width: 100vw; height: 100vh;
   z-index: -1;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 </style>
 <div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button"><div class="w-icon-nav-menu"></div></div></div></div><div class="space"><div class="home-section home" data-w-id="89fbbecb-93b6-793e-b4a7-fa1c309e77fd" style="-webkit-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 1rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0"><div class="content"><div class="title-pill home"><p class="paragraph">Product Design</p><div class="bullet home"></div><p class="paragraph">UX UI</p></div><h1 class="home-heading"><strong>Turning complexity into efficiency and lasting engagement.</strong><br/></h1><div class="w-layout-hflex flex-block-2"><a class="flex-block yt w-inline-block" href="#"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65f56e0d41f9dd583343_youtube_activity_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">Youtube</h1></a><a class="flex-block w-inline-block" href="https://www.linkedin.com/in/jenniferflo/" target="_blank"><img alt="" class="image-11" loading="lazy" src="https://cdn.prod.website-files.com/662b1bf555950e4333f17ac6/676a65576e0d41f9dd57a4f5_work_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"/><h1 class="heading-5">LinkedIn</h1></a></div></div></div><div class="notice-wrap"><div class="notice-inner"><div>This project is a Webflow rebuild of <a class="notice-link" href="https://linear.app/" target="_blank">linear.app</a> and was made by <a class="notice-link" href="https://www.moritz-petersen.de/en" target="_blank">Moritz Petersen</a> for educational purposes. It's not affiliated with Linear in any way, all rights of the graphics and texts belong to Linear.</div><div class="notice-btn-wrap"><a class="cta-button w-inline-block" href="https://webflow.grsm.io/3423979-linear-rebuild" target="_blank"><div>Clone this project</div></a><div class="cta-button cta-button--sec" data-w-id="0131a31a-b7a7-332a-3142-6e12d2120283"><div>Close</div></div></div></div></div></div><div class="projects-home"><h1 class="home-subheading">Selected UX Work</h1><!-- vAuto Test Drive hidden until ready -->
@@ -570,7 +571,17 @@ import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.82/build/
 const splineCanvas = document.getElementById('spline-koi');
 if (splineCanvas) {
   const app = new Application(splineCanvas);
-  app.load('https://prod.spline.design/fIBFQVi9VlBMvNGG/scene.splinecode');
+  app.load('https://prod.spline.design/fIBFQVi9VlBMvNGG/scene.splinecode').then(() => {
+    /* Make background transparent */
+    if (app._renderer) {
+      app._renderer.setClearColor(0x000000, 0);
+      app._renderer.setClearAlpha(0);
+    }
+    /* Also try the public API */
+    try {
+      app.setBackgroundColor('transparent');
+    } catch(e) {}
+  });
 }
 </script>
 <script src="chatbot.js"></script>
