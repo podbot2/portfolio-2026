@@ -33,29 +33,47 @@ body .transition {display: block}
 }
 </style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style>
 <style>
-/* Override: let paragraph text span full tile width */
+/* ── Tile component overrides ── */
+
+/* Stack heading above body text */
 .container.out.other {
   flex-direction: column !important;
-  align-items: flex-start !important;
+  align-items: stretch !important;
+  padding: 24px !important;
 }
-.container.out.other p.cs-text.container.other {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding: 0 20px 20px !important;
-}
+
+/* Title row: horizontal, full width, centered text */
 .container.out.other .cs-std-text_content-left.below.with-padding.in-container {
-  align-items: center !important;
   width: 100% !important;
-  padding: 20px 20px 0 !important;
+  padding: 0 !important;
+  margin-bottom: 12px !important;
   flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
+
+/* Titles: let them breathe, natural wrap only */
 .container.out.other .cs-std-text_content-left.below.with-padding.in-container h2,
 .container.out.other .cs-std-text_content-left.below.with-padding.in-container h3 {
   white-space: normal !important;
-  width: 100% !important;
+  width: auto !important;
+  max-width: 100% !important;
   text-align: center !important;
+  overflow: visible !important;
+  word-break: normal !important;
+}
+
+/* Body text: full width, no extra margin */
+.container.out.other p.cs-text.container.other {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Images inside title row */
+.container.out.other .cs-std-text_content-left.below.with-padding.in-container img {
+  margin-right: 8px;
 }
 </style>
 </head><body><div class="page-wrapper"><div class="global-styles w-embed"><style>
