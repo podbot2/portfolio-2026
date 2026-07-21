@@ -31,15 +31,46 @@
 
   var activeIndex = -1;
 
+  /* Exit overlay for smooth page transitions */
+  var exitCss = document.createElement('style');
+  exitCss.textContent = '#glass-nav-exit{position:fixed;inset:0;z-index:99998;background:#06111e;opacity:0;pointer-events:none;transition:opacity .35s ease}';
+  document.head.appendChild(exitCss);
+
+  var exitOverlay = document.createElement('div');
+  exitOverlay.id = 'glass-nav-exit';
+  document.body.appendChild(exitOverlay);
+
   links.forEach(function (link, i) {
     var a = document.createElement('a');
     a.href = link.href;
     a.className = 'glass-nav-link';
     a.textContent = link.text;
+
     if (currentPage === link.href) {
       a.classList.add('active');
       activeIndex = i;
     }
+
+    /* Toggle-switch behavior: slide pill then fade out */
+    a.addEventListener('click', function (e) {
+      if (currentPage === link.href) return; /* already on this page */
+      e.preventDefault();
+
+      /* Slide pill to clicked tab */
+      var navLinks = nav.querySelectorAll('.glass-nav-link');
+      navLinks.forEach(function (l) { l.classList.remove('active'); });
+      a.classList.add('active');
+      pill.style.opacity = '1';
+      pill.style.width = a.offsetWidth + 'px';
+      pill.style.transform = 'translateX(' + (a.offsetLeft - 4) + 'px)';
+
+      /* Fade to dark then navigate */
+      setTimeout(function () {
+        exitOverlay.style.opacity = '1';
+        setTimeout(function () { window.location = link.href; }, 350);
+      }, 200);
+    });
+
     nav.appendChild(a);
   });
 
