@@ -31,7 +31,15 @@ body .transition {display: block}
 [js-line-animation] .line {
 	overflow: hidden;
 }
-</style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style></head><body><div class="page-wrapper"><div class="global-styles w-embed"><style>
+</style><style>.w-webflow-badge { position: fixed !important; display: None !important; visibility: hidden !important; } </style>
+<style>
+/* Override: let paragraph text span full tile width */
+.container.out.other p.cs-text.container.other {
+  max-width: 100%;
+  width: 100%;
+}
+</style>
+</head><body><div class="page-wrapper"><div class="global-styles w-embed"><style>
 
 /* Focus state style for keyboard navigation for the focusable elements */
 *[tabindex]:focus-visible,
