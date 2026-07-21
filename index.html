@@ -81,15 +81,19 @@ html.w-editor [text-split] {opacity: 1;}
 <div class="navbar-2 w-nav" data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" style="display:none;"><div class="padding-horizontal padding-small"><a aria-current="page" class="navbar_logo-link w-nav-brand w--current" href="index.html"><p class="cs-text logo">Jennifer Flores</p><p class="cs-text subtitle">Product Designer</p></a><nav class="w-nav-menu" role="navigation"><a aria-current="page" class="nav-link w-nav-link w--current" href="index.html">Home</a><a class="nav-link w-nav-link" href="about.html">About</a></nav><div class="w-nav-button"><div class="w-icon-nav-menu"></div></div></div></div>
 
 <!-- Glassmorphism nav pill -->
-<div id="glass-nav">
-  <button id="glass-nav-toggle" aria-label="Toggle navigation">
-    <span class="glass-nav-bar"></span>
-    <span class="glass-nav-bar"></span>
-  </button>
+<div id="glass-nav" class="open">
+  <a href="index.html" class="glass-nav-logo">
+    <span class="glass-nav-name">Jennifer Flores</span>
+    <span class="glass-nav-role">Product Designer</span>
+  </a>
   <div id="glass-nav-links">
     <a href="index.html" class="glass-nav-link active">Home</a>
     <a href="about.html" class="glass-nav-link">About</a>
   </div>
+  <button id="glass-nav-toggle" aria-label="Toggle navigation">
+    <span class="glass-nav-bar"></span>
+    <span class="glass-nav-bar"></span>
+  </button>
 </div>
 
 <style>
@@ -101,17 +105,62 @@ html.w-editor [text-split] {opacity: 1;}
   z-index: 9990;
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 8px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
-  padding: 6px;
-  transition: gap 0.4s cubic-bezier(.4,0,.2,1), padding 0.4s cubic-bezier(.4,0,.2,1);
+  padding: 6px 8px 6px 16px;
+  transition: gap 0.4s cubic-bezier(.4,0,.2,1);
 }
-#glass-nav.open {
-  gap: 4px;
+.glass-nav-logo {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.glass-nav-name {
+  color: #fff;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.glass-nav-role {
+  color: rgba(255,255,255,0.45);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+#glass-nav-links {
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  transition: max-width 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
+  max-width: 200px;
+  opacity: 1;
+}
+#glass-nav:not(.open) #glass-nav-links {
+  max-width: 0;
+  opacity: 0;
+}
+.glass-nav-link {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 8px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+.glass-nav-link:hover, .glass-nav-link.active {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
 }
 #glass-nav-toggle {
   width: 36px;
@@ -144,33 +193,6 @@ html.w-editor [text-split] {opacity: 1;}
 }
 #glass-nav.open .glass-nav-bar:last-child {
   transform: rotate(-45deg) translate(2px, -2px);
-}
-#glass-nav-links {
-  display: flex;
-  gap: 2px;
-  overflow: hidden;
-  max-width: 0;
-  opacity: 0;
-  transition: max-width 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
-}
-#glass-nav.open #glass-nav-links {
-  max-width: 200px;
-  opacity: 1;
-}
-.glass-nav-link {
-  color: rgba(255,255,255,0.65);
-  text-decoration: none;
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  padding: 8px 16px;
-  border-radius: 999px;
-  white-space: nowrap;
-  transition: color 0.2s, background 0.2s;
-}
-.glass-nav-link:hover, .glass-nav-link.active {
-  color: #fff;
-  background: rgba(255,255,255,0.1);
 }
 </style>
 
