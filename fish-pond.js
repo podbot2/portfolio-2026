@@ -508,17 +508,22 @@
       var f = fishList[i];
       var m = f.mesh;
 
-      /* Flee from cursor */
+      /* Flee from cursor (with dead zone to prevent spinning) */
       var dx = m.position.x - mouse.x;
       var dz = m.position.z - mouse.z;
       var dist = Math.sqrt(dx * dx + dz * dz);
       var fleeRadius = 12;
+      var deadZone = 1.5;
 
-      if (dist < fleeRadius && dist > 0) {
+      if (dist < fleeRadius && dist > deadZone) {
         var fleeAngle = Math.atan2(dx, dz);
         var urgency = 1 - dist / fleeRadius;
-        f.angle += angleWrap(fleeAngle - f.angle) * urgency * 0.12;
-        f.speed = f.baseSpeed + urgency * 0.12;
+        f.angle += angleWrap(fleeAngle - f.angle) * urgency * 0.06;
+        f.speed = f.baseSpeed + urgency * 0.1;
+        f.fleeing = Math.min(f.fleeing + dt * 2, 1);
+      } else if (dist <= deadZone && dist > 0) {
+        /* Too close: keep current angle, just speed up to escape */
+        f.speed = f.baseSpeed + 0.12;
         f.fleeing = Math.min(f.fleeing + dt * 3, 1);
       } else {
         f.speed += (f.baseSpeed - f.speed) * 0.02;
