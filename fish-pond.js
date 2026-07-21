@@ -184,42 +184,43 @@
     { name: "Ki Utsuri",     body: 0x1a1a18, patches: [0xe8a818, 0xd49818],           fin: 0x282420, finTint: 0x504828 }
   ];
 
-  /* ── Build a koi mesh ── */
-  function createKoi(variety, scale) {
-    var group = new THREE.Group();
-    var s = scale || 1;
+  /* ── Build a segmented koi mesh ── */
+  var SPINE_SEGS = 6;
 
-    /* Body: higher-res lathe for smoother shape */
-    var bodyPts = [];
-    var SEGS = 24;
-    for (var i = 0; i <= SEGS; i++) {
-      var t = i / SEGS;
-      var radius;
-      if (t < 0.05) radius = 0.35 + t / 0.05 * 0.65;
-      else if (t < 0.15) radius = 1.0 + Math.sin((t - 0.05) / 0.1 * Math.PI) * 0.08;
-      else if (t < 0.3) radius = 1.0;
-      else if (t < 0.82) radius = 1.0 - (t - 0.3) / 0.52 * 0.65;
-      else radius = 0.35 - (t - 0.82) / 0.18 * 0.28;
-      radius = Math.max(radius, 0.04) * 0.6 * s;
-      var x = (t - 0.5) * 6 * s;
-      bodyPts.push(new THREE.Vector2(radius, x));
+  function bodyRadius(t) {
+    if (t < 0.05) return 0.35 + t / 0.05 * 0.65;
+    if (t < 0.3) return 1.0 + Math.sin((t - 0.05) / 0.25 * Math.PI) * 0.06;
+    if (t < 0.82) return 1.0 - (t - 0.3) / 0.52 * 0.65;
+    return 0.35 - (t - 0.82) / 0.18 * 0.28;
+  }
+
+  function createSegment(variety, tStart, tEnd, s) {
+    var pts = [];
+    var steps = 6;
+    for (var i = 0; i <= steps; i++) {
+      var t = tStart + (tEnd - tStart) * (i / steps);
+      var r = Math.max(bodyRadius(t), 0.04) * 0.6 * s;
+      var x = (i / steps - 0.5) * ((tEnd - tStart) * 6 * s);
+      pts.push(new THREE.Vector2(r, x));
     }
-    var bodyGeo = new THREE.LatheGeometry(bodyPts, 20);
-    bodyGeo.rotateZ(Math.PI / 2);
+    var geo = new THREE.LatheGeometry(pts, 14);
+    geo.rotateZ(Math.PI / 2);
 
-    /* Generate procedural scale bump via vertex displacement */
-    var pos = bodyGeo.attributes.position;
-    var norm = bodyGeo.attributes.normal;
+    /* Scale bump */
+    var pos = geo.attributes.position;
+    var norm = geo.attributes.normal;
     for (var vi = 0; vi < pos.count; vi++) {
       var vx = pos.getX(vi), vy = pos.getY(vi), vz = pos.getZ(vi);
-      var bump = Math.sin(vx * 12) * Math.sin(vz * 14 + vx * 3) * 0.008 * s;
-      pos.setX(vi, vx + (norm ? norm.getX(vi) : 0) * bump);
-      pos.setY(vi, vy + (norm ? norm.getY(vi) : 0) * bump);
-      pos.setZ(vi, vz + (norm ? norm.getZ(vi) : 0) * bump);
+      var bump = Math.sin(vx * 14 + tStart * 30) * Math.sin(vz * 16 + vx * 3) * 0.006 * s;
+      if (norm) {
+        pos.setX(vi, vx + norm.getX(vi) * bump);
+        pos.setY(vi, vy + norm.getY(vi) * bump);
+        pos.setZ(vi, vz + norm.getZ(vi) * bump);
+      }
     }
-    bodyGeo.computeVertexNormals();
+    geo.computeVertexNormals();
 
-    var bodyMat = new THREE.MeshPhysicalMaterial({
+    var mat = new THREE.MeshPhysicalMaterial({
       color: variety.body,
       roughness: 0.25,
       metalness: 0.08,
@@ -228,31 +229,51 @@
       sheen: 0.3,
       sheenColor: new THREE.Color(0xffffff)
     });
-    var body = new THREE.Mesh(bodyGeo, bodyMat);
-    group.add(body);
+    return new THREE.Mesh(geo, mat);
+  }
 
-    /* Color patches: larger, more vibrant, hugging the body */
-    var patchCount = variety.name === "Tancho" ? 1 : Math.floor(3 + Math.random() * 3);
-    for (var p = 0; p < patchCount; p++) {
-      var pSize = variety.name === "Tancho" ? 0.4 * s : (0.4 + Math.random() * 0.6) * s;
-      var patchGeo = new THREE.SphereGeometry(pSize, 10, 8);
-      var patchMat = new THREE.MeshPhysicalMaterial({
-        color: variety.patches[p % variety.patches.length],
-        roughness: 0.28,
-        metalness: 0.05,
-        clearcoat: 0.8,
-        clearcoatRoughness: 0.1
-      });
-      var patch = new THREE.Mesh(patchGeo, patchMat);
-      var pPos = variety.name === "Tancho" ? -2.2 * s : (-2.5 + Math.random() * 4) * s;
-      patch.position.set(pPos, 0.12 * s, (Math.random() - 0.5) * 0.35 * s);
-      patch.scale.set(1.2, 0.35, 0.9);
-      group.add(patch);
+  function createKoi(variety, scale) {
+    var root = new THREE.Group();
+    var s = scale || 1;
+
+    /* Spine: chain of pivots, each holding a body segment */
+    var segments = [];
+    var segLen = (6 * s) / SPINE_SEGS;
+
+    for (var i = 0; i < SPINE_SEGS; i++) {
+      var pivot = new THREE.Group();
+      var tStart = i / SPINE_SEGS;
+      var tEnd = (i + 1) / SPINE_SEGS;
+      var seg = createSegment(variety, tStart, tEnd, s);
+      seg.scale.y = 0.4;
+      pivot.add(seg);
+      pivot.position.x = i === 0 ? 0 : -segLen;
+
+      /* Patches on this segment */
+      var patchChance = variety.name === "Tancho" ? (i === 0 ? 1 : 0) : 0.55;
+      if (Math.random() < patchChance) {
+        var pSize = variety.name === "Tancho" ? 0.35 * s : (0.3 + Math.random() * 0.5) * s;
+        var patchGeo = new THREE.SphereGeometry(pSize, 8, 6);
+        var patchMat = new THREE.MeshPhysicalMaterial({
+          color: variety.patches[Math.floor(Math.random() * variety.patches.length)],
+          roughness: 0.28,
+          metalness: 0.05,
+          clearcoat: 0.8
+        });
+        var patch = new THREE.Mesh(patchGeo, patchMat);
+        patch.position.set(0, 0.06 * s, (Math.random() - 0.5) * 0.2 * s);
+        patch.scale.set(1.1, 0.15, 0.8);
+        pivot.add(patch);
+      }
+
+      segments.push(pivot);
+      if (i === 0) root.add(pivot);
+      else segments[i - 1].add(pivot);
     }
 
-    /* Tail fin: larger, forked, more dramatic */
+    /* Fin material */
     var finMat = new THREE.MeshPhysicalMaterial({
-      color: variety.fin,
+      color: variety.finTint,
       roughness: 0.35,
       metalness: 0.02,
       transparent: true,
@@ -261,6 +282,7 @@
       clearcoat: 0.4
     });
 
+    /* Tail fin on last segment */
     var tailShape = new THREE.Shape();
     tailShape.moveTo(0, 0);
     tailShape.bezierCurveTo(0.6*s, 0.4*s, 1.2*s, 1.0*s, 1.8*s, 1.4*s);
@@ -271,12 +293,12 @@
     tailGeo.rotateY(Math.PI / 2);
     tailGeo.rotateX(Math.PI / 2);
     var tail = new THREE.Mesh(tailGeo, finMat.clone());
-    tail.material.color.set(variety.finTint);
-    tail.position.x = 3 * s;
-    group.add(tail);
-    group.userData.tail = tail;
+    tail.position.x = -segLen * 0.4;
+    tail.scale.y = 0.4;
+    segments[SPINE_SEGS - 1].add(tail);
 
-    /* Pectoral fins: larger, fan-shaped */
+    /* Pectoral fins on segment 1 (behind head) */
+    var pectorals = [];
     for (var side = -1; side <= 1; side += 2) {
       var pfShape = new THREE.Shape();
       pfShape.moveTo(0, 0);
@@ -285,39 +307,44 @@
       var pfGeo = new THREE.ShapeGeometry(pfShape, 6);
       pfGeo.rotateX(Math.PI / 2);
       var pFin = new THREE.Mesh(pfGeo, finMat.clone());
-      pFin.position.set(-0.6 * s, -0.05 * s, 0.45 * s * side);
-      group.add(pFin);
+      pFin.position.set(0, -0.02 * s, 0.3 * s * side);
+      pFin.scale.y = 0.4;
+      segments[1].add(pFin);
+      pectorals.push(pFin);
     }
 
-    /* Dorsal fin: taller, more visible */
+    /* Dorsal fin on segment 2 */
     var dorsalShape = new THREE.Shape();
     dorsalShape.moveTo(0, 0);
     dorsalShape.bezierCurveTo(-0.2*s, 0.5*s, -0.5*s, 0.55*s, -1.0*s, 0.15*s);
     dorsalShape.lineTo(0, 0);
     var dorsalGeo = new THREE.ShapeGeometry(dorsalShape, 6);
     var dorsal = new THREE.Mesh(dorsalGeo, finMat.clone());
-    dorsal.position.set(-0.2 * s, 0.4 * s, 0);
+    dorsal.position.set(0, 0.18 * s, 0);
     dorsal.rotation.y = Math.PI / 2;
-    group.add(dorsal);
+    dorsal.scale.y = 0.4;
+    segments[2].add(dorsal);
 
-    /* Specular highlight strip along back */
-    var highlightGeo = new THREE.PlaneGeometry(3.5 * s, 0.12 * s);
-    var highlightMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+    /* Shadow disc under fish */
+    var shadowGeo = new THREE.CircleGeometry(1.8 * s, 16);
+    shadowGeo.rotateX(-Math.PI / 2);
+    var shadowMat = new THREE.MeshBasicMaterial({
+      color: 0x000000,
       transparent: true,
       opacity: 0.15,
-      side: THREE.DoubleSide,
       depthWrite: false
     });
-    var highlight = new THREE.Mesh(highlightGeo, highlightMat);
-    highlight.position.set(-0.3 * s, 0.32 * s, 0);
-    highlight.rotation.x = Math.PI / 2;
-    group.add(highlight);
+    var shadow = new THREE.Mesh(shadowGeo, shadowMat);
+    shadow.position.y = -0.45;
+    shadow.scale.set(1.5, 1, 0.5);
+    root.add(shadow);
 
-    /* Flatten for top-down view */
-    group.scale.y = 0.4;
+    root.userData.segments = segments;
+    root.userData.tail = tail;
+    root.userData.pectorals = pectorals;
+    root.userData.shadow = shadow;
 
-    return group;
+    return root;
   }
 
   /* ── Create and track fish ── */
@@ -456,18 +483,38 @@
       /* Body rotation */
       m.rotation.y += angleWrap(f.angle - m.rotation.y) * 0.08;
 
-      /* Swimming wave (tail wag) */
-      var tailFreq = f.freq + f.fleeing * 6;
-      var tailWag = Math.sin(t * tailFreq + f.phase) * (0.3 + f.fleeing * 0.4);
-      if (m.userData.tail) {
-        m.userData.tail.rotation.y = tailWag;
+      /* Spine wave: each segment rotates with increasing amplitude toward tail */
+      var segs = m.userData.segments;
+      var swimFreq = f.freq + f.fleeing * 6;
+      if (segs) {
+        for (var si = 1; si < segs.length; si++) {
+          var segT = si / (segs.length - 1);
+          var amp = segT * segT * (0.15 + f.fleeing * 0.25);
+          segs[si].rotation.y = Math.sin(t * swimFreq - si * 0.6 + f.phase) * amp;
+        }
       }
 
-      /* Subtle body sway */
-      m.rotation.z = Math.sin(t * f.freq * 0.5 + f.phase) * 0.03;
+      /* Pectoral fin flap */
+      var pecs = m.userData.pectorals;
+      if (pecs) {
+        var flapAngle = Math.sin(t * 1.5 + f.phase) * 0.25;
+        pecs[0].rotation.x = -Math.PI / 2 + flapAngle;
+        pecs[1].rotation.x = -Math.PI / 2 - flapAngle;
+      }
+
+      /* Tail fin extra wag */
+      if (m.userData.tail) {
+        m.userData.tail.rotation.y = Math.sin(t * swimFreq + f.phase) * (0.35 + f.fleeing * 0.5);
+      }
 
       /* Subtle depth bob */
       m.position.y = 0.3 + Math.sin(t * 0.5 + f.phase) * 0.15;
+
+      /* Shadow follows */
+      if (m.userData.shadow) {
+        m.userData.shadow.position.x = 0;
+        m.userData.shadow.position.z = 0;
+      }
     }
 
     /* Ripple animation */
