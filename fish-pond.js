@@ -171,17 +171,17 @@
     mouse.z = 9999;
   });
 
-  /* ── Koi varieties ── */
+  /* ── Koi varieties (vivid, saturated like real koi) ── */
   var VARIETIES = [
-    { name: "Kohaku",        body: 0xf5e8dd, patches: [0xcc3322, 0xdd4433], fin: 0xf5e0d0 },
-    { name: "Sanke",         body: 0xf5e8dd, patches: [0xcc3322, 0x222222], fin: 0xf5e0d0 },
-    { name: "Hi Utsuri",     body: 0x1a1a1a, patches: [0xcc3322, 0xdd4433], fin: 0x2a2020 },
-    { name: "Ogon",          body: 0xd4a832, patches: [0xe8c24a],           fin: 0xc8a030 },
-    { name: "Showa",         body: 0x1a1a1a, patches: [0xcc3322, 0xf5e8dd], fin: 0x2a2020 },
-    { name: "Asagi",         body: 0x4a6e8a, patches: [0xcc4422],           fin: 0x5a7e9a },
-    { name: "Platinum Ogon", body: 0xe8e4dc, patches: [0xf0ece6],           fin: 0xddd8d0 },
-    { name: "Tancho",        body: 0xf5e8dd, patches: [0xcc2222],           fin: 0xf5e0d0 },
-    { name: "Ki Utsuri",     body: 0x1a1a1a, patches: [0xd4a832],           fin: 0x2a2520 }
+    { name: "Kohaku",        body: 0xf8f0e0, patches: [0xe85020, 0xff6b2e, 0xf04818], fin: 0xf8e8d0, finTint: 0xff8844 },
+    { name: "Sanke",         body: 0xf8f0e0, patches: [0xe85020, 0x1a1a1a, 0xff5522], fin: 0xf0e0cc, finTint: 0xddaa88 },
+    { name: "Hi Utsuri",     body: 0x1a1a18, patches: [0xe04020, 0xff5530],           fin: 0x282420, finTint: 0x444038 },
+    { name: "Ogon",          body: 0xe8a818, patches: [0xffcc30, 0xf0b820],           fin: 0xdda020, finTint: 0xeebb40 },
+    { name: "Showa",         body: 0x1a1a18, patches: [0xe04020, 0xf8f0e0, 0xff4422], fin: 0x282420, finTint: 0x443830 },
+    { name: "Asagi",         body: 0x3a5a78, patches: [0xcc4422, 0x2a4a68],           fin: 0x4a6a88, finTint: 0x6688aa },
+    { name: "Platinum Ogon", body: 0xf0ece4, patches: [0xffffff, 0xe8e4dc],           fin: 0xe0dcd4, finTint: 0xeeeae4 },
+    { name: "Tancho",        body: 0xf8f0e0, patches: [0xdd1818],                     fin: 0xf0e0cc, finTint: 0xddaa88 },
+    { name: "Ki Utsuri",     body: 0x1a1a18, patches: [0xe8a818, 0xd49818],           fin: 0x282420, finTint: 0x504828 }
   ];
 
   /* ── Build a koi mesh ── */
@@ -189,102 +189,133 @@
     var group = new THREE.Group();
     var s = scale || 1;
 
-    /* Body: tapered ellipsoid using lathe */
+    /* Body: higher-res lathe for smoother shape */
     var bodyPts = [];
-    var SEGS = 16;
+    var SEGS = 24;
     for (var i = 0; i <= SEGS; i++) {
       var t = i / SEGS;
-      /* Body profile: snout → widest at 28% → taper to tail */
       var radius;
-      if (t < 0.08) radius = 0.3 + t / 0.08 * 0.7;
-      else if (t < 0.28) radius = 1.0;
-      else if (t < 0.85) radius = 1.0 - (t - 0.28) / 0.57 * 0.7;
-      else radius = 0.3 - (t - 0.85) / 0.15 * 0.2;
-      radius = Math.max(radius, 0.05) * 0.5 * s;
-      var x = (t - 0.5) * 5 * s;
+      if (t < 0.05) radius = 0.35 + t / 0.05 * 0.65;
+      else if (t < 0.15) radius = 1.0 + Math.sin((t - 0.05) / 0.1 * Math.PI) * 0.08;
+      else if (t < 0.3) radius = 1.0;
+      else if (t < 0.82) radius = 1.0 - (t - 0.3) / 0.52 * 0.65;
+      else radius = 0.35 - (t - 0.82) / 0.18 * 0.28;
+      radius = Math.max(radius, 0.04) * 0.6 * s;
+      var x = (t - 0.5) * 6 * s;
       bodyPts.push(new THREE.Vector2(radius, x));
     }
-    var bodyGeo = new THREE.LatheGeometry(bodyPts, 12);
+    var bodyGeo = new THREE.LatheGeometry(bodyPts, 20);
     bodyGeo.rotateZ(Math.PI / 2);
+
+    /* Generate procedural scale bump via vertex displacement */
+    var pos = bodyGeo.attributes.position;
+    var norm = bodyGeo.attributes.normal;
+    for (var vi = 0; vi < pos.count; vi++) {
+      var vx = pos.getX(vi), vy = pos.getY(vi), vz = pos.getZ(vi);
+      var bump = Math.sin(vx * 12) * Math.sin(vz * 14 + vx * 3) * 0.008 * s;
+      pos.setX(vi, vx + (norm ? norm.getX(vi) : 0) * bump);
+      pos.setY(vi, vy + (norm ? norm.getY(vi) : 0) * bump);
+      pos.setZ(vi, vz + (norm ? norm.getZ(vi) : 0) * bump);
+    }
+    bodyGeo.computeVertexNormals();
+
     var bodyMat = new THREE.MeshPhysicalMaterial({
       color: variety.body,
-      roughness: 0.4,
-      metalness: 0.05,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.2
+      roughness: 0.25,
+      metalness: 0.08,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      sheen: 0.3,
+      sheenColor: new THREE.Color(0xffffff)
     });
     var body = new THREE.Mesh(bodyGeo, bodyMat);
     group.add(body);
 
-    /* Color patches */
-    var patchCount = variety.name === "Tancho" ? 1 : Math.floor(2 + Math.random() * 3);
+    /* Color patches: larger, more vibrant, hugging the body */
+    var patchCount = variety.name === "Tancho" ? 1 : Math.floor(3 + Math.random() * 3);
     for (var p = 0; p < patchCount; p++) {
-      var patchGeo = new THREE.SphereGeometry(
-        variety.name === "Tancho" ? 0.35 * s : (0.3 + Math.random() * 0.5) * s,
-        8, 6
-      );
+      var pSize = variety.name === "Tancho" ? 0.4 * s : (0.4 + Math.random() * 0.6) * s;
+      var patchGeo = new THREE.SphereGeometry(pSize, 10, 8);
       var patchMat = new THREE.MeshPhysicalMaterial({
         color: variety.patches[p % variety.patches.length],
-        roughness: 0.45,
-        metalness: 0.02,
-        clearcoat: 0.5
+        roughness: 0.28,
+        metalness: 0.05,
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.1
       });
       var patch = new THREE.Mesh(patchGeo, patchMat);
-      var pPos = variety.name === "Tancho" ? -2 * s : (-2 + Math.random() * 3.5) * s;
-      patch.position.set(pPos, 0.15 * s, (Math.random() - 0.5) * 0.3 * s);
-      patch.scale.set(1, 0.4, 1);
+      var pPos = variety.name === "Tancho" ? -2.2 * s : (-2.5 + Math.random() * 4) * s;
+      patch.position.set(pPos, 0.12 * s, (Math.random() - 0.5) * 0.35 * s);
+      patch.scale.set(1.2, 0.35, 0.9);
       group.add(patch);
     }
 
-    /* Tail fin */
+    /* Tail fin: larger, forked, more dramatic */
+    var finMat = new THREE.MeshPhysicalMaterial({
+      color: variety.fin,
+      roughness: 0.35,
+      metalness: 0.02,
+      transparent: true,
+      opacity: 0.75,
+      side: THREE.DoubleSide,
+      clearcoat: 0.4
+    });
+
     var tailShape = new THREE.Shape();
     tailShape.moveTo(0, 0);
-    tailShape.quadraticCurveTo(0.8 * s, 0.5 * s, 1.2 * s, 1.0 * s);
-    tailShape.quadraticCurveTo(0.6 * s, 0.2 * s, 0, 0);
-    tailShape.quadraticCurveTo(0.6 * s, -0.2 * s, 1.2 * s, -1.0 * s);
-    tailShape.quadraticCurveTo(0.8 * s, -0.5 * s, 0, 0);
-    var tailGeo = new THREE.ShapeGeometry(tailShape);
+    tailShape.bezierCurveTo(0.6*s, 0.4*s, 1.2*s, 1.0*s, 1.8*s, 1.4*s);
+    tailShape.bezierCurveTo(1.4*s, 0.8*s, 0.8*s, 0.2*s, 0.3*s, 0);
+    tailShape.bezierCurveTo(0.8*s, -0.2*s, 1.4*s, -0.8*s, 1.8*s, -1.4*s);
+    tailShape.bezierCurveTo(1.2*s, -1.0*s, 0.6*s, -0.4*s, 0, 0);
+    var tailGeo = new THREE.ShapeGeometry(tailShape, 8);
     tailGeo.rotateY(Math.PI / 2);
     tailGeo.rotateX(Math.PI / 2);
-    var tailMat = new THREE.MeshPhysicalMaterial({
-      color: variety.fin,
-      roughness: 0.5,
-      metalness: 0.0,
-      transparent: true,
-      opacity: 0.7,
-      side: THREE.DoubleSide
-    });
-    var tail = new THREE.Mesh(tailGeo, tailMat);
-    tail.position.x = 2.5 * s;
+    var tail = new THREE.Mesh(tailGeo, finMat.clone());
+    tail.material.color.set(variety.finTint);
+    tail.position.x = 3 * s;
     group.add(tail);
     group.userData.tail = tail;
 
-    /* Pectoral fins */
+    /* Pectoral fins: larger, fan-shaped */
     for (var side = -1; side <= 1; side += 2) {
-      var finShape = new THREE.Shape();
-      finShape.moveTo(0, 0);
-      finShape.quadraticCurveTo(0.4 * s, 0.6 * s * side, 0.8 * s, 0.3 * s * side);
-      finShape.lineTo(0, 0);
-      var finGeo = new THREE.ShapeGeometry(finShape);
-      finGeo.rotateX(Math.PI / 2);
-      var fin = new THREE.Mesh(finGeo, tailMat.clone());
-      fin.position.set(-0.8 * s, -0.1 * s, 0.4 * s * side);
-      group.add(fin);
+      var pfShape = new THREE.Shape();
+      pfShape.moveTo(0, 0);
+      pfShape.bezierCurveTo(0.2*s, 0.5*s*side, 0.6*s, 0.9*s*side, 1.2*s, 0.6*s*side);
+      pfShape.bezierCurveTo(0.8*s, 0.3*s*side, 0.3*s, 0.1*s*side, 0, 0);
+      var pfGeo = new THREE.ShapeGeometry(pfShape, 6);
+      pfGeo.rotateX(Math.PI / 2);
+      var pFin = new THREE.Mesh(pfGeo, finMat.clone());
+      pFin.position.set(-0.6 * s, -0.05 * s, 0.45 * s * side);
+      group.add(pFin);
     }
 
-    /* Dorsal fin */
+    /* Dorsal fin: taller, more visible */
     var dorsalShape = new THREE.Shape();
     dorsalShape.moveTo(0, 0);
-    dorsalShape.quadraticCurveTo(-0.3 * s, 0.4 * s, -0.8 * s, 0.1 * s);
+    dorsalShape.bezierCurveTo(-0.2*s, 0.5*s, -0.5*s, 0.55*s, -1.0*s, 0.15*s);
     dorsalShape.lineTo(0, 0);
-    var dorsalGeo = new THREE.ShapeGeometry(dorsalShape);
-    var dorsal = new THREE.Mesh(dorsalGeo, tailMat.clone());
-    dorsal.position.set(-0.2 * s, 0.35 * s, 0);
+    var dorsalGeo = new THREE.ShapeGeometry(dorsalShape, 6);
+    var dorsal = new THREE.Mesh(dorsalGeo, finMat.clone());
+    dorsal.position.set(-0.2 * s, 0.4 * s, 0);
     dorsal.rotation.y = Math.PI / 2;
     group.add(dorsal);
 
-    /* Flatten body slightly */
-    group.scale.y = 0.45;
+    /* Specular highlight strip along back */
+    var highlightGeo = new THREE.PlaneGeometry(3.5 * s, 0.12 * s);
+    var highlightMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.15,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    var highlight = new THREE.Mesh(highlightGeo, highlightMat);
+    highlight.position.set(-0.3 * s, 0.32 * s, 0);
+    highlight.rotation.x = Math.PI / 2;
+    group.add(highlight);
+
+    /* Flatten for top-down view */
+    group.scale.y = 0.4;
 
     return group;
   }
