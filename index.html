@@ -64,6 +64,8 @@ html.w-editor [text-split] {opacity: 1;}
   width: 100vw; height: 100vh;
   z-index: -1;
   transition: transform 1.2s cubic-bezier(.4,0,.2,1);
+  mix-blend-mode: screen;
+  background: transparent !important;
 }
 #koi-pond-bg {
   position: fixed;
@@ -569,7 +571,9 @@ import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.82/build/
 const c = document.getElementById('spline-koi');
 if (c) {
   const app = new Application(c);
-  app.load('https://prod.spline.design/RsFEQRGX6T5-vpJ5/scene.splinecode');
+  app.load('https://prod.spline.design/RsFEQRGX6T5-vpJ5/scene.splinecode').then(() => {
+    c.style.background = 'transparent';
+  });
 
   /* Shift koi to center-right after scrolling past hero */
   const hero = document.querySelector('.home-section.home');
