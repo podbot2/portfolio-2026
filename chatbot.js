@@ -2,7 +2,7 @@
   /* ── Global Q&A (available on all pages) ── */
   var GLOBAL_QA = [
     {
-      keywords: ["who", "about", "tell me", "introduce", "yourself", "jennifer", "jen"],
+      keywords: ["who are you", "about jennifer", "tell me about you", "introduce", "yourself", "who is jennifer", "who is jen"],
       answer: "Hi! I'm Jennifer Flores, a Product Designer with 4+ years of experience. I'm currently at Cox Automotive (vAuto) where I lead UX for beta platforms serving 220K+ users. Before that, I was at General Motors designing AI-driven cloud products. I love turning complexity into clarity."
     },
     {
