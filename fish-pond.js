@@ -378,6 +378,33 @@
     });
   }
 
+  /* ── Hero fish: larger, brighter, scroll-driven ── */
+  var heroVariety = { name: "Hero", body: 0xf8e0c8, patches: [0xff5520, 0xff7730, 0xe84818], fin: 0xf8d8b8, finTint: 0xff9955 };
+  var heroScale = 1.4;
+  var heroKoi = createKoi(heroVariety, heroScale);
+  heroKoi.position.set(0, 0.6, 0);
+  scene.add(heroKoi);
+
+  /* Scroll state */
+  var scrollY = 0;
+  var maxScroll = 1;
+  function updateScroll() {
+    scrollY = window.scrollY || window.pageYOffset;
+    maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  }
+  updateScroll();
+  window.addEventListener("scroll", updateScroll, { passive: true });
+  window.addEventListener("resize", updateScroll);
+
+  /* Hero fish path: sinuous S-curve across the pond as you scroll */
+  function heroPath(progress) {
+    var p = Math.max(0, Math.min(1, progress));
+    return {
+      x: Math.sin(p * Math.PI * 2.5) * 18,
+      z: (p - 0.5) * -50
+    };
+  }
+
   /* ── Ripple rings ── */
   var ripples = [];
   var lastRippleTime = 0;
@@ -411,8 +438,16 @@
   /* ── Animation loop ── */
   var clock = new THREE.Clock();
 
+  /* ── Performance: pause when tab hidden ── */
+  var tabVisible = true;
+  document.addEventListener("visibilitychange", function () {
+    tabVisible = !document.hidden;
+    if (tabVisible) clock.getDelta(); /* reset delta so no huge jump */
+  });
+
   function animate() {
     requestAnimationFrame(animate);
+    if (!tabVisible) return;
     var dt = Math.min(clock.getDelta(), 0.05);
     var t = clock.getElapsedTime();
 
@@ -515,6 +550,40 @@
         m.userData.shadow.position.x = 0;
         m.userData.shadow.position.z = 0;
       }
+    }
+
+    /* ── Hero fish: scroll-driven position + swimming animation ── */
+    var scrollProgress = scrollY / maxScroll;
+    var heroTarget = heroPath(scrollProgress);
+    heroKoi.position.x += (heroTarget.x - heroKoi.position.x) * 0.03;
+    heroKoi.position.z += (heroTarget.z - heroKoi.position.z) * 0.03;
+    heroKoi.position.y = 0.5 + Math.sin(t * 0.4) * 0.2;
+
+    /* Hero faces movement direction */
+    var heroAngle = Math.atan2(heroTarget.x - heroKoi.position.x, heroTarget.z - heroKoi.position.z);
+    heroKoi.rotation.y += angleWrap(heroAngle - heroKoi.rotation.y) * 0.05;
+
+    /* Hero spine wave */
+    var heroSegs = heroKoi.userData.segments;
+    if (heroSegs) {
+      var heroSwimSpeed = 2.5 + Math.abs(heroTarget.x - heroKoi.position.x) * 2;
+      for (var si = 1; si < heroSegs.length; si++) {
+        var segT = si / (heroSegs.length - 1);
+        heroSegs[si].rotation.y = Math.sin(t * heroSwimSpeed - si * 0.6) * segT * segT * 0.18;
+      }
+    }
+
+    /* Hero pectoral fins */
+    var heroPecs = heroKoi.userData.pectorals;
+    if (heroPecs) {
+      var hFlap = Math.sin(t * 1.2) * 0.2;
+      heroPecs[0].rotation.x = -Math.PI / 2 + hFlap;
+      heroPecs[1].rotation.x = -Math.PI / 2 - hFlap;
+    }
+
+    /* Hero tail */
+    if (heroKoi.userData.tail) {
+      heroKoi.userData.tail.rotation.y = Math.sin(t * 2.5) * 0.3;
     }
 
     /* Ripple animation */
