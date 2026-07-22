@@ -294,7 +294,7 @@
   } else {
     pageQA = [];
     pageSuggestions = ["Why should I hire Jennifer?", "What's her experience?", "What tools does she use?", "Tell me about vAuto Test Drive"];
-    pageGreeting = "Hey there! I'm Jennifer's portfolio assistant. Ask me anything about her experience, skills, projects, or why she'd be a great fit for your team!";
+    pageGreeting = "Hey there! I'm Jennifer's portfolio assistant. I can tell you about her projects, background, tools, and process. Try one of the questions below or type your own.";
   }
 
   /* Combine page-specific QA (higher priority) with global */
@@ -307,6 +307,9 @@
   var OFFTOPIC = "I'm here to help you learn more about Jennifer's work. Want me to tell you about a specific project or her background?";
 
   var FALLBACK = "I don't have details on that one, but Jennifer would be happy to speak to it directly. You can reach her at <a href='mailto:flores.jennifer1000@gmail.com' style='color:#6a6ff7'>flores.jennifer1000@gmail.com</a>.";
+
+  var WORKER_URL = "https://jennifer-portfolio-chatbot.flores-jennifer1000.workers.dev";
+  var conversationHistory = [];
 
   /* ── Topics to redirect to Jennifer ── */
   var REDIRECT_KEYWORDS = ["salary", "compensation", "rate", "pay", "money", "how much", "start date", "availability", "available", "when can you start", "freelance", "full-time", "full time", "contract", "reference", "work sample", "nda", "legal"];
@@ -336,7 +339,24 @@
       }
     }
 
-    return bestScore > 0 ? best.answer : FALLBACK;
+    return bestScore > 0 ? best.answer : null;
+  }
+
+  /* ── Call Claude via Cloudflare Worker ── */
+  function askClaude(text, callback) {
+    var pageName = path.split("/").pop() || "homepage";
+    fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        history: conversationHistory.slice(-6),
+        page: pageName
+      })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) { callback(data.answer || FALLBACK); })
+    .catch(function () { callback(FALLBACK); });
   }
 
   /* ── Build the UI ── */
@@ -384,6 +404,10 @@
       "#jf-chat-send:hover{transform:scale(1.1)}",
       "#jf-chat-send svg{width:16px;height:16px;fill:#fff}",
       "@keyframes jf-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}",
+      ".jf-typing span{display:inline-block;animation:jf-blink 1.4s infinite;font-size:18px;line-height:1;color:#888}",
+      ".jf-typing span:nth-child(2){animation-delay:.2s}",
+      ".jf-typing span:nth-child(3){animation-delay:.4s}",
+      "@keyframes jf-blink{0%,80%,100%{opacity:.2}40%{opacity:1}}",
       "@media(max-width:479px){#jf-chat-window{right:12px;left:12px;width:auto;bottom:80px;height:60vh}#jf-chat-window.expanded{height:calc(100vh - 100px)}#jf-chat-toggle{bottom:1.25rem;right:1.25rem}}"
     ].join("\n");
     document.head.appendChild(css);
@@ -408,7 +432,7 @@
       '<div id="jf-chat-messages"></div>',
       '<div class="jf-suggestions" id="jf-suggestions"></div>',
       '<div id="jf-chat-input-wrap">',
-      '<input id="jf-chat-input" type="text" placeholder="Ask me anything..." autocomplete="off"/>',
+      '<input id="jf-chat-input" type="text" placeholder="Ask about her work..." autocomplete="off"/>',
       '<button id="jf-chat-send" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>',
       '</div>'
     ].join("");
@@ -452,11 +476,31 @@
     function sendMessage(text) {
       addMessage(text, "user");
       input.value = "";
+      conversationHistory.push({ role: "user", content: text });
 
-      setTimeout(function () {
-        addMessage(findAnswer(text), "bot");
-        showSuggestions();
-      }, 400);
+      var localAnswer = findAnswer(text);
+
+      if (localAnswer) {
+        setTimeout(function () {
+          addMessage(localAnswer, "bot");
+          conversationHistory.push({ role: "assistant", content: localAnswer });
+          showSuggestions();
+        }, 400);
+      } else {
+        /* Show typing indicator while waiting for Claude */
+        var typing = document.createElement("div");
+        typing.className = "jf-msg bot";
+        typing.innerHTML = '<span class="jf-typing"><span>.</span><span>.</span><span>.</span></span>';
+        messages.appendChild(typing);
+        messages.scrollTop = messages.scrollHeight;
+
+        askClaude(text, function (answer) {
+          messages.removeChild(typing);
+          addMessage(answer, "bot");
+          conversationHistory.push({ role: "assistant", content: answer });
+          showSuggestions();
+        });
+      }
     }
 
     function openChat() {
