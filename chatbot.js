@@ -546,7 +546,8 @@
     var currentPage = window.location.pathname.split('/').pop() || 'index.html';
     var wasClosed = false;
     try { wasClosed = sessionStorage.getItem("jf-chat-closed") === "1"; } catch(e) {}
-    if (!wasClosed && (currentPage === 'index.html' || currentPage === '' || currentPage === 'portfolio-2026')) {
+    var isMobile = window.innerWidth <= 479;
+    if (!wasClosed && !isMobile && (currentPage === 'index.html' || currentPage === '' || currentPage === 'portfolio-2026')) {
       setTimeout(openChat, 1500);
     }
   }

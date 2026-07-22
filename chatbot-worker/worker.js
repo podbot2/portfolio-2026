@@ -74,7 +74,6 @@ RULES:
 
       if (!response.ok) {
         const err = await response.text();
-        console.error("Anthropic API error:", err);
         return new Response(
           JSON.stringify({ answer: "I'm having trouble right now. You can reach Jennifer directly at flores.jennifer1000@gmail.com." }),
           { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" } }
