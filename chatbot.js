@@ -481,8 +481,8 @@
       var localAnswer = findAnswer(text);
 
       /* Track in Google Analytics */
-      if (typeof gtag === "function") {
-        gtag("event", "chatbot_query", {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "chatbot_query", {
           event_category: "chatbot",
           event_label: text.substring(0, 100),
           source: localAnswer ? "keyword" : "claude"
@@ -515,7 +515,7 @@
     function openChat() {
       isOpen = true;
       win.classList.add("open");
-      if (typeof gtag === "function") { gtag("event", "chatbot_open", { event_category: "chatbot" }); }
+      if (typeof window.gtag === "function") { window.gtag("event", "chatbot_open", { event_category: "chatbot" }); }
       if (messages.children.length === 0) {
         addMessage(GREETING, "bot");
         showSuggestions();
