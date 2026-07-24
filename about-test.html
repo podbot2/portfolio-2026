@@ -86,6 +86,54 @@ html { scrollbar-width: none; }
   z-index: 2;
 }
 
+/* ── Behind the Scenes section ── */
+.about-test-bts {
+  padding: 80px 90px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.about-test-bts-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.about-test-bts-subhead {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 36px;
+}
+.about-test-bts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  column-gap: 10px;
+  row-gap: 18px;
+}
+.about-test-bts-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+/* Middle and bottom images span full width */
+.about-test-bts-grid .bts-full {
+  grid-column: 1 / -1;
+}
+.about-test-bts-grid .bts-full img {
+  max-height: 400px;
+}
+
 /* ── References section ── */
 .about-test-refs {
   padding: 80px 90px;
@@ -367,6 +415,7 @@ html { scrollbar-width: none; }
 /* ── Tablet ── */
 @media (max-width: 991px) {
   .about-test-section { padding-left: 40px; padding-right: 40px; }
+  .about-test-bts { padding-left: 40px; padding-right: 40px; }
   .about-test-refs { padding-left: 40px; padding-right: 40px; }
 }
 /* ── Mobile ── */
@@ -387,6 +436,12 @@ html { scrollbar-width: none; }
   .about-test-ref-cards { flex-direction: column; }
   .about-test-ref-preview { display: none; }
   .about-test-ref-cta { display: none; }
+  .about-test-bts {
+    padding: 60px 20px;
+    height: auto;
+    min-height: auto;
+  }
+  .about-test-bts-grid .bts-full img { max-height: 280px; }
   .about-test-refs {
     padding: 60px 20px;
     height: auto;
@@ -428,19 +483,23 @@ html { scrollbar-width: none; }
     <path class="ring-body" id="ring-body" d="M 0,40 A 100,100 0 0,1 0,240"/>
     <!-- Progress stroke on outer edge (radius 136 = 100 + 36 half of 72) -->
     <path class="ring-progress" id="ring-progress" d="M 0,4 A 136,136 0 0,1 0,276"/>
-    <!-- Section indices on ring centerline, compressed to 35°–90°–145° -->
+    <!-- Section indices on ring centerline, 4 markers at -55°, -18°, +18°, +55° -->
     <text class="ring-index" id="ring-idx-1" x="57" y="58" data-section="hero-section">01</text>
-    <text class="ring-index" id="ring-idx-2" x="100" y="140" data-section="body-section">02</text>
-    <text class="ring-index" id="ring-idx-3" x="57" y="222" data-section="references-section">03</text>
+    <text class="ring-index" id="ring-idx-2" x="95" y="109" data-section="body-section">02</text>
+    <text class="ring-index" id="ring-idx-3" x="95" y="171" data-section="bts-section">03</text>
+    <text class="ring-index" id="ring-idx-4" x="57" y="222" data-section="references-section">04</text>
   </svg>
   <!-- Extending tabs — originate from marker positions, extend right -->
   <div class="ring-tab active" id="ring-tab-1" data-section="hero-section" style="left:65px;top:46px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">About</span>
   </div>
-  <div class="ring-tab" id="ring-tab-2" data-section="body-section" style="left:108px;top:128px;">
+  <div class="ring-tab" id="ring-tab-2" data-section="body-section" style="left:103px;top:97px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">Story</span>
   </div>
-  <div class="ring-tab" id="ring-tab-3" data-section="references-section" style="left:65px;top:210px;">
+  <div class="ring-tab" id="ring-tab-3" data-section="bts-section" style="left:103px;top:159px;">
+    <span class="ring-tab-dot"></span><span class="ring-tab-label">Behind the Scenes</span>
+  </div>
+  <div class="ring-tab" id="ring-tab-4" data-section="references-section" style="left:65px;top:210px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">References</span>
   </div>
 </div>
@@ -453,7 +512,7 @@ html { scrollbar-width: none; }
       <h1 class="about-test-heading">A designer for the moments complexity usually wins</h1>
     </div>
     <div class="about-test-img-wrap">
-      <img src="About_Img1.png" alt="Jennifer Flores at Yao Station" />
+      <img src="About_Imgs/About_Img1.png" alt="Jennifer Flores at Yao Station" />
       <div class="about-test-img-wipe"></div>
     </div>
   </section>
@@ -464,12 +523,24 @@ html { scrollbar-width: none; }
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
     <div class="about-test-img-wrap">
-      <img src="About_img2.png" alt="Jennifer Flores in the mountains" />
+      <img src="About_Imgs/About_img2.png" alt="Jennifer Flores in the mountains" />
       <div class="about-test-img-wipe"></div>
     </div>
   </section>
 
-  <!-- ══ Section 3: References ══ -->
+  <!-- ══ Section 3: Behind the Scenes ══ -->
+  <section class="about-test-bts" id="bts-section">
+    <h2 class="about-test-bts-heading">Behind the Scenes</h2>
+    <p class="about-test-bts-subhead">The workshops, the people, and the walls covered in sticky notes.</p>
+    <div class="about-test-bts-grid">
+      <div><img src="About_Imgs/rose_img.png" alt="Rose Thorn Bud workshop board" /></div>
+      <div><img src="About_Imgs/thorn_img.png" alt="Thorn workshop board" /></div>
+      <div class="bts-full"><img src="About_Imgs/group_img.png" alt="UX Connect team event at Cox Automotive" /></div>
+      <div class="bts-full"><img src="About_Imgs/bud_img.png" alt="Bud workshop board with sticky notes" /></div>
+    </div>
+  </section>
+
+  <!-- ══ Section 4: References ══ -->
   <section class="about-test-refs" id="references-section">
     <h2 class="about-test-refs-heading">References</h2>
     <p class="about-test-refs-subhead">The numbers, and what the people I've worked with have to say.</p>
@@ -595,12 +666,8 @@ window.addEventListener("DOMContentLoaded", function () {
   var ringTabs = [
     document.getElementById("ring-tab-1"),
     document.getElementById("ring-tab-2"),
-    document.getElementById("ring-tab-3")
-  ];
-  var ringIndices = [
-    document.getElementById("ring-idx-1"),
-    document.getElementById("ring-idx-2"),
-    document.getElementById("ring-idx-3")
+    document.getElementById("ring-tab-3"),
+    document.getElementById("ring-tab-4")
   ];
   var activeRing = 0;
 
@@ -644,11 +711,18 @@ window.addEventListener("DOMContentLoaded", function () {
       onEnterBack: function () { setRingSection(1); }
     });
     ScrollTrigger.create({
-      trigger: "#references-section",
+      trigger: "#bts-section",
       start: "top center",
       end: "bottom center",
       onEnter: function () { setRingSection(2); },
       onEnterBack: function () { setRingSection(2); }
+    });
+    ScrollTrigger.create({
+      trigger: "#references-section",
+      start: "top center",
+      end: "bottom center",
+      onEnter: function () { setRingSection(3); },
+      onEnterBack: function () { setRingSection(3); }
     });
 
     /* Click to scroll — tabs and indices */
@@ -673,6 +747,29 @@ window.addEventListener("DOMContentLoaded", function () {
     yPercent: -8,
     ease: "none"
   });
+
+  /* ── Behind the Scenes — scroll entrance ── */
+  var btsTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#bts-section",
+      start: "top 80%",
+      toggleActions: "play none none reverse"
+    }
+  });
+  btsTl.fromTo(".about-test-bts-heading",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+  );
+  btsTl.fromTo(".about-test-bts-subhead",
+    { opacity: 0, y: 15 },
+    { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+    "-=0.4"
+  );
+  btsTl.fromTo(".about-test-bts-grid > div",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.12 },
+    "-=0.2"
+  );
 
   /* ── References — scroll entrance ── */
   var refsTl = gsap.timeline({
