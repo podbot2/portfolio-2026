@@ -305,30 +305,29 @@ window.addEventListener("DOMContentLoaded", function () {
     scaleX: 0, duration: 1, ease: "power3.inOut"
   }, "-=0.4");
 
-  /* ── Section 2 — scrubbed pin: animation tied to scroll position ── */
-  var bodyTl = gsap.timeline({
+  /* ── Section 2 — always visible, image wipe + text as scroll enhancements ── */
+  gsap.to("#body-section .about-test-img-wipe", {
     scrollTrigger: {
       trigger: "#body-section",
-      start: "top top",
-      end: "+=70%",
-      pin: true,
-      pinSpacing: true,
-      scrub: 0.4
-    }
+      start: "top 85%",
+      end: "top 30%",
+      scrub: 0.3
+    },
+    scaleX: 0,
+    ease: "none"
   });
-  bodyTl.fromTo("#body-section",
-    { opacity: 0 },
-    { opacity: 1, duration: 0.3 }
-  );
-  bodyTl.fromTo("#body-section .about-test-img-wipe",
-    { scaleX: 1 },
-    { scaleX: 0, duration: 0.5, ease: "power2.inOut" },
-    0.05
-  );
-  bodyTl.fromTo("#body-section .about-test-body",
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.4 },
-    0.2
+
+  gsap.fromTo("#body-section .about-test-body",
+    { opacity: 0.3, y: 15 },
+    {
+      opacity: 1, y: 0, ease: "none",
+      scrollTrigger: {
+        trigger: "#body-section",
+        start: "top 80%",
+        end: "top 40%",
+        scrub: 0.3
+      }
+    }
   );
 
   /* ── Subtle parallax on hero image only (Section 2 is pinned) ── */
