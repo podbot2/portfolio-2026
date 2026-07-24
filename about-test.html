@@ -318,11 +318,21 @@ window.addEventListener("DOMContentLoaded", function () {
     scaleX: 0, duration: 1, ease: "power3.inOut"
   }, "-=0.4");
 
-  /* ── Section 2 — animates in on scroll down, reverses only when scrolling back above trigger ── */
+  /* ── Section 2 — pins at top, animation plays, then releases ── */
+  /* Pin section 2 while the entrance animation completes */
+  ScrollTrigger.create({
+    trigger: "#body-section",
+    start: "top top",
+    end: "+=60%",
+    pin: true,
+    pinSpacing: true
+  });
+
+  /* Animation triggers slightly before the pin engages */
   var bodyTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#body-section",
-      start: "top 80%",
+      start: "top 70%",
       toggleActions: "play none none reverse"
     }
   });
