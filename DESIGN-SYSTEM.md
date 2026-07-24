@@ -39,43 +39,68 @@ These values are aligned to the navbar margins so content, nav, and sections sha
 
 ## Animation
 
-### Smooth Scroll
-- **Library:** Lenis v1.0.42
-- **Duration:** 1.2s
-- **Easing:** easeOutExpo — `1.001 - Math.pow(2, -10 * t)`
-- **Wheel multiplier:** 0.8
+### Principles
 
-### Anchor Scroll (e.g. scroll indicator click)
-- **Duration:** 2s
-- **Easing:** cubic ease-in-out — `t < 0.5 ? 4*t³ : 1 - (-2t+2)³/2`
-- **Offset:** -80px (breathing room from viewport top)
+1. **Content is always visible** — animations enhance, never gate. No `opacity: 0` start states on scroll-triggered sections.
+2. **Scrub for scroll-linked effects** (`scrub: 0.3`) so animation speed matches scroll speed.
+3. **No pinning for content sections** — pins create hard stops that fight with Lenis smooth scroll.
+4. **`toggleActions: "play none none reverse"`** for time-based entrances — plays on enter, stays visible when scrolling past, reverses only when scrolling back above trigger.
 
-### Scroll-Triggered Reveals
-- **Char stagger** (headings): `yPercent: 110`, duration 0.75s, stagger 0.018, `power3.out`
-- **Footer heading**: `yPercent: 40`, opacity 0→1, duration 0.9s, `power3.out`
-- **Word scrub** (text blocks): opacity 0.2→1, scrub-linked to scroll position
-- **Card border trace**: SVG stroke-dashoffset, 0.9s `cubic-bezier(0.65, 0, 0.35, 1)`
-- **Card gradient reveal**: opacity transition 0.6s `cubic-bezier(0.33, 0, 0.2, 1)`
+### Patterns
 
-### Scrubbed Section Reveals
+Each pattern is reusable. "Used in" tracks where the implementation code lives for reference.
 
-Content is **always visible** — animations enhance, never gate. No `opacity: 0` start states on scroll-triggered sections.
+#### Smooth Scroll
+- **Specs:** Lenis v1.0.42, duration 1.2s, easeOutExpo, wheelMultiplier 0.8
+- **Used in:** `index.html`, `about-test.html`
 
-- **Image wipe:** solid overlay (`scaleX: 1→0`), scrubbed to scroll position (`scrub: 0.3`), triggers from `top 85%` to `top 30%` of viewport
-- **Body text:** subtle fade (`opacity: 0.3→1`) + slide (`y: 15→0`), scrubbed, triggers from `top 80%` to `top 40%`
-- **References:** time-based entrance (`toggleActions: "play none none reverse"`), heading + cards stagger + accent line draw-in as one clean sequence
+#### Anchor Scroll
+- **Specs:** 2s duration, cubic ease-in-out, -80px offset
+- **Used in:** `index.html` (scroll indicator)
 
-**Key principles:**
-1. Never hide content behind scroll — if a user scrolls fast, they should still see everything
-2. Scrub (`scrub: 0.3`) for scroll-linked effects so animation speed matches scroll speed
-3. No pinning for content sections — pins create hard stops that fight with Lenis smooth scroll
-4. `toggleActions: "play none none reverse"` for time-based entrances — plays on enter, stays visible when scrolling past, reverses only when scrolling back above trigger
+#### Page Load Entrance
+- **Specs:** `translateY(1rem) → 0`, `opacity: 0 → 1`, duration 0.9s, `power3.out`, 0.3s delay
+- **Used in:** `index.html` (hero), `about-test.html` (hero section)
 
-### Page Load
-- **Loader:** 3-dot bounce, fades out over 0.6s on `window.load`
-- **Hero content:** Webflow entrance (translate-y 1rem → 0, opacity 0→1)
-- **Scroll indicator:** fade-in at 1.8s delay (after hero entrance settles)
-- **Spline koi fish:** opacity 0→1 once scene loads
+#### Image Wipe Reveal
+- **Specs:** solid color overlay, `scaleX: 1 → 0`, scrubbed (`scrub: 0.3`), trigger range `top 85%` to `top 30%`
+- **Used in:** `about-test.html` (section 1 on page load, section 2 on scroll)
+
+#### Text Fade-Slide
+- **Specs:** `opacity: 0.3 → 1`, `y: 15 → 0`, scrubbed (`scrub: 0.3`), trigger range `top 80%` to `top 40%`
+- **Used in:** `about-test.html` (section 2 body text)
+
+#### Char Stagger Reveal
+- **Specs:** `yPercent: 110`, duration 0.75s, stagger 0.018, `power3.out`
+- **Used in:** `index.html` ("Selected UX Work" heading)
+
+#### Word Scrub
+- **Specs:** `opacity: 0.2 → 1`, scrub-linked to scroll position
+- **Used in:** `index.html`, case study pages (body text blocks)
+
+#### Card Border Trace
+- **Specs:** SVG `stroke-dashoffset` animation, 0.9s, `cubic-bezier(0.65, 0, 0.35, 1)`
+- **Used in:** `index.html` (project cards on hover)
+
+#### Card Gradient Reveal
+- **Specs:** opacity 0.6s, `cubic-bezier(0.33, 0, 0.2, 1)`
+- **Used in:** `index.html` (project cards on hover)
+
+#### Staggered Card Entrance
+- **Specs:** `opacity: 0 → 1`, `y: 40 → 0`, duration 0.8s, `power3.out`, stagger 0.15, `toggleActions: "play none none reverse"`
+- **Used in:** `about-test.html` (reference cards)
+
+#### Accent Line Draw
+- **Specs:** `width: 0 → 60px`, accent gradient `#6a6ff7`, duration 0.6s, `power2.out`
+- **Used in:** `about-test.html` (reference cards)
+
+#### Footer Heading Reveal
+- **Specs:** `yPercent: 40`, `opacity: 0 → 1`, duration 0.9s, `power3.out`
+- **Used in:** `index.html`, `about-test.html` (footer)
+
+#### Page Loader
+- **Specs:** 3-dot bounce, fades out over 0.6s on `window.load`
+- **Used in:** all pages
 
 ### Hover States
 - **Project cards:** gradient overlay + SVG border trace
