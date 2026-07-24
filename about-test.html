@@ -103,8 +103,34 @@ html { scrollbar-width: none; }
   font-weight: 700;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   letter-spacing: -0.01em;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
   color: #fff;
+}
+/* Stats bar */
+.about-test-stats {
+  display: flex;
+  gap: clamp(32px, 5vw, 64px);
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.about-test-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.about-test-stat-number {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  color: #fff;
+}
+.about-test-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.03em;
 }
 .about-test-ref-cards {
   display: flex;
@@ -198,6 +224,7 @@ html { scrollbar-width: none; }
     flex-direction: column !important;
   }
   .about-test-img-wrap { max-height: 50vh; }
+  .about-test-stats { flex-wrap: wrap; gap: 24px 40px; }
   .about-test-ref-cards { flex-direction: column; }
   .about-test-refs {
     padding: 60px 20px;
@@ -257,6 +284,20 @@ html { scrollbar-width: none; }
   <!-- ══ Section 3: References ══ -->
   <section class="about-test-refs" id="references-section">
     <h2 class="about-test-refs-heading">References</h2>
+    <div class="about-test-stats">
+      <div class="about-test-stat">
+        <p class="about-test-stat-number">4+</p>
+        <p class="about-test-stat-label">Years experience</p>
+      </div>
+      <div class="about-test-stat">
+        <p class="about-test-stat-number">30K+</p>
+        <p class="about-test-stat-label">Users shipped to</p>
+      </div>
+      <div class="about-test-stat">
+        <p class="about-test-stat-number">2.5x</p>
+        <p class="about-test-stat-label">Engagement lift</p>
+      </div>
+    </div>
     <div class="about-test-ref-cards">
 
       <div class="about-test-ref-card">
@@ -371,6 +412,11 @@ window.addEventListener("DOMContentLoaded", function () {
   refsTl.fromTo(".about-test-refs-heading",
     { opacity: 0, y: 30 },
     { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
+  );
+  refsTl.fromTo(".about-test-stat",
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.1 },
+    "-=0.3"
   );
   refsTl.fromTo(".about-test-ref-card",
     { opacity: 0, y: 30 },
