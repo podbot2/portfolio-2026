@@ -428,19 +428,19 @@ html { scrollbar-width: none; }
     <path class="ring-body" id="ring-body" d="M 0,40 A 100,100 0 0,1 0,240"/>
     <!-- Progress stroke on outer edge (radius 136 = 100 + 36 half of 72) -->
     <path class="ring-progress" id="ring-progress" d="M 0,4 A 136,136 0 0,1 0,276"/>
-    <!-- Section indices centered in ring thickness (at radius 100, the midpoint of the 72px stroke) -->
-    <text class="ring-index" id="ring-idx-1" x="0" y="40" data-section="hero-section">01</text>
+    <!-- Section indices on ring centerline, compressed to 35°–90°–145° -->
+    <text class="ring-index" id="ring-idx-1" x="57" y="58" data-section="hero-section">01</text>
     <text class="ring-index" id="ring-idx-2" x="100" y="140" data-section="body-section">02</text>
-    <text class="ring-index" id="ring-idx-3" x="0" y="240" data-section="references-section">03</text>
+    <text class="ring-index" id="ring-idx-3" x="57" y="222" data-section="references-section">03</text>
   </svg>
-  <!-- Extending tabs — positioned absolutely over the SVG -->
-  <div class="ring-tab active" id="ring-tab-1" data-section="hero-section" style="left:20px;top:28px;">
+  <!-- Extending tabs — originate from marker positions, extend right -->
+  <div class="ring-tab active" id="ring-tab-1" data-section="hero-section" style="left:65px;top:46px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">About</span>
   </div>
-  <div class="ring-tab" id="ring-tab-2" data-section="body-section" style="left:110px;top:128px;">
+  <div class="ring-tab" id="ring-tab-2" data-section="body-section" style="left:108px;top:128px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">Story</span>
   </div>
-  <div class="ring-tab" id="ring-tab-3" data-section="references-section" style="left:20px;top:228px;">
+  <div class="ring-tab" id="ring-tab-3" data-section="references-section" style="left:65px;top:210px;">
     <span class="ring-tab-dot"></span><span class="ring-tab-label">References</span>
   </div>
 </div>
