@@ -86,6 +86,50 @@ html { scrollbar-width: none; }
   z-index: 2;
 }
 
+/* ── Image tooltips ── */
+.img-tooltip-wrap {
+  position: relative;
+  cursor: pointer;
+}
+.img-tooltip-wrap .img-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%) translateY(6px);
+  background: rgba(255,255,255,0.92);
+  color: #0a0a0a;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  max-width: 280px;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1), transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  z-index: 5;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.img-tooltip-wrap:hover .img-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+/* Tooltip tail */
+.img-tooltip-wrap .img-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 2px;
+  rotate: 45deg;
+}
+
 /* ── Behind the Scenes section ── */
 .about-test-bts {
   display: flex;
@@ -523,9 +567,10 @@ html { scrollbar-width: none; }
     <div class="about-test-text">
       <h1 class="about-test-heading">A designer for the moments complexity usually wins</h1>
     </div>
-    <div class="about-test-img-wrap">
+    <div class="about-test-img-wrap img-tooltip-wrap">
       <img src="About_Imgs/About_Img1.png" alt="Jennifer Flores at Yao Station" />
       <div class="about-test-img-wipe"></div>
+      <span class="img-tooltip">Exploring Japan between sprints — Yao Station, Osaka</span>
     </div>
   </section>
 
@@ -534,9 +579,10 @@ html { scrollbar-width: none; }
     <div class="about-test-text">
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
-    <div class="about-test-img-wrap">
+    <div class="about-test-img-wrap img-tooltip-wrap">
       <img src="About_Imgs/About_img2.png" alt="Jennifer Flores in the mountains" />
       <div class="about-test-img-wipe"></div>
+      <span class="img-tooltip">Chasing perspective at 10,000 feet — Mt. Rainier</span>
     </div>
   </section>
 
@@ -549,9 +595,9 @@ html { scrollbar-width: none; }
     <div class="about-test-bts-grid-wrap">
       <div class="about-test-img-wipe"></div>
       <div class="about-test-bts-grid">
-        <div><img src="About_Imgs/rose_img.png" alt="Rose Thorn Bud workshop board" /></div>
-        <div><img src="About_Imgs/bud_img.png" alt="Bud workshop board with sticky notes" /></div>
-        <div class="bts-full"><img src="About_Imgs/group_img.png" alt="UX Connect team event at Cox Automotive" /></div>
+        <div class="img-tooltip-wrap"><img src="About_Imgs/rose_img.png" alt="Rose Thorn Bud workshop board" /><span class="img-tooltip">Running a Rose, Thorn, Bud session to surface what's working and what's not</span></div>
+        <div class="img-tooltip-wrap"><img src="About_Imgs/bud_img.png" alt="Bud workshop board with sticky notes" /><span class="img-tooltip">Mapping opportunities during a team retro at Cox Automotive</span></div>
+        <div class="bts-full img-tooltip-wrap"><img src="About_Imgs/group_img.png" alt="UX Connect team event at Cox Automotive" /><span class="img-tooltip">UX Connect 2025 — the people at Cox are one of the best parts about working here</span></div>
       </div>
     </div>
   </section>
