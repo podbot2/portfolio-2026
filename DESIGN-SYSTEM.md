@@ -57,6 +57,20 @@ These values are aligned to the navbar margins so content, nav, and sections sha
 - **Card border trace**: SVG stroke-dashoffset, 0.9s `cubic-bezier(0.65, 0, 0.35, 1)`
 - **Card gradient reveal**: opacity transition 0.6s `cubic-bezier(0.33, 0, 0.2, 1)`
 
+### Scrubbed Section Reveals (about page pattern)
+
+Content is **always visible** — animations enhance, never gate. No `opacity: 0` start states on scroll-triggered sections.
+
+- **Image wipe:** solid overlay (`scaleX: 1→0`), scrubbed to scroll position (`scrub: 0.3`), triggers from `top 85%` to `top 30%` of viewport
+- **Body text:** subtle fade (`opacity: 0.3→1`) + slide (`y: 15→0`), scrubbed, triggers from `top 80%` to `top 40%`
+- **References:** time-based entrance (`toggleActions: "play none none reverse"`), heading + cards stagger + accent line draw-in as one clean sequence
+
+**Key principles:**
+1. Never hide content behind scroll — if a user scrolls fast, they should still see everything
+2. Scrub (`scrub: 0.3`) for scroll-linked effects so animation speed matches scroll speed
+3. No pinning for content sections — pins create hard stops that fight with Lenis smooth scroll
+4. `toggleActions: "play none none reverse"` for time-based entrances — plays on enter, stays visible when scrolling past, reverses only when scrolling back above trigger
+
 ### Page Load
 - **Loader:** 3-dot bounce, fades out over 0.6s on `window.load`
 - **Hero content:** Webflow entrance (translate-y 1rem → 0, opacity 0→1)
