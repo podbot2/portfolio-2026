@@ -89,6 +89,8 @@ html { scrollbar-width: none; }
 /* ── Image tooltips (cursor-following) ── */
 .img-tooltip-wrap {
   position: relative;
+}
+.img-tooltip-wrap img {
   cursor: none;
 }
 /* Custom cursor dot */
@@ -894,26 +896,20 @@ window.addEventListener("DOMContentLoaded", function () {
 
   document.querySelectorAll(".img-tooltip-wrap").forEach(function (wrap) {
     var tip = wrap.querySelector(".img-tooltip");
-    if (!tip) return;
+    var img = wrap.querySelector("img");
+    if (!tip || !img) return;
 
-    /* Pre-measure: briefly make visible off-screen to get height */
-    tip.style.left = "-9999px";
-    tip.style.top = "-9999px";
-    tip.style.opacity = "0";
-    tip.style.display = "block";
-
-    wrap.addEventListener("mouseenter", function () {
+    img.addEventListener("mouseenter", function () {
       tip.style.opacity = "1";
       cursorDot.style.opacity = "1";
     });
-    wrap.addEventListener("mouseleave", function () {
+    img.addEventListener("mouseleave", function () {
       tip.style.opacity = "0";
       cursorDot.style.opacity = "0";
     });
-    wrap.addEventListener("mousemove", function (e) {
-      var tipH = tip.offsetHeight;
+    img.addEventListener("mousemove", function (e) {
+      var tipH = tip.offsetHeight || 40;
       var above = e.clientY - tipH - 20;
-      /* If tooltip would go off-screen top, place it below cursor */
       if (above < 8) {
         tip.style.top = (e.clientY + 20) + "px";
       } else {
