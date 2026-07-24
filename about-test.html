@@ -83,6 +83,14 @@ html { scrollbar-width: none; }
   z-index: 2;
 }
 
+/* ── Scroll snap ── */
+html {
+  scroll-snap-type: y proximity;
+}
+.about-test-snap {
+  scroll-snap-align: start;
+}
+
 /* ── References section ── */
 .about-test-refs {
   padding: 80px 90px 120px;
@@ -103,13 +111,31 @@ html { scrollbar-width: none; }
   gap: 32px;
 }
 .about-test-ref-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
-  padding: 40px;
+  padding: 48px 40px 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  transition: border-color 0.6s ease, background 0.6s ease;
+}
+.about-test-ref-card:hover {
+  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+}
+/* Decorative quote mark */
+.about-test-ref-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  left: 32px;
+  font-family: 'PT Serif', serif;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(106, 111, 247, 0.25);
+  pointer-events: none;
 }
 .about-test-ref-quote {
   font-family: 'Inter', sans-serif;
@@ -128,6 +154,17 @@ html { scrollbar-width: none; }
   font-size: 0.85rem;
   color: rgba(255,255,255,0.4);
   margin-top: 2px;
+}
+/* Accent line that draws in on reveal */
+.about-test-ref-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #6a6ff7, rgba(106,111,247,0));
+  margin-bottom: 4px;
+  transition: width 1.2s cubic-bezier(0.33, 0, 0.2, 1);
+}
+.about-test-ref-line.revealed {
+  width: 60px;
 }
 
 /* ── Load animation (translate-Y fade entrance) ── */
@@ -153,6 +190,7 @@ html { scrollbar-width: none; }
     flex-direction: column !important;
   }
   .about-test-refs { padding-left: 20px; padding-right: 20px; }
+  html { scroll-snap-type: none; }
 }
 </style>
 </head>
@@ -177,7 +215,7 @@ html { scrollbar-width: none; }
 <main>
 
   <!-- ══ Section 1: Hero — Text left, Image right ══ -->
-  <section class="about-test-section about-test-entrance" id="hero-section">
+  <section class="about-test-section about-test-entrance about-test-snap" id="hero-section">
     <div class="about-test-text">
       <h1 class="about-test-heading">A designer for the moments complexity usually wins</h1>
     </div>
@@ -188,7 +226,7 @@ html { scrollbar-width: none; }
   </section>
 
   <!-- ══ Section 2: Body — Image left, Text right ══ -->
-  <section class="about-test-section reverse about-test-entrance" id="body-section">
+  <section class="about-test-section reverse about-test-entrance about-test-snap" id="body-section">
     <div class="about-test-text">
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
@@ -199,12 +237,13 @@ html { scrollbar-width: none; }
   </section>
 
   <!-- ══ Section 3: References ══ -->
-  <section class="about-test-refs about-test-entrance" id="references-section">
+  <section class="about-test-refs about-test-entrance about-test-snap" id="references-section">
     <h2 class="about-test-refs-heading">References</h2>
     <div class="about-test-ref-cards">
 
       <div class="about-test-ref-card">
         <p class="about-test-ref-quote">Jen is a very talented UX designer who is a delight to work with! Jen's ability to create, organize and maintain a design system for cloudServe has been crucial to our success as a UX team. Not only does she bring efficiency and attention to detail to our team, but critical thinking and a passion for design research. Our team has benefitted immensely from her skills in prototyping, usability testing, marketing and Figma. Jen is very successful in collaborating across teams at GM, working along side engineering and data science teams to create quality products for our users.</p>
+        <div class="about-test-ref-line"></div>
         <div>
           <p class="about-test-ref-author">Maeve Tierney</p>
           <p class="about-test-ref-role">Lead Designer</p>
@@ -213,6 +252,7 @@ html { scrollbar-width: none; }
 
       <div class="about-test-ref-card">
         <p class="about-test-ref-quote">Jen and I collaborated as UX/UI Designers, and she has proven invaluable. Jen led our transition from Adobe XD to Figma, improving our workflow and productivity. Her strong communication and user empathy during interviews and design processes are exceptional. She also played a key role in planning meetings with cloud architects, clarifying requirements, and streamlining our workflow. Jen's clear communication and visualization skills significantly enhanced our team's efficiency. She would be a great addition to your team.</p>
+        <div class="about-test-ref-line"></div>
         <div>
           <p class="about-test-ref-author">Alexander Sanchez</p>
           <p class="about-test-ref-role">UX/UI Designer</p>
@@ -252,7 +292,7 @@ window.addEventListener("DOMContentLoaded", function () {
   gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
   gsap.ticker.lagSmoothing(0);
 
-  /* ── Page load entrance (translate-Y fade) ── */
+  /* ── Page load entrance (translate-Y fade) — plays once, stays visible ── */
   gsap.to(".about-test-entrance", {
     opacity: 1,
     y: 0,
@@ -270,18 +310,19 @@ window.addEventListener("DOMContentLoaded", function () {
     delay: 0.5
   });
 
-  /* Section 2 image wipe — triggered on scroll */
+  /* Section 2 image wipe — triggered on scroll, stays revealed */
   gsap.to("#body-section .about-test-img-wipe", {
     scrollTrigger: {
       trigger: "#body-section",
-      start: "top 75%"
+      start: "top 75%",
+      toggleActions: "play none none none"
     },
     scaleX: 0,
     duration: 1,
     ease: "power3.inOut"
   });
 
-  /* ── Subtle parallax on images ── */
+  /* ── Subtle parallax on images (always active both directions) ── */
   document.querySelectorAll(".about-test-img-wrap").forEach(function (wrap) {
     gsap.to(wrap, {
       scrollTrigger: {
@@ -295,11 +336,12 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /* ── Section 2 text — scroll-triggered entrance ── */
+  /* ── Section 2 text — scroll-triggered, stays visible ── */
   gsap.from("#body-section .about-test-body", {
     scrollTrigger: {
       trigger: "#body-section",
-      start: "top 75%"
+      start: "top 75%",
+      toggleActions: "play none none none"
     },
     opacity: 0,
     y: 30,
@@ -307,17 +349,75 @@ window.addEventListener("DOMContentLoaded", function () {
     ease: "power3.out"
   });
 
-  /* ── References — scroll-triggered entrance ── */
+  /* ── References — enhanced entrance ── */
+
+  /* Heading slides in */
+  gsap.from(".about-test-refs-heading", {
+    scrollTrigger: {
+      trigger: ".about-test-refs",
+      start: "top 85%",
+      toggleActions: "play none none none"
+    },
+    opacity: 0,
+    x: -30,
+    duration: 0.8,
+    ease: "power3.out"
+  });
+
+  /* Cards fade up with stagger */
   gsap.from(".about-test-ref-card", {
     scrollTrigger: {
       trigger: ".about-test-refs",
-      start: "top 80%"
+      start: "top 75%",
+      toggleActions: "play none none none"
     },
     opacity: 0,
-    y: 40,
-    duration: 0.8,
+    y: 50,
+    scale: 0.97,
+    duration: 0.9,
     ease: "power3.out",
-    stagger: 0.15
+    stagger: 0.2
+  });
+
+  /* Quote text fades in per card with slight delay after card appears */
+  gsap.from(".about-test-ref-quote", {
+    scrollTrigger: {
+      trigger: ".about-test-refs",
+      start: "top 70%",
+      toggleActions: "play none none none"
+    },
+    opacity: 0,
+    y: 15,
+    duration: 0.7,
+    ease: "power2.out",
+    stagger: 0.25,
+    delay: 0.3
+  });
+
+  /* Accent lines draw in */
+  ScrollTrigger.create({
+    trigger: ".about-test-refs",
+    start: "top 65%",
+    onEnter: function () {
+      document.querySelectorAll(".about-test-ref-line").forEach(function (line, i) {
+        setTimeout(function () { line.classList.add("revealed"); }, i * 200 + 500);
+      });
+    }
+  });
+
+  /* Author info fades in last */
+  gsap.from(".about-test-ref-author, .about-test-ref-role", {
+    scrollTrigger: {
+      trigger: ".about-test-refs",
+      start: "top 60%",
+      toggleActions: "play none none none"
+    },
+    opacity: 0,
+    y: 10,
+    duration: 0.6,
+    ease: "power2.out",
+    stagger: 0.1,
+    delay: 0.6
   });
 });
 </script>
