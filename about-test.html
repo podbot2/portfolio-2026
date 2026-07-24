@@ -89,8 +89,25 @@ html { scrollbar-width: none; }
 /* ── Image tooltips (cursor-following) ── */
 .img-tooltip-wrap {
   position: relative;
-  cursor: pointer;
+  cursor: none;
 }
+/* Custom cursor dot */
+.img-cursor-dot {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  pointer-events: none;
+  z-index: 101;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+/* Ensure wipe doesn't block hover after reveal */
+.about-test-img-wipe[style*="scale"] { pointer-events: none; }
+.about-test-img-wipe { pointer-events: none; }
 .img-tooltip-wrap .img-tooltip {
   position: fixed;
   pointer-events: none;
@@ -870,21 +887,29 @@ window.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  /* ── Cursor-following tooltips ── */
+  /* ── Cursor-following tooltips + custom dot cursor ── */
+  var cursorDot = document.createElement("div");
+  cursorDot.className = "img-cursor-dot";
+  document.body.appendChild(cursorDot);
+
   document.querySelectorAll(".img-tooltip-wrap").forEach(function (wrap) {
     var tip = wrap.querySelector(".img-tooltip");
     if (!tip) return;
 
     wrap.addEventListener("mouseenter", function () {
       tip.style.opacity = "1";
+      cursorDot.style.opacity = "1";
     });
     wrap.addEventListener("mouseleave", function () {
       tip.style.opacity = "0";
+      cursorDot.style.opacity = "0";
     });
     wrap.addEventListener("mousemove", function (e) {
       tip.style.left = e.clientX + "px";
       tip.style.top = (e.clientY - tip.offsetHeight - 16) + "px";
       tip.style.transform = "translateX(-50%)";
+      cursorDot.style.left = e.clientX + "px";
+      cursorDot.style.top = e.clientY + "px";
     });
   });
 });
