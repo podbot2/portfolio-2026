@@ -265,72 +265,97 @@ html { scrollbar-width: none; }
   }
 }
 
-/* ── Arc nav ── */
-.about-test-arc-nav {
+/* ── Ring nav ── */
+.ring-nav {
   position: fixed;
-  left: -60px;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 120px;
-  height: 200px;
   z-index: 10;
   pointer-events: none;
 }
-.about-test-arc-nav svg {
-  width: 140px;
-  height: 200px;
+.ring-nav svg {
   overflow: visible;
+  display: block;
 }
-/* Track arc */
-.arc-track {
+/* Ghost ring (depth layer) */
+.ring-ghost {
   fill: none;
-  stroke: rgba(255,255,255,0.12);
-  stroke-width: 1;
+  stroke: rgba(255,255,255,0.03);
+  stroke-width: 76;
 }
-/* Progress arc */
-.arc-progress {
+/* Main ring */
+.ring-body {
+  fill: none;
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 72;
+}
+/* Progress stroke on outer edge */
+.ring-progress {
   fill: none;
   stroke: rgba(106,111,247,0.7);
-  stroke-width: 1;
+  stroke-width: 2;
   stroke-linecap: round;
 }
-/* Indicator dot + halo */
-.arc-dot {
-  fill: #6a6ff7;
-  transition: cx 0.3s cubic-bezier(0.16,1,0.3,1), cy 0.3s cubic-bezier(0.16,1,0.3,1);
-}
-.arc-dot-halo {
-  fill: rgba(106,111,247,0.15);
-  transition: cx 0.3s cubic-bezier(0.16,1,0.3,1), cy 0.3s cubic-bezier(0.16,1,0.3,1);
-}
-/* Section labels */
-.arc-label {
+/* Marker indices (01, 02, 03) */
+.ring-index {
   font-family: monospace;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.08em;
   fill: rgba(255,255,255,0.35);
+  text-anchor: middle;
+  dominant-baseline: central;
+  cursor: pointer;
+  pointer-events: auto;
   transition: fill 0.3s cubic-bezier(0.16,1,0.3,1);
 }
-.arc-label.active {
-  fill: rgba(255,255,255,0.9);
+.ring-index:hover {
+  fill: rgba(255,255,255,0.7);
 }
-/* Tick marks */
-.arc-tick {
-  fill: none;
-  stroke: rgba(255,255,255,0.2);
-  stroke-width: 1;
-  transition: stroke 0.3s cubic-bezier(0.16,1,0.3,1);
+/* Extending tab */
+.ring-tab {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 0 20px 20px 0;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s cubic-bezier(0.16,1,0.3,1);
 }
-.arc-tick.active {
-  stroke: #6a6ff7;
+.ring-tab.active {
+  transform: scaleX(1);
+  opacity: 1;
+}
+.ring-tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6a6ff7;
+  flex-shrink: 0;
+}
+.ring-tab-label {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
 }
 @media (max-width: 991px) {
-  .about-test-arc-nav { left: -70px; }
+  .ring-nav { left: -10px; }
 }
 @media (max-width: 767px) {
-  .about-test-arc-nav { display: none; }
+  .ring-nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring-tab { transition: none !important; }
 }
 
 /* ── Load animation (translate-Y fade entrance) ── */
@@ -393,26 +418,31 @@ html { scrollbar-width: none; }
 
 <script src="glass-nav.js"></script>
 
-<!-- Arc navigation -->
-<div class="about-test-arc-nav" id="arc-nav">
-  <svg viewBox="0 0 140 200">
-    <!-- Half-circle arc track (right half, flat edge on left) -->
-    <path class="arc-track" id="arc-track" d="M 60,10 A 90,90 0 0,1 60,190"/>
-    <!-- Progress overlay -->
-    <path class="arc-progress" id="arc-progress" d="M 60,10 A 90,90 0 0,1 60,190"/>
-    <!-- Tick marks: 8px hairlines perpendicular to arc at each section -->
-    <line class="arc-tick active" id="arc-tick-1" x1="56" y1="10" x2="64" y2="10"/>
-    <line class="arc-tick" id="arc-tick-2" x1="106" y1="100" x2="114" y2="100"/>
-    <line class="arc-tick" id="arc-tick-3" x1="56" y1="190" x2="64" y2="190"/>
-    <!-- Dot halo -->
-    <circle class="arc-dot-halo" id="arc-dot-halo" cx="60" cy="10" r="12"/>
-    <!-- Indicator dot -->
-    <circle class="arc-dot" id="arc-dot" cx="60" cy="10" r="3"/>
-    <!-- Section labels: 10px offset from tick, perpendicular to arc -->
-    <text class="arc-label active" id="arc-label-1" x="68" y="7">About</text>
-    <text class="arc-label" id="arc-label-2" x="118" y="103">Story</text>
-    <text class="arc-label" id="arc-label-3" x="68" y="198">References</text>
+<!-- Ring navigation -->
+<div class="ring-nav" id="ring-nav" style="width:200px;height:280px;">
+  <svg viewBox="0 0 200 280" width="200" height="280">
+    <!-- Half-circle: center at 0,140 radius 100 — right half arc from top to bottom -->
+    <!-- Ghost ring (depth) -->
+    <path class="ring-ghost" d="M 0,40 A 100,100 0 0,1 0,240"/>
+    <!-- Main ring body -->
+    <path class="ring-body" id="ring-body" d="M 0,40 A 100,100 0 0,1 0,240"/>
+    <!-- Progress stroke on outer edge (radius 136 = 100 + 36 half of 72) -->
+    <path class="ring-progress" id="ring-progress" d="M 0,4 A 136,136 0 0,1 0,276"/>
+    <!-- Section indices centered in ring thickness (at radius 100, the midpoint of the 72px stroke) -->
+    <text class="ring-index" id="ring-idx-1" x="0" y="40" data-section="hero-section">01</text>
+    <text class="ring-index" id="ring-idx-2" x="100" y="140" data-section="body-section">02</text>
+    <text class="ring-index" id="ring-idx-3" x="0" y="240" data-section="references-section">03</text>
   </svg>
+  <!-- Extending tabs — positioned absolutely over the SVG -->
+  <div class="ring-tab active" id="ring-tab-1" data-section="hero-section" style="left:20px;top:28px;">
+    <span class="ring-tab-dot"></span><span class="ring-tab-label">About</span>
+  </div>
+  <div class="ring-tab" id="ring-tab-2" data-section="body-section" style="left:110px;top:128px;">
+    <span class="ring-tab-dot"></span><span class="ring-tab-label">Story</span>
+  </div>
+  <div class="ring-tab" id="ring-tab-3" data-section="references-section" style="left:20px;top:228px;">
+    <span class="ring-tab-dot"></span><span class="ring-tab-label">References</span>
+  </div>
 </div>
 
 <main>
@@ -560,37 +590,27 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   );
 
-  /* ── Arc nav — progress + section indicator ── */
-  var arcTrack = document.getElementById("arc-track");
-  var arcProgress = document.getElementById("arc-progress");
-  var arcDot = document.getElementById("arc-dot");
-  var arcDotHalo = document.getElementById("arc-dot-halo");
-  var arcLabels = [
-    document.getElementById("arc-label-1"),
-    document.getElementById("arc-label-2"),
-    document.getElementById("arc-label-3")
+  /* ── Ring nav — progress + extending tabs ── */
+  var ringProgress = document.getElementById("ring-progress");
+  var ringTabs = [
+    document.getElementById("ring-tab-1"),
+    document.getElementById("ring-tab-2"),
+    document.getElementById("ring-tab-3")
   ];
-  var arcTicks = [
-    document.getElementById("arc-tick-1"),
-    document.getElementById("arc-tick-2"),
-    document.getElementById("arc-tick-3")
+  var ringIndices = [
+    document.getElementById("ring-idx-1"),
+    document.getElementById("ring-idx-2"),
+    document.getElementById("ring-idx-3")
   ];
+  var activeRing = 0;
 
-  if (arcTrack && arcProgress) {
-    var arcLen = arcTrack.getTotalLength();
-    arcProgress.style.strokeDasharray = arcLen;
-    arcProgress.style.strokeDashoffset = arcLen;
+  if (ringProgress) {
+    var ringLen = ringProgress.getTotalLength();
+    ringProgress.style.strokeDasharray = ringLen;
+    ringProgress.style.strokeDashoffset = ringLen;
 
-    /* Three points along the arc: 0%, 50%, 100% */
-    var arcPoints = [
-      arcTrack.getPointAtLength(0),
-      arcTrack.getPointAtLength(arcLen * 0.5),
-      arcTrack.getPointAtLength(arcLen)
-    ];
-    var activeArc = 0;
-
-    /* Scrub progress arc to scroll position */
-    gsap.to(arcProgress, {
+    /* Scrub progress stroke to scroll position */
+    gsap.to(ringProgress, {
       scrollTrigger: {
         trigger: "main",
         start: "top top",
@@ -601,40 +621,44 @@ window.addEventListener("DOMContentLoaded", function () {
       ease: "none"
     });
 
-    /* Move dot + halo, highlight label + tick per section */
-    function setArcSection(index) {
-      if (index === activeArc) return;
-      arcLabels[activeArc].classList.remove("active");
-      arcTicks[activeArc].classList.remove("active");
-      arcLabels[index].classList.add("active");
-      arcTicks[index].classList.add("active");
-      arcDot.setAttribute("cx", arcPoints[index].x);
-      arcDot.setAttribute("cy", arcPoints[index].y);
-      arcDotHalo.setAttribute("cx", arcPoints[index].x);
-      arcDotHalo.setAttribute("cy", arcPoints[index].y);
-      activeArc = index;
+    /* Extend active tab, retract others */
+    function setRingSection(index) {
+      if (index === activeRing) return;
+      ringTabs[activeRing].classList.remove("active");
+      ringTabs[index].classList.add("active");
+      activeRing = index;
     }
 
     ScrollTrigger.create({
       trigger: "#hero-section",
       start: "top center",
       end: "bottom center",
-      onEnter: function () { setArcSection(0); },
-      onEnterBack: function () { setArcSection(0); }
+      onEnter: function () { setRingSection(0); },
+      onEnterBack: function () { setRingSection(0); }
     });
     ScrollTrigger.create({
       trigger: "#body-section",
       start: "top center",
       end: "bottom center",
-      onEnter: function () { setArcSection(1); },
-      onEnterBack: function () { setArcSection(1); }
+      onEnter: function () { setRingSection(1); },
+      onEnterBack: function () { setRingSection(1); }
     });
     ScrollTrigger.create({
       trigger: "#references-section",
       start: "top center",
       end: "bottom center",
-      onEnter: function () { setArcSection(2); },
-      onEnterBack: function () { setArcSection(2); }
+      onEnter: function () { setRingSection(2); },
+      onEnterBack: function () { setRingSection(2); }
+    });
+
+    /* Click to scroll — tabs and indices */
+    document.querySelectorAll("[data-section]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        var target = document.getElementById(el.getAttribute("data-section"));
+        if (target && window._lenis) {
+          window._lenis.scrollTo(target, { duration: 2, easing: function (t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; } });
+        }
+      });
     });
   }
 
