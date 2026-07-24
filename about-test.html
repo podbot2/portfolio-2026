@@ -35,7 +35,6 @@ html { scrollbar-width: none; }
   margin: 0 auto;
   height: 100vh;
   height: 100dvh;
-  overflow: hidden;
   box-sizing: border-box;
 }
 .about-test-section.reverse {
@@ -67,16 +66,15 @@ html { scrollbar-width: none; }
 .about-test-img-wrap {
   flex: 0 1 50%;
   min-width: 0;
-  max-height: 70vh;
+  max-height: 75vh;
   position: relative;
-  overflow: hidden;
   border-radius: 16px;
 }
 .about-test-img-wrap img {
   width: 100%;
-  height: 100%;
+  max-height: 75vh;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 16px;
 }
 /* Image wipe reveal overlay */
@@ -101,12 +99,11 @@ html {
   padding: 80px 90px;
   max-width: 1400px;
   margin: 0 auto;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
   box-sizing: border-box;
 }
 .about-test-refs-heading {
@@ -251,7 +248,7 @@ html {
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
     <div class="about-test-img-wrap">
-      <img src="About_img2.JPG" alt="Jennifer Flores" />
+      <img src="About_img2.png" alt="Jennifer Flores in the mountains" />
       <div class="about-test-img-wipe"></div>
     </div>
   </section>
@@ -321,13 +318,12 @@ window.addEventListener("DOMContentLoaded", function () {
     scaleX: 0, duration: 1, ease: "power3.inOut"
   }, "-=0.4");
 
-  /* ── Section 2 — bidirectional scroll animation ── */
+  /* ── Section 2 — animates in on scroll down, reverses only when scrolling back above trigger ── */
   var bodyTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#body-section",
       start: "top 80%",
-      end: "top 20%",
-      toggleActions: "play reverse play reverse"
+      toggleActions: "play none none reverse"
     }
   });
   bodyTl.fromTo("#body-section",
@@ -359,13 +355,12 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /* ── References — bidirectional entrance ── */
+  /* ── References — animates in on scroll down, reverses only when scrolling back above trigger ── */
   var refsTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#references-section",
       start: "top 80%",
-      end: "top 20%",
-      toggleActions: "play reverse play reverse"
+      toggleActions: "play none none reverse"
     }
   });
 
