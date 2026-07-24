@@ -86,14 +86,6 @@ html { scrollbar-width: none; }
   z-index: 2;
 }
 
-/* ── Scroll snap ── */
-html {
-  scroll-snap-type: y proximity;
-}
-.about-test-snap {
-  scroll-snap-align: start;
-}
-
 /* ── References section ── */
 .about-test-refs {
   padding: 80px 90px;
@@ -207,7 +199,6 @@ html {
     min-height: 100vh;
     min-height: 100dvh;
   }
-  html { scroll-snap-type: none; }
 }
 </style>
 </head>
@@ -232,7 +223,7 @@ html {
 <main>
 
   <!-- ══ Section 1: Hero — Text left, Image right ══ -->
-  <section class="about-test-section about-test-entrance about-test-snap" id="hero-section">
+  <section class="about-test-section about-test-entrance" id="hero-section">
     <div class="about-test-text">
       <h1 class="about-test-heading">A designer for the moments complexity usually wins</h1>
     </div>
@@ -243,7 +234,7 @@ html {
   </section>
 
   <!-- ══ Section 2: Body — Image left, Text right ══ -->
-  <section class="about-test-section reverse about-test-entrance about-test-snap" id="body-section">
+  <section class="about-test-section reverse about-test-entrance" id="body-section">
     <div class="about-test-text">
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
@@ -254,7 +245,7 @@ html {
   </section>
 
   <!-- ══ Section 3: References ══ -->
-  <section class="about-test-refs about-test-entrance about-test-snap" id="references-section">
+  <section class="about-test-refs about-test-entrance" id="references-section">
     <h2 class="about-test-refs-heading">References</h2>
     <div class="about-test-ref-cards">
 
