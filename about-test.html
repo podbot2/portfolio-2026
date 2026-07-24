@@ -121,6 +121,9 @@ html { scrollbar-width: none; }
   flex: 0 1 55%;
   min-width: 0;
   max-width: 520px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
 }
 .about-test-bts-grid {
   display: grid;
@@ -544,6 +547,7 @@ html { scrollbar-width: none; }
       <p class="about-test-bts-subhead">The workshops, the people, and the walls covered in sticky notes.</p>
     </div>
     <div class="about-test-bts-grid-wrap">
+      <div class="about-test-img-wipe"></div>
       <div class="about-test-bts-grid">
         <div><img src="About_Imgs/rose_img.png" alt="Rose Thorn Bud workshop board" /></div>
         <div><img src="About_Imgs/bud_img.png" alt="Bud workshop board with sticky notes" /></div>
@@ -773,18 +777,16 @@ window.addEventListener("DOMContentLoaded", function () {
       }
     }
   );
-  gsap.fromTo(".about-test-bts-grid-wrap",
-    { opacity: 0.3, y: 15 },
-    {
-      opacity: 1, y: 0, ease: "none",
-      scrollTrigger: {
-        trigger: "#bts-section",
-        start: "top 85%",
-        end: "top 30%",
-        scrub: 0.3
-      }
-    }
-  );
+  gsap.to("#bts-section .about-test-img-wipe", {
+    scrollTrigger: {
+      trigger: "#bts-section",
+      start: "top 85%",
+      end: "top 30%",
+      scrub: 0.3
+    },
+    scaleX: 0,
+    ease: "none"
+  });
 
   /* ── References — scrubbed entrance (matches Section 2) ── */
   gsap.fromTo("#references-section",
