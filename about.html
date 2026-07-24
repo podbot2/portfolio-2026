@@ -489,39 +489,61 @@ html { scrollbar-width: none; }
 @media (max-width: 767px) {
   .about-test-section {
     flex-direction: column !important;
-    padding: 40px 20px;
+    padding: 60px 20px;
     gap: 24px;
     height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: auto;
   }
   .about-test-section.reverse {
     flex-direction: column !important;
   }
-  .about-test-img-wrap { max-height: 50vh; }
-  .about-test-stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .about-test-ref-cards { flex-direction: column; }
+  /* Text column: full width, tighter sizing */
+  .about-test-heading { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  .about-test-body { font-size: 1rem; }
+  /* Image column: constrain height, full width */
+  .about-test-img-wrap {
+    max-height: 45vh;
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .about-test-img-wrap img { max-height: 45vh; }
+  /* Stats: 2-column on mobile, last item spans full */
+  .about-test-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 16px;
+  }
+  .about-test-stat:last-child {
+    grid-column: 1 / -1;
+  }
+  .about-test-stat-number { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+  /* Reference cards: stack vertically */
+  .about-test-ref-cards { flex-direction: column; gap: 16px; }
   .about-test-ref-preview { display: none; }
   .about-test-ref-cta { display: none; }
+  /* BTS section */
   .about-test-bts {
     flex-direction: column !important;
     padding: 60px 20px;
     gap: 24px;
     height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: auto;
   }
+  .about-test-bts-heading { font-size: clamp(1.75rem, 7vw, 2.5rem); }
   .about-test-bts-grid-wrap { max-width: 100%; }
+  /* References section */
   .about-test-refs {
     padding: 60px 20px;
     height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: auto;
   }
+  .about-test-refs-heading { font-size: clamp(1.5rem, 6vw, 2rem); }
   /* Drawers open by default on mobile (no hover) */
   .about-test-ref-drawer { grid-template-rows: 1fr; }
   .about-test-ref-line { width: 60px; }
   .about-test-ref-quote { opacity: 1; transform: translateY(0); }
+  /* Tooltip: disable cursor-following on touch devices */
+  .img-tooltip-wrap img { cursor: auto; }
+  .img-cursor-dot { display: none; }
 }
 </style>
 </head>

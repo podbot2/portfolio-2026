@@ -42,3 +42,14 @@
 .container.out.other .cs-std-text_content-left.below.with-padding.in-container img {
   margin-right: 8px;
 }
+
+/* ── Mobile: tighter tile padding, smaller text ── */
+@media (max-width: 767px) {
+  .container.out.other {
+    padding: 16px !important;
+  }
+  .container.out.other p.cs-text.container.other {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+  }
+}

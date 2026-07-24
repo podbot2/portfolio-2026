@@ -400,11 +400,25 @@ document.addEventListener("keyup", function (e) {
   .home-section.home .content { padding-left: 40px !important; padding-right: 40px !important; }
   .projects-home { padding-left: 40px !important; padding-right: 40px !important; }
 }
+/* Mobile landscape */
+@media (max-width: 767px) {
+  /* ── Scroll indicator: keep on one line ── */
+  .scroll-indicator-text { font-size: 10px; }
+  /* ── Project tiles: stack vertically, prevent overlap ── */
+  .project-container { flex-direction: column !important; }
+  .project-container .first-half { display: none !important; }
+  .project-container .second-half { flex-direction: column !important; width: 100% !important; }
+  .project-container .project-img { width: 100% !important; max-width: 100% !important; margin-bottom: 16px; }
+  .project-container .project-img img { width: 100% !important; height: auto !important; object-fit: contain; }
+  .project-container .text-half { width: 100% !important; padding: 0 !important; }
+}
 /* Mobile */
 @media (max-width: 479px) {
   .home-section.home .content { padding-left: 20px !important; padding-right: 20px !important; }
   .home-section.home .home-heading { font-size: clamp(2.5rem, 12vw, 4.5rem) !important; }
   .projects-home { padding-left: 20px !important; padding-right: 20px !important; margin-top: 60px !important; margin-bottom: 60px !important; }
+  /* ── Scroll indicator: shorten text on small screens ── */
+  .scroll-indicator-text { font-size: 9px; letter-spacing: 0.04em; }
 }
 /* Subtle gradient reveal on project card hover — scoped to the card boundary */
 .project-container { position: relative; }
