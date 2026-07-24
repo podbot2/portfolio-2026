@@ -406,11 +406,13 @@ document.addEventListener("keyup", function (e) {
   .scroll-indicator-text { font-size: 10px; }
   /* ── Project tiles: stack vertically, prevent overlap ── */
   .project-container { flex-direction: column !important; }
+  .project-container { height: auto !important; overflow: visible !important; }
   .project-container .first-half { display: none !important; }
-  .project-container .second-half { flex-direction: column !important; width: 100% !important; gap: 16px !important; }
-  .project-container .project-img { width: 100% !important; max-width: 100% !important; }
+  .project-container .second-half { flex-direction: column !important; width: 100% !important; height: auto !important; gap: 16px !important; overflow: visible !important; }
+  .project-container .project-img { width: 100% !important; max-width: 100% !important; height: auto !important; }
   .project-container .project-img img { width: 100% !important; height: auto !important; object-fit: contain; }
-  .project-container .text-half { width: 100% !important; padding: 0 16px 8px !important; }
+  .project-container .text-half { width: 100% !important; height: auto !important; padding: 0 16px 8px !important; overflow: visible !important; }
+  .project-container .text-half p { overflow: visible !important; -webkit-line-clamp: unset !important; display: block !important; }
 }
 /* Mobile */
 @media (max-width: 479px) {
