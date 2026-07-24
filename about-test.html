@@ -896,6 +896,12 @@ window.addEventListener("DOMContentLoaded", function () {
     var tip = wrap.querySelector(".img-tooltip");
     if (!tip) return;
 
+    /* Pre-measure: briefly make visible off-screen to get height */
+    tip.style.left = "-9999px";
+    tip.style.top = "-9999px";
+    tip.style.opacity = "0";
+    tip.style.display = "block";
+
     wrap.addEventListener("mouseenter", function () {
       tip.style.opacity = "1";
       cursorDot.style.opacity = "1";
@@ -905,8 +911,15 @@ window.addEventListener("DOMContentLoaded", function () {
       cursorDot.style.opacity = "0";
     });
     wrap.addEventListener("mousemove", function (e) {
+      var tipH = tip.offsetHeight;
+      var above = e.clientY - tipH - 20;
+      /* If tooltip would go off-screen top, place it below cursor */
+      if (above < 8) {
+        tip.style.top = (e.clientY + 20) + "px";
+      } else {
+        tip.style.top = above + "px";
+      }
       tip.style.left = e.clientX + "px";
-      tip.style.top = (e.clientY - tip.offsetHeight - 16) + "px";
       tip.style.transform = "translateX(-50%)";
       cursorDot.style.left = e.clientX + "px";
       cursorDot.style.top = e.clientY + "px";
