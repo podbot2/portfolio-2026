@@ -107,42 +107,23 @@ html { scrollbar-width: none; }
   color: #fff;
 }
 .about-test-ref-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+  display: flex;
   gap: 32px;
+  align-items: flex-start;
 }
 .about-test-ref-card {
   position: relative;
+  flex: 1 1 0%;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
-  padding: 48px 40px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  transition: border-color 0.6s ease, background 0.6s ease;
+  padding: 40px;
+  cursor: pointer;
+  transition: border-color 0.4s ease, background 0.4s ease;
 }
 .about-test-ref-card:hover {
   border-color: rgba(255,255,255,0.12);
   background: rgba(255,255,255,0.05);
-}
-/* Decorative quote mark */
-.about-test-ref-card::before {
-  content: '\201C';
-  position: absolute;
-  top: -8px;
-  left: 32px;
-  font-family: 'PT Serif', serif;
-  font-size: 5rem;
-  line-height: 1;
-  color: rgba(106, 111, 247, 0.25);
-  pointer-events: none;
-}
-.about-test-ref-quote {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  line-height: 1.7;
-  color: rgba(255,255,255,0.7);
 }
 .about-test-ref-author {
   font-family: 'Inter', sans-serif;
@@ -154,14 +135,42 @@ html { scrollbar-width: none; }
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   color: rgba(255,255,255,0.4);
-  margin-top: 2px;
+  margin-top: 4px;
 }
-/* Accent line */
+/* Quote drawer — hidden by default */
+.about-test-ref-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.33, 0, 0.2, 1);
+}
+.about-test-ref-card:hover .about-test-ref-drawer {
+  grid-template-rows: 1fr;
+}
+.about-test-ref-drawer-inner {
+  overflow: hidden;
+}
 .about-test-ref-line {
   width: 0;
   height: 1px;
   background: linear-gradient(90deg, #6a6ff7, rgba(106,111,247,0));
-  margin-bottom: 4px;
+  margin: 24px 0 20px;
+  transition: width 0.5s cubic-bezier(0.33, 0, 0.2, 1) 0.1s;
+}
+.about-test-ref-card:hover .about-test-ref-line {
+  width: 60px;
+}
+.about-test-ref-quote {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.6);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+}
+.about-test-ref-card:hover .about-test-ref-quote {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Load animation (translate-Y fade entrance) ── */
@@ -189,12 +198,17 @@ html { scrollbar-width: none; }
     flex-direction: column !important;
   }
   .about-test-img-wrap { max-height: 50vh; }
+  .about-test-ref-cards { flex-direction: column; }
   .about-test-refs {
     padding: 60px 20px;
     height: auto;
     min-height: 100vh;
     min-height: 100dvh;
   }
+  /* Drawers open by default on mobile (no hover) */
+  .about-test-ref-drawer { grid-template-rows: 1fr; }
+  .about-test-ref-line { width: 60px; }
+  .about-test-ref-quote { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -246,20 +260,24 @@ html { scrollbar-width: none; }
     <div class="about-test-ref-cards">
 
       <div class="about-test-ref-card">
-        <p class="about-test-ref-quote">Jen is a very talented UX designer who is a delight to work with! Jen's ability to create, organize and maintain a design system for cloudServe has been crucial to our success as a UX team. Not only does she bring efficiency and attention to detail to our team, but critical thinking and a passion for design research. Our team has benefitted immensely from her skills in prototyping, usability testing, marketing and Figma. Jen is very successful in collaborating across teams at GM, working along side engineering and data science teams to create quality products for our users.</p>
-        <div class="about-test-ref-line"></div>
-        <div>
-          <p class="about-test-ref-author">Maeve Tierney</p>
-          <p class="about-test-ref-role">Lead Designer</p>
+        <p class="about-test-ref-author">Maeve Tierney</p>
+        <p class="about-test-ref-role">Lead Designer</p>
+        <div class="about-test-ref-drawer">
+          <div class="about-test-ref-drawer-inner">
+            <div class="about-test-ref-line"></div>
+            <p class="about-test-ref-quote">Jen is a very talented UX designer who is a delight to work with! Jen's ability to create, organize and maintain a design system for cloudServe has been crucial to our success as a UX team. Not only does she bring efficiency and attention to detail to our team, but critical thinking and a passion for design research. Our team has benefitted immensely from her skills in prototyping, usability testing, marketing and Figma. Jen is very successful in collaborating across teams at GM, working along side engineering and data science teams to create quality products for our users.</p>
+          </div>
         </div>
       </div>
 
       <div class="about-test-ref-card">
-        <p class="about-test-ref-quote">Jen and I collaborated as UX/UI Designers, and she has proven invaluable. Jen led our transition from Adobe XD to Figma, improving our workflow and productivity. Her strong communication and user empathy during interviews and design processes are exceptional. She also played a key role in planning meetings with cloud architects, clarifying requirements, and streamlining our workflow. Jen's clear communication and visualization skills significantly enhanced our team's efficiency. She would be a great addition to your team.</p>
-        <div class="about-test-ref-line"></div>
-        <div>
-          <p class="about-test-ref-author">Alexander Sanchez</p>
-          <p class="about-test-ref-role">UX/UI Designer</p>
+        <p class="about-test-ref-author">Alexander Sanchez</p>
+        <p class="about-test-ref-role">UX/UI Designer</p>
+        <div class="about-test-ref-drawer">
+          <div class="about-test-ref-drawer-inner">
+            <div class="about-test-ref-line"></div>
+            <p class="about-test-ref-quote">Jen and I collaborated as UX/UI Designers, and she has proven invaluable. Jen led our transition from Adobe XD to Figma, improving our workflow and productivity. Her strong communication and user empathy during interviews and design processes are exceptional. She also played a key role in planning meetings with cloud architects, clarifying requirements, and streamlining our workflow. Jen's clear communication and visualization skills significantly enhanced our team's efficiency. She would be a great addition to your team.</p>
+          </div>
         </div>
       </div>
 
@@ -342,7 +360,7 @@ window.addEventListener("DOMContentLoaded", function () {
     ease: "none"
   });
 
-  /* ── References — single clean entrance ── */
+  /* ── References — scroll entrance for heading + cards ── */
   var refsTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#references-section",
@@ -355,13 +373,8 @@ window.addEventListener("DOMContentLoaded", function () {
     { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
   );
   refsTl.fromTo(".about-test-ref-card",
-    { opacity: 0, y: 40 },
+    { opacity: 0, y: 30 },
     { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.15 },
-    "-=0.3"
-  );
-  refsTl.fromTo(".about-test-ref-line",
-    { width: 0 },
-    { width: 60, duration: 0.6, ease: "power2.out", stagger: 0.1 },
     "-=0.3"
   );
 });
