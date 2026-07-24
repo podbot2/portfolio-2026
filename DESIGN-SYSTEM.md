@@ -57,7 +57,7 @@ These values are aligned to the navbar margins so content, nav, and sections sha
 - **Card border trace**: SVG stroke-dashoffset, 0.9s `cubic-bezier(0.65, 0, 0.35, 1)`
 - **Card gradient reveal**: opacity transition 0.6s `cubic-bezier(0.33, 0, 0.2, 1)`
 
-### Scrubbed Section Reveals (about page pattern)
+### Scrubbed Section Reveals
 
 Content is **always visible** — animations enhance, never gate. No `opacity: 0` start states on scroll-triggered sections.
 
