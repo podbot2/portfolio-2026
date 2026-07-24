@@ -52,7 +52,7 @@ Each pattern is reusable. "Used in" tracks where the implementation code lives f
 
 #### Smooth Scroll
 - **Specs:** Lenis v1.0.42, duration 1.2s, easeOutExpo, wheelMultiplier 0.8
-- **Used in:** `index.html`, `about-test.html`
+- **Used in:** `index.html`, `about.html`
 
 #### Anchor Scroll
 - **Specs:** 2s duration, cubic ease-in-out, -80px offset
@@ -60,15 +60,15 @@ Each pattern is reusable. "Used in" tracks where the implementation code lives f
 
 #### Page Load Entrance
 - **Specs:** `translateY(1rem) → 0`, `opacity: 0 → 1`, duration 0.9s, `power3.out`, 0.3s delay
-- **Used in:** `index.html` (hero), `about-test.html` (hero section)
+- **Used in:** `index.html` (hero), `about.html` (hero section)
 
 #### Image Wipe Reveal
 - **Specs:** solid color overlay, `scaleX: 1 → 0`, scrubbed (`scrub: 0.3`), trigger range `top 85%` to `top 30%`
-- **Used in:** `about-test.html` (section 1 on page load, section 2 on scroll)
+- **Used in:** `about.html` (section 1 on page load, section 2 on scroll)
 
 #### Text Fade-Slide
 - **Specs:** `opacity: 0.3 → 1`, `y: 15 → 0`, scrubbed (`scrub: 0.3`), trigger range `top 80%` to `top 40%`
-- **Used in:** `about-test.html` (section 2 body text)
+- **Used in:** `about.html` (section 2 body text)
 
 #### Char Stagger Reveal
 - **Specs:** `yPercent: 110`, duration 0.75s, stagger 0.018, `power3.out`
@@ -88,19 +88,31 @@ Each pattern is reusable. "Used in" tracks where the implementation code lives f
 
 #### Staggered Card Entrance
 - **Specs:** `opacity: 0 → 1`, `y: 40 → 0`, duration 0.8s, `power3.out`, stagger 0.15, `toggleActions: "play none none reverse"`
-- **Used in:** `about-test.html` (reference cards)
+- **Used in:** `about.html` (reference cards)
 
 #### Accent Line Draw
 - **Specs:** `width: 0 → 60px`, accent gradient `#6a6ff7`, duration 0.6s, `power2.out`
-- **Used in:** `about-test.html` (reference cards)
+- **Used in:** `about.html` (reference cards)
 
 #### Footer Heading Reveal
 - **Specs:** `yPercent: 40`, `opacity: 0 → 1`, duration 0.9s, `power3.out`
-- **Used in:** `index.html`, `about-test.html` (footer)
+- **Used in:** `index.html`, `about.html` (footer)
 
 #### Page Loader
 - **Specs:** 3-dot bounce, fades out over 0.6s on `window.load`
 - **Used in:** all pages
+
+#### Cursor-Following Tooltip
+
+Tooltip that tracks the mouse position across an image. Custom dot cursor replaces the default pointer.
+
+- **Structure:** `.img-tooltip-wrap` wraps the image + `<span class="img-tooltip">`. On DOMContentLoaded, JS moves all `.img-tooltip` spans to `document.body` (required to escape CSS `transform` containment on parent sections). A shared `.img-cursor-dot` div is appended to body.
+- **Listeners bind to `<img>` elements** (not wrappers) so hover only activates on the visible image, not surrounding whitespace.
+- **Tooltip:** `position: fixed`, `max-width: 240px`, white surface (`rgba(255,255,255,0.94)`), dark text, `border-radius: 12px`, `box-shadow: 0 4px 20px rgba(0,0,0,0.3)`, `::after` tail. Clamped to 3 lines (`-webkit-line-clamp: 3`). Opacity fade 0.25s.
+- **Cursor dot:** 12px white circle, `box-shadow: 0 0 8px rgba(255,255,255,0.3)`, `z-index: 101`. Opacity fade 0.2s.
+- **Positioning:** tooltip sits 20px above cursor. If that would go off-screen (< 8px from top), flips 20px below cursor.
+- **Key gotcha:** tooltips inside elements with CSS `transform` (e.g. GSAP-animated sections) must be moved to `document.body` — `position: fixed` inside a transformed parent is relative to that parent, not the viewport.
+- **Used in:** `about.html` (all 5 images)
 
 ### Hover States
 - **Project cards:** gradient overlay + SVG border trace
