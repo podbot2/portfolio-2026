@@ -156,16 +156,12 @@ html { scrollbar-width: none; }
   color: rgba(255,255,255,0.4);
   margin-top: 2px;
 }
-/* Accent line that draws in on reveal */
+/* Accent line */
 .about-test-ref-line {
   width: 0;
   height: 1px;
   background: linear-gradient(90deg, #6a6ff7, rgba(106,111,247,0));
   margin-bottom: 4px;
-  transition: width 1.2s cubic-bezier(0.33, 0, 0.2, 1);
-}
-.about-test-ref-line.revealed {
-  width: 60px;
 }
 
 /* ── Load animation (translate-Y fade entrance) ── */
@@ -234,7 +230,7 @@ html { scrollbar-width: none; }
   </section>
 
   <!-- ══ Section 2: Body — Image left, Text right ══ -->
-  <section class="about-test-section reverse about-test-entrance" id="body-section">
+  <section class="about-test-section reverse" id="body-section">
     <div class="about-test-text">
       <p class="about-test-body">That means untangling enterprise workflows, designing for the edge cases, and shipping specs that close the gap between intent and what gets built. Every project starts the same way: find the real problem, document the reasoning, build something that holds up.</p>
     </div>
@@ -245,7 +241,7 @@ html { scrollbar-width: none; }
   </section>
 
   <!-- ══ Section 3: References ══ -->
-  <section class="about-test-refs about-test-entrance" id="references-section">
+  <section class="about-test-refs" id="references-section">
     <h2 class="about-test-refs-heading">References</h2>
     <div class="about-test-ref-cards">
 
@@ -309,54 +305,45 @@ window.addEventListener("DOMContentLoaded", function () {
     scaleX: 0, duration: 1, ease: "power3.inOut"
   }, "-=0.4");
 
-  /* ── Section 2 — pins at top, animation plays, then releases ── */
-  /* Pin section 2 while the entrance animation completes */
-  ScrollTrigger.create({
-    trigger: "#body-section",
-    start: "top top",
-    end: "+=60%",
-    pin: true,
-    pinSpacing: true
-  });
-
-  /* Animation triggers slightly before the pin engages */
+  /* ── Section 2 — scrubbed pin: animation tied to scroll position ── */
   var bodyTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#body-section",
-      start: "top 70%",
-      toggleActions: "play none none reverse"
+      start: "top top",
+      end: "+=70%",
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.4
     }
   });
   bodyTl.fromTo("#body-section",
-    { opacity: 0, y: 40 },
-    { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }
+    { opacity: 0 },
+    { opacity: 1, duration: 0.3 }
   );
   bodyTl.fromTo("#body-section .about-test-img-wipe",
     { scaleX: 1 },
-    { scaleX: 0, duration: 1, ease: "power3.inOut" },
-    "-=0.5"
+    { scaleX: 0, duration: 0.5, ease: "power2.inOut" },
+    0.05
   );
   bodyTl.fromTo("#body-section .about-test-body",
     { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
-    "-=0.6"
+    { opacity: 1, y: 0, duration: 0.4 },
+    0.2
   );
 
-  /* ── Subtle parallax on images (continuous, both directions) ── */
-  document.querySelectorAll(".about-test-img-wrap").forEach(function (wrap) {
-    gsap.to(wrap, {
-      scrollTrigger: {
-        trigger: wrap,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      },
-      yPercent: -8,
-      ease: "none"
-    });
+  /* ── Subtle parallax on hero image only (Section 2 is pinned) ── */
+  gsap.to("#hero-section .about-test-img-wrap", {
+    scrollTrigger: {
+      trigger: "#hero-section",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    },
+    yPercent: -8,
+    ease: "none"
   });
 
-  /* ── References — animates in on scroll down, reverses only when scrolling back above trigger ── */
+  /* ── References — single clean entrance ── */
   var refsTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#references-section",
@@ -364,51 +351,20 @@ window.addEventListener("DOMContentLoaded", function () {
       toggleActions: "play none none reverse"
     }
   });
-
-  refsTl.fromTo("#references-section",
-    { opacity: 0, y: 40 },
-    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
-  );
-
   refsTl.fromTo(".about-test-refs-heading",
-    { opacity: 0, x: -30 },
-    { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-    "-=0.4"
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
   );
-
   refsTl.fromTo(".about-test-ref-card",
-    { opacity: 0, y: 50, scale: 0.97 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out", stagger: 0.15 },
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.15 },
     "-=0.3"
   );
-
-  refsTl.fromTo(".about-test-ref-quote",
-    { opacity: 0, y: 15 },
-    { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.2 },
-    "-=0.5"
-  );
-
-  refsTl.fromTo(".about-test-ref-author, .about-test-ref-role",
-    { opacity: 0, y: 10 },
-    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.1 },
+  refsTl.fromTo(".about-test-ref-line",
+    { width: 0 },
+    { width: 60, duration: 0.6, ease: "power2.out", stagger: 0.1 },
     "-=0.3"
   );
-
-  /* Accent lines — draw in/out with scroll direction */
-  ScrollTrigger.create({
-    trigger: "#references-section",
-    start: "top 60%",
-    onEnter: function () {
-      document.querySelectorAll(".about-test-ref-line").forEach(function (line, i) {
-        setTimeout(function () { line.classList.add("revealed"); }, i * 200);
-      });
-    },
-    onLeaveBack: function () {
-      document.querySelectorAll(".about-test-ref-line").forEach(function (line) {
-        line.classList.remove("revealed");
-      });
-    }
-  });
 });
 </script>
 
