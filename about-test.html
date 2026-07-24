@@ -899,6 +899,9 @@ window.addEventListener("DOMContentLoaded", function () {
     var img = wrap.querySelector("img");
     if (!tip || !img) return;
 
+    /* Move tooltip to body so it's never inside a transformed container */
+    document.body.appendChild(tip);
+
     img.addEventListener("mouseenter", function () {
       tip.style.opacity = "1";
       cursorDot.style.opacity = "1";
