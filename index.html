@@ -962,7 +962,7 @@ window.addEventListener("DOMContentLoaded", function () {
     pinTrigger = ScrollTrigger.create({
       trigger: stagePin,
       start: "top top",
-      end: "+=" + (window.innerHeight * (totalStages - 1)),
+      end: "+=" + (window.innerHeight * totalStages * 2),
       pin: true,
       onUpdate: function (self) {
         var idx = Math.min(Math.floor(self.progress * totalStages), totalStages - 1);
