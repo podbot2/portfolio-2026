@@ -484,12 +484,8 @@ document.addEventListener("keyup", function (e) {
 /* ── Pinned viewport architecture ── */
 .stage-runway {
   position: relative;
-  /* 3 stages × 100vh scroll distance */
-  height: 300vh;
 }
 .stage-pin {
-  position: sticky;
-  top: 0;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -940,61 +936,46 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function exitStage(idx) {
-    var stage = stages[idx];
-    var caseEl = stage.querySelector(".stage-case");
-    var letters = stage.querySelectorAll(".ch-inner");
-    var descEl = stage.querySelector(".stage-desc");
-    var ctaEl = stage.querySelector(".stage-cta");
-    var imgCard = stage.querySelector(".stage-image-card");
-    var orbit = stage.querySelector(".stage-orbit");
-    var tl = gsap.timeline();
-    tl.to(ctaEl, { opacity: 0, y: -12, duration: 0.3, ease: mainEase }, 0);
-    tl.to(descEl, { opacity: 0, y: -12, duration: 0.3, ease: mainEase }, 0.05);
-    tl.to(letters, { yPercent: -115, opacity: 0, duration: 0.4, ease: mainEase, stagger: 0.02 }, 0.05);
-    tl.to(caseEl, { opacity: 0, y: -12, duration: 0.3, ease: mainEase }, 0.1);
-    tl.to(imgCard, { opacity: 0, duration: 0.4, ease: mainEase }, 0);
-    tl.to(orbit, { opacity: 0, duration: 0.3, ease: mainEase }, 0);
-    return tl;
-  }
+  var activeTL = null;
 
   function goToStage(newIdx) {
     if (newIdx === currentStage) return;
-    var oldIdx = currentStage;
+    if (activeTL) { activeTL.kill(); activeTL = null; }
+
+    /* Immediately swap visibility */
+    stages[currentStage].classList.remove("is-active");
+    stages[newIdx].classList.add("is-active");
     currentStage = newIdx;
 
     /* Update chrome */
     if (counterNum) counterNum.textContent = String(newIdx + 1).padStart(2, "0");
     railItems.forEach(function (item, i) { item.classList.toggle("is-active", i === newIdx); });
 
-    /* Exit old, enter new */
-    var exitTL = exitStage(oldIdx);
-    exitTL.eventCallback("onComplete", function () {
-      stages[oldIdx].classList.remove("is-active");
-      stages[newIdx].classList.add("is-active");
-      enterTLs[newIdx]();
-    });
+    /* Play enter animation on new stage */
+    activeTL = enterTLs[newIdx]();
   }
 
-  /* ScrollTrigger on the runway — maps scroll progress to stage index */
-  if (runway) {
-    ScrollTrigger.create({
-      trigger: runway,
+  /* ScrollTrigger with pin — GSAP handles sticky + scroll distance (desktop only) */
+  var pinTrigger = null;
+  var stagePin = document.querySelector(".stage-pin");
+  if (stagePin && window.innerWidth > 767) {
+    pinTrigger = ScrollTrigger.create({
+      trigger: stagePin,
       start: "top top",
-      end: "bottom bottom",
+      end: "+=" + (window.innerHeight * (totalStages - 1)),
+      pin: true,
       onUpdate: function (self) {
-        var p = self.progress;
-        var idx = Math.min(Math.floor(p * totalStages), totalStages - 1);
+        var idx = Math.min(Math.floor(self.progress * totalStages), totalStages - 1);
         if (idx !== currentStage) goToStage(idx);
       }
     });
   }
 
-  /* Rail click → scroll to correct position in runway */
+  /* Rail click → scroll to correct pinned position */
   railItems.forEach(function (item, i) {
     item.addEventListener("click", function () {
-      if (!runway) return;
-      var targetScroll = runway.offsetTop + (i / totalStages) * runway.offsetHeight;
+      if (!pinTrigger) return;
+      var targetScroll = pinTrigger.start + (i / totalStages) * (pinTrigger.end - pinTrigger.start);
       if (window._lenis) {
         window._lenis.scrollTo(targetScroll, { duration: 1.5 });
       } else {
