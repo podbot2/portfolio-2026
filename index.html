@@ -121,15 +121,16 @@ html.w-editor [text-split] {opacity: 1;}
 </nav>
 <!-- Scroll pulse label -->
 <div class="stage-scroll-label">SCROLL</div>
+<!-- Sticky section header -->
+<div class="stage-sticky-bar">
+  <span class="stage-section-label">SELECTED UX WORK</span>
+  <span class="stage-counter"><span class="stage-counter-num" data-counter>01</span> / 03</span>
+</div>
 <!-- Full-viewport project stages -->
 <div class="stage-wrap">
 
   <!-- Stage 1: cloudServe -->
   <section class="stage" data-index="1">
-    <div class="stage-top">
-      <span class="stage-section-label">SELECTED UX WORK</span>
-      <span class="stage-counter"><span class="stage-counter-num">01</span> / 03</span>
-    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 01</span></div>
@@ -157,10 +158,6 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 2: Maxis Workspaces -->
   <section class="stage" data-index="2">
-    <div class="stage-top">
-      <span class="stage-section-label">SELECTED UX WORK</span>
-      <span class="stage-counter"><span class="stage-counter-num">02</span> / 03</span>
-    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 02</span></div>
@@ -188,10 +185,6 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 3: Data Catalog -->
   <section class="stage" data-index="3">
-    <div class="stage-top">
-      <span class="stage-section-label">SELECTED UX WORK</span>
-      <span class="stage-counter"><span class="stage-counter-num">03</span> / 03</span>
-    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 03</span></div>
@@ -490,14 +483,16 @@ document.addEventListener("keyup", function (e) {
 /* ── Projects section ── */
 .projects-home { position: relative; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; }
 
-/* ── Stage top bar (inside each stage) ── */
-.stage-top {
+/* ── Sticky section header ── */
+.stage-sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
-  margin-bottom: 0;
-  flex-shrink: 0;
+  padding: 24px 90px 20px;
+  background: linear-gradient(180deg, #0a0a0c 60%, transparent 100%);
 }
 .stage-section-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -809,7 +804,7 @@ document.addEventListener("keyup", function (e) {
 @media (max-width: 991px) {
   .home-section.home .content { padding-left: 40px !important; padding-right: 40px !important; }
   .stage { padding: 70px 40px 48px; }
-  .stage-header { padding-left: 40px; padding-right: 40px; }
+  .stage-sticky-bar { padding-left: 40px; padding-right: 40px; }
   .stage-body { gap: 32px; }
   .stage-image-card { max-width: 420px; }
   .stage-title { font-size: clamp(2rem, 4.5vw, 3.5rem) !important; }
@@ -819,7 +814,7 @@ document.addEventListener("keyup", function (e) {
 @media (max-width: 767px) {
   .scroll-indicator-text { font-size: 10px; }
   .stage { padding: 70px 20px 40px; min-height: auto; }
-  .stage-header { padding-left: 20px; padding-right: 20px; }
+  .stage-sticky-bar { padding-left: 20px; padding-right: 20px; }
   .stage-body {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -837,7 +832,7 @@ document.addEventListener("keyup", function (e) {
   .home-section.home .home-heading { font-size: clamp(2.5rem, 12vw, 4.5rem) !important; }
   .scroll-indicator-text { font-size: 9px; letter-spacing: 0.04em; }
   .stage { padding: 60px 16px 32px; }
-  .stage-header { padding-left: 16px; padding-right: 16px; }
+  .stage-sticky-bar { padding-left: 16px; padding-right: 16px; }
   .stage-title { font-size: clamp(1.5rem, 7vw, 2.2rem) !important; }
   .stage-desc { font-size: 14px !important; }
 }
@@ -874,6 +869,7 @@ window.addEventListener("DOMContentLoaded", function () {
   /* ── Per-stage scroll-triggered cascade ── */
   var stages = document.querySelectorAll(".stage");
   var totalStages = stages.length;
+  var counterNum = document.querySelector("[data-counter]");
   var railItems = document.querySelectorAll(".stage-rail-item");
 
   stages.forEach(function (stage, idx) {
@@ -942,6 +938,8 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 
   function activateStage(idx) {
+    /* Update sticky counter */
+    if (counterNum) counterNum.textContent = String(idx + 1).padStart(2, "0");
     /* Update rail */
     railItems.forEach(function (item, i) {
       item.classList.toggle("is-active", i === idx);
