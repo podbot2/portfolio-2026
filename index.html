@@ -908,14 +908,20 @@ window.addEventListener("DOMContentLoaded", function () {
     var veil = stage.querySelector(".stage-image-veil");
     var orbit = stage.querySelector(".stage-orbit");
 
-    /* All stages start hidden — first stage animates in when pin begins */
-    gsap.set(caseEl, { opacity: 0, y: 18 });
-    gsap.set(letters, { yPercent: 115, opacity: 0 });
-    gsap.set(descEl, { opacity: 0, y: 24 });
-    gsap.set(ctaEl, { opacity: 0, y: 24 });
-    gsap.set(imgCard, { y: 56, scale: 1.08, opacity: 0 });
-    gsap.set(veil, { opacity: 1 });
-    gsap.set(orbit, { opacity: 0 });
+    /* Set initial hidden state for non-first stages */
+    if (idx > 0) {
+      gsap.set(caseEl, { opacity: 0, y: 18 });
+      gsap.set(letters, { yPercent: 115, opacity: 0 });
+      gsap.set(descEl, { opacity: 0, y: 24 });
+      gsap.set(ctaEl, { opacity: 0, y: 24 });
+      gsap.set(imgCard, { y: 56, scale: 1.08, opacity: 0 });
+      gsap.set(veil, { opacity: 1 });
+      gsap.set(orbit, { opacity: 0 });
+    } else {
+      /* First stage starts visible */
+      gsap.set(veil, { opacity: 0 });
+      gsap.set(orbit, { opacity: 1 });
+    }
 
     enterTLs.push(function () {
       var tl = gsap.timeline();
@@ -958,10 +964,6 @@ window.addEventListener("DOMContentLoaded", function () {
       start: "top top",
       end: "+=" + (window.innerHeight * totalStages * 2),
       pin: true,
-      onEnter: function () {
-        /* Animate first stage in gently when pin begins */
-        activeTL = enterTLs[0]();
-      },
       onUpdate: function (self) {
         var idx = Math.min(Math.floor(self.progress * totalStages), totalStages - 1);
         if (idx !== currentStage) goToStage(idx);
