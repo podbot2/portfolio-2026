@@ -113,13 +113,6 @@ html.w-editor [text-split] {opacity: 1;}
   <svg class="scroll-indicator-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
 </div>
 <div class="notice-wrap"><div class="notice-inner"><div>This project is a Webflow rebuild of <a class="notice-link" href="https://linear.app/" target="_blank">linear.app</a> and was made by <a class="notice-link" href="https://www.moritz-petersen.de/en" target="_blank">Moritz Petersen</a> for educational purposes. It's not affiliated with Linear in any way, all rights of the graphics and texts belong to Linear.</div><div class="notice-btn-wrap"><a class="cta-button w-inline-block" href="https://webflow.grsm.io/3423979-linear-rebuild" target="_blank"><div>Clone this project</div></a><div class="cta-button cta-button--sec" data-w-id="0131a31a-b7a7-332a-3142-6e12d2120283"><div>Close</div></div></div></div></div></div><div class="projects-home">
-<!-- Progress bar -->
-<div class="stage-progress"><div class="stage-progress-fill"></div></div>
-<!-- Sticky header — shows once -->
-<div class="stage-header">
-  <span class="stage-section-label">SELECTED UX WORK</span>
-  <span class="stage-counter"><span class="stage-counter-num" data-counter>01</span> / 03</span>
-</div>
 <!-- Right rail nav -->
 <nav class="stage-rail">
   <button class="stage-rail-item is-active" data-rail="1"><span class="stage-rail-num">01</span><span class="stage-rail-tick"></span></button>
@@ -133,6 +126,10 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 1: cloudServe -->
   <section class="stage" data-index="1">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">01</span> / 03</span>
+    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 01</span></div>
@@ -160,6 +157,10 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 2: Maxis Workspaces -->
   <section class="stage" data-index="2">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">02</span> / 03</span>
+    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 02</span></div>
@@ -187,6 +188,10 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 3: Data Catalog -->
   <section class="stage" data-index="3">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">03</span> / 03</span>
+    </div>
     <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 03</span></div>
@@ -485,33 +490,14 @@ document.addEventListener("keyup", function (e) {
 /* ── Projects section ── */
 .projects-home { position: relative; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; }
 
-/* ── Progress bar (top) ── */
-.stage-progress {
-  position: sticky;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: rgba(255,255,255,0.04);
-  z-index: 50;
-}
-.stage-progress-fill {
-  height: 100%;
-  width: 33.33%;
-  background: linear-gradient(90deg, #6a6ff7, #8b8fff);
-  transition: width 0.8s cubic-bezier(0.33,0,0.2,1);
-}
-
-/* ── Sticky header ── */
-.stage-header {
-  position: sticky;
-  top: 3px;
-  z-index: 40;
+/* ── Stage top bar (inside each stage) ── */
+.stage-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 90px 16px;
-  pointer-events: none;
+  padding: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 .stage-section-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -888,8 +874,6 @@ window.addEventListener("DOMContentLoaded", function () {
   /* ── Per-stage scroll-triggered cascade ── */
   var stages = document.querySelectorAll(".stage");
   var totalStages = stages.length;
-  var progressFill = document.querySelector(".stage-progress-fill");
-  var counterNum = document.querySelector("[data-counter]");
   var railItems = document.querySelectorAll(".stage-rail-item");
 
   stages.forEach(function (stage, idx) {
@@ -958,11 +942,6 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 
   function activateStage(idx) {
-    var num = String(idx + 1).padStart(2, "0");
-    /* Update counter */
-    if (counterNum) counterNum.textContent = num;
-    /* Update progress bar */
-    if (progressFill) progressFill.style.width = ((idx + 1) / totalStages * 100) + "%";
     /* Update rail */
     railItems.forEach(function (item, i) {
       item.classList.toggle("is-active", i === idx);
