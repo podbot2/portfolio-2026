@@ -113,31 +113,24 @@ html.w-editor [text-split] {opacity: 1;}
   <svg class="scroll-indicator-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
 </div>
 <div class="notice-wrap"><div class="notice-inner"><div>This project is a Webflow rebuild of <a class="notice-link" href="https://linear.app/" target="_blank">linear.app</a> and was made by <a class="notice-link" href="https://www.moritz-petersen.de/en" target="_blank">Moritz Petersen</a> for educational purposes. It's not affiliated with Linear in any way, all rights of the graphics and texts belong to Linear.</div><div class="notice-btn-wrap"><a class="cta-button w-inline-block" href="https://webflow.grsm.io/3423979-linear-rebuild" target="_blank"><div>Clone this project</div></a><div class="cta-button cta-button--sec" data-w-id="0131a31a-b7a7-332a-3142-6e12d2120283"><div>Close</div></div></div></div></div></div><div class="projects-home">
-<!-- Sticky header (zero-height) -->
-<div class="stage-sticky-bar">
-  <div class="stage-sticky-bar-inner">
-    <span class="stage-section-label">SELECTED UX WORK</span>
-    <span class="stage-counter"><span class="stage-counter-num" data-counter>01</span> / 03</span>
-  </div>
-</div>
-<!-- Sticky right rail (zero-height) -->
-<div class="stage-sticky-rail">
-  <nav class="stage-rail">
-    <button class="stage-rail-item is-active" data-rail="1"><span class="stage-rail-num">01</span><span class="stage-rail-tick"></span></button>
-    <button class="stage-rail-item" data-rail="2"><span class="stage-rail-num">02</span><span class="stage-rail-tick"></span></button>
-    <button class="stage-rail-item" data-rail="3"><span class="stage-rail-num">03</span><span class="stage-rail-tick"></span></button>
-  </nav>
-</div>
-<!-- Sticky scroll cue (zero-height, bottom) -->
-<div class="stage-sticky-scroll">
-  <div class="stage-scroll-label">SCROLL</div>
-</div>
+<!-- Right rail nav -->
+<nav class="stage-rail">
+  <button class="stage-rail-item is-active" data-rail="1"><span class="stage-rail-num">01</span><span class="stage-rail-tick"></span></button>
+  <button class="stage-rail-item" data-rail="2"><span class="stage-rail-num">02</span><span class="stage-rail-tick"></span></button>
+  <button class="stage-rail-item" data-rail="3"><span class="stage-rail-num">03</span><span class="stage-rail-tick"></span></button>
+</nav>
+<!-- Scroll pulse label -->
+<div class="stage-scroll-label">SCROLL</div>
 <!-- Full-viewport project stages -->
 <div class="stage-wrap">
 
   <!-- Stage 1: cloudServe -->
   <section class="stage" data-index="1">
-<div class="stage-body">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">01</span> / 03</span>
+    </div>
+    <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 01</span></div>
         <h2 class="stage-title" data-title>CLOUDSERVE</h2>
@@ -164,7 +157,11 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 2: Maxis Workspaces -->
   <section class="stage" data-index="2">
-<div class="stage-body">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">02</span> / 03</span>
+    </div>
+    <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 02</span></div>
         <h2 class="stage-title" data-title>MAXIS WORKSPACES</h2>
@@ -191,7 +188,11 @@ html.w-editor [text-split] {opacity: 1;}
 
   <!-- Stage 3: Data Catalog -->
   <section class="stage" data-index="3">
-<div class="stage-body">
+    <div class="stage-top">
+      <span class="stage-section-label">SELECTED UX WORK</span>
+      <span class="stage-counter"><span class="stage-counter-num">03</span> / 03</span>
+    </div>
+    <div class="stage-body">
       <div class="stage-left">
         <div class="stage-case"><span class="stage-case-dash"></span><span class="stage-case-text">CASE 03</span></div>
         <h2 class="stage-title" data-title>DATA CATALOG</h2>
@@ -489,20 +490,14 @@ document.addEventListener("keyup", function (e) {
 /* ── Projects section ── */
 .projects-home { position: relative; margin-top: 0 !important; margin-bottom: 0 !important; padding: 0 !important; }
 
-/* ── Zero-height sticky: header bar ── */
-.stage-sticky-bar {
-  position: sticky;
-  top: 0;
-  height: 0;
-  z-index: 50;
-  pointer-events: none;
-}
-.stage-sticky-bar-inner {
+/* ── Stage top bar (inside each stage) ── */
+.stage-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 90px 0;
-  pointer-events: auto;
+  padding: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 .stage-section-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -524,23 +519,16 @@ document.addEventListener("keyup", function (e) {
   font-weight: 500;
 }
 
-/* ── Zero-height sticky: right rail ── */
-.stage-sticky-rail {
-  position: sticky;
-  top: 50vh;
-  height: 0;
-  z-index: 50;
-  pointer-events: none;
-}
+/* ── Right rail nav ── */
 .stage-rail {
-  position: absolute;
+  position: fixed;
   right: 28px;
-  top: 0;
+  top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  pointer-events: auto;
+  z-index: 45;
 }
 .stage-rail-item {
   display: flex;
@@ -570,16 +558,9 @@ document.addEventListener("keyup", function (e) {
 .stage-rail-item.is-active .stage-rail-num { color: #e8e8ec; }
 .stage-rail-item.is-active .stage-rail-tick { width: 46px; background: #6a6ff7; }
 
-/* ── Zero-height sticky: scroll cue ── */
-.stage-sticky-scroll {
-  position: sticky;
-  bottom: 0;
-  height: 0;
-  z-index: 50;
-  pointer-events: none;
-}
+/* ── Scroll pulse label ── */
 .stage-scroll-label {
-  position: absolute;
+  position: fixed;
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
@@ -588,6 +569,7 @@ document.addEventListener("keyup", function (e) {
   font-weight: 400;
   letter-spacing: 0.22em;
   color: rgba(255,255,255,0.25);
+  z-index: 45;
   animation: scroll-pulse 3.2s ease-in-out infinite;
 }
 @keyframes scroll-pulse {
@@ -602,7 +584,6 @@ document.addEventListener("keyup", function (e) {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 80px 90px 60px;
   box-sizing: border-box;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -828,7 +809,7 @@ document.addEventListener("keyup", function (e) {
 @media (max-width: 991px) {
   .home-section.home .content { padding-left: 40px !important; padding-right: 40px !important; }
   .stage { padding: 70px 40px 48px; }
-  .stage-sticky-bar-inner { padding-left: 40px; padding-right: 40px; }
+  .stage-header { padding-left: 40px; padding-right: 40px; }
   .stage-body { gap: 32px; }
   .stage-image-card { max-width: 420px; }
   .stage-title { font-size: clamp(2rem, 4.5vw, 3.5rem) !important; }
@@ -838,7 +819,7 @@ document.addEventListener("keyup", function (e) {
 @media (max-width: 767px) {
   .scroll-indicator-text { font-size: 10px; }
   .stage { padding: 70px 20px 40px; min-height: auto; }
-  .stage-sticky-bar-inner { padding-left: 20px; padding-right: 20px; }
+  .stage-header { padding-left: 20px; padding-right: 20px; }
   .stage-body {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -847,8 +828,8 @@ document.addEventListener("keyup", function (e) {
   .stage-image-card { max-width: 100%; }
   .stage-orbit { display: none; }
   .stage-title { font-size: clamp(1.8rem, 8vw, 2.8rem) !important; }
-  .stage-sticky-rail { display: none; }
-  .stage-sticky-scroll { display: none; }
+  .stage-rail { display: none; }
+  .stage-scroll-label { display: none; }
 }
 /* ── Mobile ── */
 @media (max-width: 479px) {
@@ -856,7 +837,7 @@ document.addEventListener("keyup", function (e) {
   .home-section.home .home-heading { font-size: clamp(2.5rem, 12vw, 4.5rem) !important; }
   .scroll-indicator-text { font-size: 9px; letter-spacing: 0.04em; }
   .stage { padding: 60px 16px 32px; }
-  .stage-sticky-bar-inner { padding-left: 16px; padding-right: 16px; }
+  .stage-header { padding-left: 16px; padding-right: 16px; }
   .stage-title { font-size: clamp(1.5rem, 7vw, 2.2rem) !important; }
   .stage-desc { font-size: 14px !important; }
 }
@@ -893,7 +874,6 @@ window.addEventListener("DOMContentLoaded", function () {
   /* ── Per-stage scroll-triggered cascade ── */
   var stages = document.querySelectorAll(".stage");
   var totalStages = stages.length;
-  var counterNum = document.querySelector("[data-counter]");
   var railItems = document.querySelectorAll(".stage-rail-item");
 
   stages.forEach(function (stage, idx) {
@@ -962,9 +942,6 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 
   function activateStage(idx) {
-    var num = String(idx + 1).padStart(2, "0");
-    /* Update sticky counter */
-    if (counterNum) counterNum.textContent = num;
     /* Update rail */
     railItems.forEach(function (item, i) {
       item.classList.toggle("is-active", i === idx);
