@@ -955,10 +955,24 @@ window.addEventListener("DOMContentLoaded", function () {
     activeTL = enterTLs[newIdx]();
   }
 
-  /* ScrollTrigger with pin — GSAP handles sticky + scroll distance (desktop only) */
+  /* Gentle fade-in as projects section scrolls into view */
   var pinTrigger = null;
   var stagePin = document.querySelector(".stage-pin");
   if (stagePin && window.innerWidth > 767) {
+    gsap.set(stagePin, { opacity: 0 });
+    gsap.to(stagePin, {
+      opacity: 1,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: stagePin,
+        start: "top 85%",
+        end: "top 20%",
+        scrub: true
+      }
+    });
+
+    /* ScrollTrigger with pin — GSAP handles sticky + scroll distance */
     pinTrigger = ScrollTrigger.create({
       trigger: stagePin,
       start: "top top",
