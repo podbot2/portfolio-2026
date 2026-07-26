@@ -497,7 +497,7 @@ document.addEventListener("keyup", function (e) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 90px 0;
+  padding: 72px 90px 0;
   flex-shrink: 0;
   z-index: 20;
 }
@@ -592,7 +592,7 @@ document.addEventListener("keyup", function (e) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px 90px 60px;
+  padding: 12px 90px 32px;
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
@@ -608,7 +608,7 @@ document.addEventListener("keyup", function (e) {
 .stage-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 3fr;
   gap: 40px;
   align-items: center;
 }
@@ -646,12 +646,12 @@ document.addEventListener("keyup", function (e) {
 /* Title — letter-by-letter animation */
 .stage-title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  font-size: clamp(2.5rem, 5vw, 4.5rem) !important;
+  font-size: clamp(2rem, 4vw, 3.2rem) !important;
   font-weight: 700 !important;
   letter-spacing: -0.02em !important;
   line-height: 1.0 !important;
   text-transform: uppercase !important;
-  margin: 0 0 24px 0 !important;
+  margin: 0 0 16px 0 !important;
   padding: 0 !important;
   background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.4) 100%);
   -webkit-background-clip: text;
@@ -672,11 +672,11 @@ document.addEventListener("keyup", function (e) {
 /* Description */
 .stage-desc {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
   color: #7a7a85 !important;
-  max-width: 460px;
-  margin: 0 0 32px 0 !important;
+  max-width: 420px;
+  margin: 0 0 24px 0 !important;
   padding: 0 !important;
 }
 
@@ -775,8 +775,8 @@ document.addEventListener("keyup", function (e) {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 580px;
-  max-height: calc(100vh - 160px);
+  max-width: 640px;
+  max-height: calc(100vh - 140px);
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
