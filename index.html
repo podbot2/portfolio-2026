@@ -770,18 +770,18 @@ document.addEventListener("keyup", function (e) {
   50% { opacity: 0.9; }
 }
 
-/* Image card — fills right column */
+/* Image card — fits right column without cropping */
 .stage-image-card {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 520px;
+  max-width: 580px;
+  max-height: calc(100vh - 160px);
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   overflow: hidden;
   padding: 0;
-  align-self: stretch;
   display: flex;
   flex-direction: column;
 }
@@ -807,17 +807,12 @@ document.addEventListener("keyup", function (e) {
 .stage-image-inner {
   flex: 1;
   overflow: hidden;
-  margin: -40px;
-  margin-top: 0;
-  padding: 40px;
-  padding-top: 0;
+  min-height: 0;
 }
 .stage-image-card img {
   width: 100%;
-  height: 100%;
   display: block;
-  object-fit: cover;
-  min-height: 300px;
+  object-fit: contain;
 }
 
 /* ── Tablet ── */
@@ -826,7 +821,7 @@ document.addEventListener("keyup", function (e) {
   .stage { padding: 20px 40px 48px; }
   .stage-bar { padding-left: 40px; padding-right: 40px; }
   .stage-body { gap: 32px; }
-  .stage-image-card { max-width: 420px; }
+  .stage-image-card { max-width: 460px; }
   .stage-title { font-size: clamp(2rem, 4.5vw, 3.5rem) !important; }
   .stage-rail { right: 16px; }
 }
